@@ -64,7 +64,7 @@
         .title-intro {
             position: fixed;
             inset: 0;
-            background: var(--bg);
+            background: transparent;
             z-index: 9999;
             pointer-events: none;
         }
@@ -81,6 +81,10 @@
             align-items: center;
             z-index: 1000;
             mix-blend-mode: difference;
+            transition: transform 0.4s ease;
+        }
+        .navbar.hidden {
+            transform: translateY(-100%);
         }
         .nav-logo {
             font-family: 'Space Grotesk', sans-serif;
@@ -558,6 +562,8 @@
             color: var(--accent);
             margin-bottom: 2rem;
             opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
         }
         .hero-badge .dot {
             width: 6px;
@@ -584,11 +590,13 @@
         }
         #hero-title.intro-active {
             position: fixed;
-            z-index: 10000;
+            z-index: 100000;
             visibility: visible;
+            perspective: 1000px;
         }
         #hero-title.intro-active .line {
             overflow: visible;
+            transform-style: preserve-3d;
         }
         #hero-title.ready {
             visibility: visible;
@@ -615,12 +623,21 @@
             max-width: 600px;
             line-height: 1.6;
             margin-bottom: 2.5rem;
+        }
+        .hero-sub .word {
+            display: inline-block;
             opacity: 0;
+            transform: translateY(20px);
         }
         .hero-buttons {
             display: flex;
             gap: 1rem;
+        }
+        .hero-buttons .btn-primary,
+        .hero-buttons .btn-secondary {
             opacity: 0;
+            transform: scale(0.9);
+            filter: blur(10px);
         }
         .btn-primary {
             background: var(--accent);
@@ -804,11 +821,11 @@
         }
         .feature-card {
             width: 400px;
-            min-height: 450px;
+            min-height: 480px;
             background: var(--bg2);
             border: 1px solid rgba(255,255,255,0.05);
             border-radius: 24px;
-            padding: 3rem;
+            padding: 0;
             position: relative;
             overflow: hidden;
             flex-shrink: 0;
@@ -822,18 +839,31 @@
             background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(201, 243, 29, 0.06) 0%, transparent 60%);
             opacity: 0;
             transition: opacity 0.4s;
+            pointer-events: none;
         }
         .feature-card:hover::after { opacity: 1; }
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            background: rgba(201, 243, 29, 0.1);
+        .feature-img {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(201,243,29,0.05) 0%, rgba(201,243,29,0.02) 100%);
+        }
+        .feature-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .feature-img.done-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
-            font-size: 1.5rem;
+            font-size: 7rem;
+            background: linear-gradient(135deg, rgba(201,243,29,0.2) 0%, rgba(201,243,29,0.05) 100%);
+            color: var(--accent);
+            text-shadow: 0 0 40px rgba(201,243,29,0.5);
+        }
+        .feature-content {
+            padding: 2rem 2.5rem 3rem;
         }
         .feature-card h3 {
             font-family: 'Space Grotesk', sans-serif;
@@ -848,12 +878,12 @@
         }
         .feature-number {
             position: absolute;
-            bottom: 2rem;
+            bottom: 1.5rem;
             right: 2rem;
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 5rem;
+            font-size: 4rem;
             font-weight: 700;
-            color: rgba(255,255,255,0.03);
+            color: rgba(201,243,29,0.15);
             line-height: 1;
         }
 
@@ -1399,39 +1429,63 @@
         </div>
         <div class="features-track" id="features-track">
             <div class="feature-card">
-                <div class="feature-icon">&#9889;</div>
-                <h3>Instant Lead Capture</h3>
-                <p>High-converting landing pages that capture leads the moment they click. No more leaky funnels or lost prospects.</p>
+                <div class="feature-img">
+                    <img src="images/feature-1-lead-capture.png" alt="Instant Lead Capture">
+                </div>
+                <div class="feature-content">
+                    <h3>Instant Lead Capture</h3>
+                    <p>High-converting landing pages that capture leads the moment they click. No more leaky funnels or lost prospects.</p>
+                </div>
                 <div class="feature-number">01</div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">&#128172;</div>
-                <h3>Auto SMS & Email</h3>
-                <p>Respond to leads within seconds via SMS and email. Multi-touch follow-up sequences that never let a lead go cold.</p>
+                <div class="feature-img">
+                    <img src="images/feature-2-sms-email.png" alt="Auto SMS & Email">
+                </div>
+                <div class="feature-content">
+                    <h3>Auto SMS & Email</h3>
+                    <p>Respond to leads within seconds via SMS and email. Multi-touch follow-up sequences that never let a lead go cold.</p>
+                </div>
                 <div class="feature-number">02</div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">&#128197;</div>
-                <h3>Smart Booking</h3>
-                <p>Direct Calendly integration. Leads book themselves into your calendar. Wake up to a full schedule every morning.</p>
+                <div class="feature-img">
+                    <img src="images/feature-3-booking.png" alt="Smart Booking">
+                </div>
+                <div class="feature-content">
+                    <h3>Smart Booking</h3>
+                    <p>Direct Calendly integration. Leads book themselves into your calendar. Wake up to a full schedule every morning.</p>
+                </div>
                 <div class="feature-number">03</div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">&#128200;</div>
-                <h3>Pipeline CRM</h3>
-                <p>Full visibility into your pipeline. Know exactly where every lead is, what they need, and when to close.</p>
+                <div class="feature-img">
+                    <img src="images/feature-4-crm.png" alt="Pipeline CRM">
+                </div>
+                <div class="feature-content">
+                    <h3>Pipeline CRM</h3>
+                    <p>Full visibility into your pipeline. Know exactly where every lead is, what they need, and when to close.</p>
+                </div>
                 <div class="feature-number">04</div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">&#127919;</div>
-                <h3>Revenue Attribution</h3>
-                <p>See exactly which ads, campaigns, and channels generate revenue. Every dollar tracked, every ROI measured.</p>
+                <div class="feature-img">
+                    <img src="images/feature-5-revenue.png" alt="Revenue Attribution">
+                </div>
+                <div class="feature-content">
+                    <h3>Revenue Attribution</h3>
+                    <p>See exactly which ads, campaigns, and channels generate revenue. Every dollar tracked, every ROI measured.</p>
+                </div>
                 <div class="feature-number">05</div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">&#128640;</div>
-                <h3>Done For You</h3>
-                <p>We build it, launch it, and optimize it. You focus on closing deals while ONIX handles the rest.</p>
+                <div class="feature-img done-icon">
+                    <span>&#10004;</span>
+                </div>
+                <div class="feature-content">
+                    <h3>Done For You</h3>
+                    <p>We build it, launch it, and optimize it. You focus on closing deals while ONIX handles the rest.</p>
+                </div>
                 <div class="feature-number">06</div>
             </div>
         </div>
@@ -1620,6 +1674,12 @@
         document.querySelectorAll('#hero-title .line').forEach(splitLineIntoChars);
         document.getElementById('hero-title').classList.add('ready');
 
+        // Split hero subtitle into words
+        const heroSub = document.querySelector('.hero-sub');
+        heroSub.innerHTML = heroSub.textContent.split(' ').map(word =>
+            `<span class="word">${word}</span>`
+        ).join(' ');
+
         // ============================================================
         //  MASTER TIMELINE — Hero title: Big Center → Shrink to Place → Reveal rest
         // ============================================================
@@ -1708,13 +1768,32 @@
             .to('.hero-glow-2', { opacity: 1, duration: 2 }, 3.6)
 
             // PHASE 5: Badge
-            .to('.hero-badge', { opacity: 1, y: 0, duration: 0.8 }, 3.8)
+            .to('.hero-badge', { opacity: 1, y: 0, visibility: 'visible', duration: 0.8 }, 3.8)
 
-            // PHASE 6: Subtitle
-            .to('.hero-sub', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 4.0)
+            // PHASE 6: Subtitle (word-by-word)
+            .to('.hero-sub .word', {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.08,
+                ease: "power3.out"
+            }, 4.0)
 
-            // PHASE 7: Buttons
-            .to('.hero-buttons', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 4.2)
+            // PHASE 7: Buttons (blur + scale)
+            .to('.hero-buttons .btn-primary', {
+                opacity: 1,
+                scale: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                ease: "power2.out"
+            }, 4.6)
+            .to('.hero-buttons .btn-secondary', {
+                opacity: 1,
+                scale: 1,
+                filter: 'blur(0px)',
+                duration: 1,
+                ease: "power2.out"
+            }, 4.75)
 
             // PHASE 8: Dashboard
             .to('#indDashboard', { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 4.0)
@@ -1828,17 +1907,78 @@
         let autoRotateTimer = null;
 
         // ── Render Bento ──
-        function renderBento(ind) {
+        function renderBento(ind, skipValues = false) {
             const d = industries[ind];
             const grid = document.getElementById('bentoGrid');
             grid.className = 'bento-grid ' + d.bentoClass;
             grid.innerHTML = d.stats.map((s, i) =>
                 '<div class="bento-box ' + d.shapes[i % d.shapes.length] + '">' +
-                    '<div class="bento-val">' + s.val + '</div>' +
+                    '<div class="bento-val" data-target="' + s.num + '" data-format="' + s.val + '">' + (skipValues ? '0' : s.val) + '</div>' +
                     '<div class="bento-lbl">' + s.lbl + '</div>' +
                     '<div class="bento-change' + (s.down ? ' down' : '') + '">' + s.change + '</div>' +
                 '</div>'
             ).join('');
+        }
+
+        // ── Format number based on original format string ──
+        function formatNumber(num, format) {
+            // Extract prefix (like '$') and suffix (like 'k', '%', 's', 'M', 'x')
+            const prefix = format.match(/^[^0-9.]*/)[0] || '';
+            const suffix = format.match(/[^0-9.]*$/)[0] || '';
+
+            // Check if original has decimal
+            const hasDecimal = format.includes('.');
+            const decimalPlaces = hasDecimal ? (format.split('.')[1].match(/[0-9]/g) || []).length : 0;
+
+            // Format the number
+            let formatted;
+            if (hasDecimal) {
+                formatted = num.toFixed(decimalPlaces);
+            } else {
+                formatted = Math.round(num).toLocaleString();
+            }
+
+            return prefix + formatted + suffix;
+        }
+
+        // ── Count up animation for stat numbers ──
+        function animateCountUp(element, duration = 1.5, delay = 0) {
+            const target = parseFloat(element.dataset.target);
+            const format = element.dataset.format;
+
+            gsap.fromTo(element,
+                { innerText: 0 },
+                {
+                    innerText: target,
+                    duration: duration,
+                    delay: delay,
+                    ease: "power2.out",
+                    snap: { innerText: target % 1 === 0 ? 1 : 0.1 },
+                    onUpdate: function() {
+                        const current = parseFloat(element.innerText) || 0;
+                        element.textContent = formatNumber(current, format);
+                    }
+                }
+            );
+        }
+
+        // ── Typewriter animation for labels ──
+        function typewriterLabel(element, text, delay = 0) {
+            element.textContent = '';
+            element.style.opacity = '1';
+            let idx = 0;
+            const speed = 40; // ms per character
+
+            setTimeout(() => {
+                const type = () => {
+                    if (idx <= text.length) {
+                        element.textContent = text.substring(0, idx);
+                        idx++;
+                        setTimeout(type, speed);
+                    }
+                };
+                type();
+            }, delay);
         }
 
         // ── Render Chart ──
@@ -1894,35 +2034,30 @@
             }
         }
 
-        // ── Animate data text IN — slow typewriter + gentle reveals ──
-        function animateDataIn() {
-            // Values: slow typewriter with cursor blink feel
+        // ── Animate data text IN — counting + typewriter ──
+        function animateDataIn(isInitial = true) {
+            const d = industries[currentInd];
+
+            // Values: counting animation
             document.querySelectorAll('#bentoGrid .bento-val').forEach((el, i) => {
-                const target = el.textContent;
-                el.textContent = '';
                 gsap.to(el, { opacity: 1, duration: 0.1 });
-                let idx = 0;
-                const type = () => {
-                    if (idx <= target.length) {
-                        el.textContent = target.substring(0, idx);
-                        idx++;
-                        setTimeout(type, 70 + Math.random() * 50);
-                    }
-                };
-                setTimeout(type, 400 + i * 300);
+                animateCountUp(el, 1.2, i * 0.15);
             });
 
-            // Labels slide up gently with long delay
-            gsap.fromTo('#bentoGrid .bento-lbl',
-                { opacity: 0, y: 10 },
-                { opacity: 1, y: 0, duration: 1, stagger: 0.2, delay: 0.8, ease: "power2.out" }
-            );
+            // Labels: typewriter animation
+            if (isInitial) {
+                document.querySelectorAll('#bentoGrid .bento-lbl').forEach((el, i) => {
+                    const text = d.stats[i].lbl;
+                    el.style.opacity = '0';
+                    typewriterLabel(el, text, 500 + i * 200);
+                });
 
-            // Change badges scale in with bounce
-            gsap.fromTo('#bentoGrid .bento-change',
-                { opacity: 0, scale: 0.7 },
-                { opacity: 1, scale: 1, duration: 0.8, stagger: 0.2, delay: 1.2, ease: "back.out(1.8)" }
-            );
+                // Change badges scale in with bounce
+                gsap.fromTo('#bentoGrid .bento-change',
+                    { opacity: 0, scale: 0.7 },
+                    { opacity: 1, scale: 1, duration: 0.8, stagger: 0.2, delay: 1.2, ease: "back.out(1.8)" }
+                );
+            }
         }
 
         // ── Animate chart data IN — slow and cinematic ──
@@ -2021,16 +2156,43 @@
                 gsap.fromTo(title, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" });
             }});
 
-            // Bento text: fade down slowly, then render new + animate in
-            gsap.to('#bentoGrid .bento-val', {
-                opacity: 0, y: 8, duration: 0.6, stagger: 0.08, ease: "power2.in"
+            // Bento: update values with counting animation (no fade out)
+            const newData = industries[ind];
+            const bentoVals = document.querySelectorAll('#bentoGrid .bento-val');
+            const bentoLbls = document.querySelectorAll('#bentoGrid .bento-lbl');
+            const bentoChanges = document.querySelectorAll('#bentoGrid .bento-change');
+
+            // Update data attributes and animate count to new values
+            bentoVals.forEach((el, i) => {
+                const stat = newData.stats[i];
+                el.dataset.target = stat.num;
+                el.dataset.format = stat.val;
+                animateCountUp(el, 1, i * 0.1);
             });
-            gsap.to('#bentoGrid .bento-lbl, #bentoGrid .bento-change', {
-                opacity: 0, duration: 0.5, stagger: 0.05, ease: "power2.in",
-                onComplete: () => {
-                    renderBento(ind);
-                    animateDataIn();
-                }
+
+            // Update labels with typewriter animation
+            bentoLbls.forEach((el, i) => {
+                gsap.to(el, {
+                    opacity: 0,
+                    duration: 0.15,
+                    onComplete: () => {
+                        typewriterLabel(el, newData.stats[i].lbl, i * 100);
+                    }
+                });
+            });
+
+            // Update change badges with subtle fade
+            bentoChanges.forEach((el, i) => {
+                gsap.to(el, {
+                    opacity: 0,
+                    scale: 0.8,
+                    duration: 0.2,
+                    onComplete: () => {
+                        el.textContent = newData.stats[i].change;
+                        el.className = 'bento-change' + (newData.stats[i].down ? ' down' : '');
+                        gsap.to(el, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.5)" });
+                    }
+                });
             });
 
             // Chart: fade everything out together, then swap and animate in
@@ -2051,8 +2213,8 @@
             setTimeout(() => { switching = false; }, 5000);
         }
 
-        // Initialize
-        renderBento('tradies');
+        // Initialize (render with 0 values, will count up on animation)
+        renderBento('tradies', true);
         renderChart('tradies');
         setTimeout(() => {
             const firstTab = document.querySelector('.ind-tab.active');
@@ -2408,6 +2570,41 @@
             el.addEventListener('mouseleave', () => {
                 gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
             });
+        });
+
+        // ============================================================
+        //  SMART NAVBAR — Hide on scroll down, show on scroll up
+        // ============================================================
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+
+        function updateNavbar() {
+            const currentScrollY = window.scrollY;
+
+            // Only hide/show after scrolling past 100px
+            if (currentScrollY > 100) {
+                if (currentScrollY > lastScrollY) {
+                    // Scrolling down — hide navbar
+                    navbar.classList.add('hidden');
+                } else {
+                    // Scrolling up — show navbar
+                    navbar.classList.remove('hidden');
+                }
+            } else {
+                // At top — always show
+                navbar.classList.remove('hidden');
+            }
+
+            lastScrollY = currentScrollY;
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateNavbar);
+                ticking = true;
+            }
         });
 
     </script>
