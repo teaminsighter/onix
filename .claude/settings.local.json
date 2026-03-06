@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:onixmrkt.com)",
+      "Bash(start:*)",
+      "Bash(python:*)"
+    ]
+  }
+}

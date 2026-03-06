@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONIX — Leads on Autopilot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #111111;
+            --accent: #c9f31d;
+            --accent2: #a8cc18;
+            --white: #f5f5f5;
+            --gray: #888888;
+            --dark-gray: #1a1a1a;
+        }
+
+        html { scroll-behavior: auto; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ========== CUSTOM CURSOR ========== */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 99999;
+            transition: width 0.3s, height 0.3s, border-color 0.3s;
+        }
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 99999;
+        }
+        .cursor.hovering {
+            width: 60px;
+            height: 60px;
+            border-color: var(--accent);
+            background: rgba(201, 243, 29, 0.1);
+        }
+
+        /* ========== PRELOADER ========== */
+        /* ========== TITLE INTRO OVERLAY ========== */
+        .title-intro {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            mix-blend-mode: difference;
+        }
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            opacity: 0;
+        }
+        .nav-logo span { color: var(--accent); }
+        .nav-links, .nav-cta { opacity: 0; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta {
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.7rem 1.8rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(201, 243, 29, 0.3);
+        }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            padding: 6rem 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content {
+            text-align: left;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-right {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Graph Visual */
+        /* ========== INDUSTRY DASHBOARD ========== */
+        .ind-dashboard {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(20, 20, 20, 0.55);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 24px;
+            display: flex;
+            overflow: hidden;
+            height: 480px;
+            opacity: 0;
+            transform: translateY(30px);
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.3),
+                0 2px 8px rgba(0,0,0,0.2),
+                inset 0 0.5px 0 rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .ind-dashboard::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: linear-gradient(
+                135deg,
+                rgba(255,255,255,0.06) 0%,
+                transparent 40%,
+                transparent 60%,
+                rgba(255,255,255,0.02) 100%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+        /* Colorful glow behind dashboard to make glass pop */
+        .dash-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: radial-gradient(circle,
+                rgba(201, 243, 29, 0.12) 0%,
+                rgba(201, 243, 29, 0.05) 30%,
+                rgba(100, 200, 255, 0.03) 60%,
+                transparent 80%
+            );
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(20px);
+        }
+        /* Vertical Tabs */
+        .ind-tabs {
+            display: flex;
+            flex-direction: column;
+            background: rgba(0,0,0,0.25);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border-right: 1px solid rgba(255,255,255,0.06);
+            padding: 0.5rem;
+            gap: 0.25rem;
+            position: relative;
+            min-width: 56px;
+            z-index: 1;
+        }
+        .ind-tab-label {
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.2);
+            text-align: center;
+            padding: 0.6rem 0.3rem 0.4rem;
+            font-weight: 600;
+        }
+        .ind-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.7rem 0.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+        .ind-tab .tab-icon { font-size: 1.1rem; }
+        .ind-tab .tab-name {
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--gray);
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+        .ind-tab:hover .tab-name { color: var(--white); }
+        .ind-tab.active .tab-name { color: var(--white); }
+        /* Sliding active indicator */
+        .ind-tab-slider {
+            position: absolute;
+            left: 0.5rem;
+            right: 0.5rem;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            z-index: 0;
+            transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.15),
+                inset 0 0.5px 0 rgba(255,255,255,0.15);
+        }
+        /* Content area */
+        .ind-content {
+            flex: 1;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .ind-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .ind-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .ind-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.68rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .ind-live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+        /* ========== BENTO GRID ========== */
+        .bento-grid {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            height: 180px;
+        }
+        /* All layouts: 2 rows, fixed height — like solar/insurance */
+        .bento-grid.bento-tradies {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+        .bento-grid.bento-builders {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+        .bento-grid.bento-solar {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+        .bento-grid.bento-insurance {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+        .bento-grid.bento-agencies {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .bento-box {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(12px) saturate(140%);
+            -webkit-backdrop-filter: blur(12px) saturate(140%);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.9rem;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 2px 8px rgba(0,0,0,0.12),
+                inset 0 0.5px 0 rgba(255,255,255,0.06);
+        }
+        .bento-box:hover {
+            border-color: rgba(201, 243, 29, 0.2);
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.06);
+        }
+        /* Unified shape — clean rounded rect like the Builders box */
+        .bento-box.s-round,
+        .bento-box.s-pill,
+        .bento-box.s-cut,
+        .bento-box.s-sharp,
+        .bento-box.s-soft { border-radius: 16px; }
+        .bento-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1.1;
+            min-height: 1.4rem;
+        }
+        .bento-lbl {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 0.2rem;
+            line-height: 1.2;
+            opacity: 0;
+        }
+        .bento-change {
+            font-size: 0.58rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 0.25rem;
+            opacity: 0;
+        }
+        .bento-change.down { color: #ff6b6b; }
+        /* ========== CHART AREA (Bottom Half) ========== */
+        .chart-container {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(16px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 1.2rem;
+            height: 190px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.15),
+                inset 0 0.5px 0 rgba(255,255,255,0.08);
+        }
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        .chart-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .chart-badge {
+            background: rgba(201, 243, 29, 0.1);
+            color: var(--accent);
+            padding: 0.2rem 0.5rem;
+            border-radius: 100px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        .chart-area {
+            width: 100%;
+            height: 110px;
+            position: relative;
+        }
+        .chart-area svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.55rem;
+            color: rgba(255,255,255,0.45);
+            margin-top: 0.3rem;
+        }
+        /* Bar chart */
+        .chart-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 5px;
+            height: 110px;
+        }
+        .chart-bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            transition: background 0.3s;
+            position: relative;
+        }
+        .chart-bar:hover { filter: brightness(1.3); }
+        /* Pie / Donut */
+        .chart-pie {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            height: 110px;
+        }
+        .chart-pie svg {
+            width: 100px;
+            height: 100px;
+        }
+        .pie-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .pie-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.8);
+        }
+        .pie-legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .pie-legend-val {
+            font-weight: 700;
+            color: var(--white);
+            margin-left: auto;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        /* SVG styles */
+        .svg-line {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .svg-area { opacity: 0.8; }
+        .svg-dot {
+            fill: var(--accent);
+            filter: drop-shadow(0 0 4px rgba(201, 243, 29, 0.4));
+        }
+        .hero-bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 243, 29, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 243, 29, 0.05) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0;
+        }
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201, 243, 29, 0.12) 0%, rgba(201, 243, 29, 0.04) 40%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
+        .hero-glow-2 {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(100, 200, 255, 0.06) 0%, transparent 70%);
+            top: 30%;
+            right: 10%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(201, 243, 29, 0.08);
+            border: 1px solid rgba(201, 243, 29, 0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            opacity: 0;
+        }
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+        #hero-title {
+            visibility: hidden;
+            position: relative;
+        }
+        #hero-title.intro-active {
+            position: fixed;
+            z-index: 10000;
+            visibility: visible;
+        }
+        #hero-title.intro-active .line {
+            overflow: visible;
+        }
+        #hero-title.ready {
+            visibility: visible;
+        }
+        .hero h1 .line {
+            display: block;
+            overflow: hidden;
+        }
+        .hero h1 .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(60px) rotateX(-40deg);
+        }
+        .hero h1 .char-space {
+            display: inline-block;
+            width: 0.3em;
+        }
+        .hero h1 .highlight {
+            color: var(--accent);
+        }
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--gray);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            opacity: 0;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .btn-primary .btn-shine {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .btn-primary:hover .btn-shine { left: 100%; }
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: rgba(201, 243, 29, 0.05);
+        }
+        .hero-scroll {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+        }
+        .hero-scroll span {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollPulse 2s infinite;
+        }
+        @keyframes scrollPulse {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* ========== MARQUEE ========== */
+        .marquee-section {
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            gap: 4rem;
+            animation: none;
+        }
+        .marquee-item {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 600;
+            white-space: nowrap;
+            color: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .marquee-item .sep {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ========== STATS ========== */
+        .stats {
+            padding: 8rem 4rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            background: var(--bg2);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .stat-card:hover::before { opacity: 1; }
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            letter-spacing: 0.05em;
+        }
+
+        /* ========== FEATURES (Horizontal Scroll) ========== */
+        .features-section {
+            padding: 8rem 0;
+            overflow: hidden;
+        }
+        .features-header {
+            text-align: center;
+            padding: 0 4rem;
+            margin-bottom: 4rem;
+        }
+        .section-label {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+            opacity: 0;
+        }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        .section-title .word {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .features-track {
+            display: flex;
+            gap: 2rem;
+            padding: 0 4rem;
+            width: max-content;
+        }
+        .feature-card {
+            width: 400px;
+            min-height: 450px;
+            background: var(--bg2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: border-color 0.4s;
+        }
+        .feature-card:hover { border-color: rgba(201, 243, 29, 0.3); }
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(201, 243, 29, 0.06) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .feature-card:hover::after { opacity: 1; }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: rgba(201, 243, 29, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+        .feature-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .feature-card p {
+            color: var(--gray);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .feature-number {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.03);
+            line-height: 1;
+        }
+
+        /* ========== HOW IT WORKS ========== */
+        .how-section {
+            padding: 8rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .how-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+        .how-steps { display: flex; flex-direction: column; gap: 2rem; }
+        .how-step {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            transition: all 0.4s;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        .how-step.active {
+            background: var(--bg2);
+            border-color: rgba(201, 243, 29, 0.15);
+        }
+        .step-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .step-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .step-content p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .how-visual {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .orbit-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+        }
+        .orbit-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: var(--accent);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--bg);
+            z-index: 2;
+            box-shadow: 0 0 60px rgba(201, 243, 29, 0.3);
+        }
+        .orbit-ring {
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(201, 243, 29, 0.1);
+            border-radius: 50%;
+        }
+        .orbit-ring:nth-child(2) { inset: -40px; }
+        .orbit-ring:nth-child(3) { inset: -80px; }
+        .orbit-dot {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            background: var(--bg2);
+            border: 1px solid rgba(201, 243, 29, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials {
+            padding: 8rem 4rem;
+            background: var(--bg2);
+            overflow: hidden;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 4rem auto 0;
+        }
+        .testimonial-card {
+            background: var(--bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            opacity: 0;
+            transform: translateY(60px) rotateX(10deg);
+        }
+        .testimonial-stars {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+        .testimonial-card blockquote {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1.5rem;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--bg);
+            font-size: 0.85rem;
+        }
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .testimonial-role {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* ========== PRICING ========== */
+        .pricing {
+            padding: 8rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .pricing-card {
+            background: var(--bg2);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .pricing-card.featured {
+            border-color: var(--accent);
+            background: linear-gradient(180deg, rgba(201, 243, 29, 0.05), var(--bg2));
+        }
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: 1rem;
+            right: -2rem;
+            background: var(--accent);
+            color: var(--bg);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 0.3rem 3rem;
+            transform: rotate(45deg);
+        }
+        .pricing-tier {
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .pricing-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .pricing-amount span { font-size: 1.2rem; color: var(--gray); }
+        .pricing-desc {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+        .pricing-features li {
+            padding: 0.6rem 0;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .pricing-features li .check {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .pricing-btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s;
+        }
+        .pricing-btn.primary {
+            background: var(--accent);
+            color: var(--bg);
+        }
+        .pricing-btn.secondary {
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--white);
+        }
+        .pricing-btn:hover { transform: translateY(-2px); }
+
+        /* ========== CTA ========== */
+        .cta-section {
+            padding: 10rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(8rem, 20vw, 18rem);
+            font-weight: 900;
+            color: rgba(255,255,255,0.02);
+            white-space: nowrap;
+            user-select: none;
+        }
+        .cta-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .cta-section p {
+            color: var(--gray);
+            font-size: 1.2rem;
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+            position: relative;
+        }
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 1.2rem 3rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.4s;
+        }
+        .cta-btn:hover {
+            box-shadow: 0 0 60px rgba(201, 243, 29, 0.4);
+        }
+        .cta-btn .arrow {
+            transition: transform 0.3s;
+        }
+        .cta-btn:hover .arrow { transform: translateX(4px); }
+
+        /* ========== FLOATING PARTICLES ========== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            padding: 4rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-left {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .footer-left span { color: var(--accent); }
+        .footer-center {
+            display: flex;
+            gap: 2rem;
+        }
+        .footer-center a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .footer-center a:hover { color: var(--accent); }
+        .footer-right {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        /* ========== MAGNETIC BUTTON EFFECT ========== */
+        .magnetic { display: inline-block; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin-left: auto; margin-right: auto; }
+            .testimonial-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+            .how-grid { grid-template-columns: 1fr; }
+            .how-visual { display: none; }
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 2rem; }
+            .nav-links { display: none; }
+            .stats { grid-template-columns: 1fr 1fr; padding: 4rem 2rem; }
+            .hero { padding: 6rem 1.5rem 2rem; grid-template-columns: 1fr; }
+            .hero-right { margin-top: 2rem; }
+            .ind-dashboard { height: 440px; }
+            .ind-tabs { min-width: 48px; }
+            .ind-tab .tab-name { font-size: 0.5rem; }
+            .features-header, .how-section, .testimonials, .pricing, .cta-section { padding-left: 2rem; padding-right: 2rem; }
+            .footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+            .cursor, .cursor-dot { display: none; }
+            body { cursor: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- PARTICLES -->
+    <div class="particles" id="particles"></div>
+
+    <!-- TITLE INTRO OVERLAY -->
+    <div class="title-intro" id="titleIntro"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">ONIX<span>.</span></a>
+        <ul class="nav-links">
+            <li><a href="#features" class="magnetic">Features</a></li>
+            <li><a href="#how" class="magnetic">How it Works</a></li>
+            <li><a href="#pricing" class="magnetic">Pricing</a></li>
+            <li><a href="#testimonials" class="magnetic">Results</a></li>
+        </ul>
+        <a href="#book" class="nav-cta magnetic">Book a Call</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-glow-2"></div>
+
+        <!-- LEFT SIDE -->
+        <div class="hero-content">
+            <div class="hero-badge"><span class="dot"></span> Leads on Autopilot</div>
+            <h1 id="hero-title">
+                <span class="line">Stop Chasing</span>
+                <span class="line"><span class="highlight">Leads.</span> Start</span>
+                <span class="line">Closing <span class="highlight">Deals.</span></span>
+            </h1>
+            <p class="hero-sub">ONIX automates your entire lead acquisition and follow-up pipeline so you book more calls, close more deals, and scale faster.</p>
+            <div class="hero-buttons">
+                <a href="#book" class="btn-primary magnetic"><span class="btn-shine"></span>Get Started</a>
+                <a href="#how" class="btn-secondary magnetic">See How It Works</a>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE — Industry Dashboard -->
+        <div class="hero-right">
+            <div class="dash-glow"></div>
+            <div class="ind-dashboard" id="indDashboard">
+
+                <!-- Vertical Tabs -->
+                <div class="ind-tabs" id="indTabs">
+                    <div class="ind-tab-label">Results</div>
+                    <div class="ind-tab active" data-ind="tradies"><span class="tab-icon">&#128295;</span><span class="tab-name">Tradies</span></div>
+                    <div class="ind-tab" data-ind="builders"><span class="tab-icon">&#127959;</span><span class="tab-name">Builders</span></div>
+                    <div class="ind-tab" data-ind="solar"><span class="tab-icon">&#9728;</span><span class="tab-name">Solar</span></div>
+                    <div class="ind-tab" data-ind="insurance"><span class="tab-icon">&#128737;</span><span class="tab-name">Insure</span></div>
+                    <div class="ind-tab" data-ind="agencies"><span class="tab-icon">&#128640;</span><span class="tab-name">Agency</span></div>
+                    <div class="ind-tab-slider" id="tabSlider"></div>
+                </div>
+
+                <!-- Content Panel -->
+                <div class="ind-content" id="indContent">
+                    <!-- Hidden SVG defs -->
+                    <svg style="position:absolute;width:0;height:0">
+                        <defs>
+                            <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(201,243,29,0.2)"/>
+                                <stop offset="100%" stop-color="rgba(201,243,29,0)"/>
+                            </linearGradient>
+                            <linearGradient id="areaGradBlue" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="rgba(100,200,255,0.2)"/>
+                                <stop offset="100%" stop-color="rgba(100,200,255,0)"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="ind-header">
+                        <span class="ind-title" id="indTitle">Tradies</span>
+                        <span class="ind-live"><span class="ind-live-dot"></span> Live</span>
+                    </div>
+                    <!-- Bento Stats (Upper Half) -->
+                    <div class="bento-grid bento-tradies" id="bentoGrid"></div>
+                    <!-- Chart (Lower Half) -->
+                    <div class="chart-container" id="chartContainer">
+                        <div class="chart-header">
+                            <span class="chart-title" id="chartTitle">Jobs Booked</span>
+                            <span class="chart-badge" id="chartBadge">+38% growth</span>
+                        </div>
+                        <div class="chart-area" id="chartArea"></div>
+                        <div class="chart-labels" id="chartLabels"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="hero-scroll">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-section">
+        <div class="marquee-track" id="marquee">
+            <div class="marquee-item">Meta Ads <span class="sep"></span></div>
+            <div class="marquee-item">Google Ads <span class="sep"></span></div>
+            <div class="marquee-item">Landing Pages <span class="sep"></span></div>
+            <div class="marquee-item">SMS Automation <span class="sep"></span></div>
+            <div class="marquee-item">Email Follow-up <span class="sep"></span></div>
+            <div class="marquee-item">CRM Pipelines <span class="sep"></span></div>
+            <div class="marquee-item">Calendly <span class="sep"></span></div>
+            <div class="marquee-item">Reporting <span class="sep"></span></div>
+            <!-- Duplicated for seamless loop -->
+            <div class="marquee-item">Meta Ads <span class="sep"></span></div>
+            <div class="marquee-item">Google Ads <span class="sep"></span></div>
+            <div class="marquee-item">Landing Pages <span class="sep"></span></div>
+            <div class="marquee-item">SMS Automation <span class="sep"></span></div>
+            <div class="marquee-item">Email Follow-up <span class="sep"></span></div>
+            <div class="marquee-item">CRM Pipelines <span class="sep"></span></div>
+            <div class="marquee-item">Calendly <span class="sep"></span></div>
+            <div class="marquee-item">Reporting <span class="sep"></span></div>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <section class="stats" id="stats">
+        <div class="stat-card">
+            <div class="stat-number" data-target="45">0%</div>
+            <div class="stat-label">Booking Uplift</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-target="30">0%</div>
+            <div class="stat-label">Reply Rate</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-target="10" data-prefix="">0 hrs</div>
+            <div class="stat-label">Saved Weekly</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-target="100">$0k+</div>
+            <div class="stat-label">Revenue Impact</div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section" id="features">
+        <div class="features-header">
+            <span class="section-label">What We Offer</span>
+            <h2 class="section-title">Everything you need to <span class="highlight">dominate</span> lead gen</h2>
+        </div>
+        <div class="features-track" id="features-track">
+            <div class="feature-card">
+                <div class="feature-icon">&#9889;</div>
+                <h3>Instant Lead Capture</h3>
+                <p>High-converting landing pages that capture leads the moment they click. No more leaky funnels or lost prospects.</p>
+                <div class="feature-number">01</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128172;</div>
+                <h3>Auto SMS & Email</h3>
+                <p>Respond to leads within seconds via SMS and email. Multi-touch follow-up sequences that never let a lead go cold.</p>
+                <div class="feature-number">02</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128197;</div>
+                <h3>Smart Booking</h3>
+                <p>Direct Calendly integration. Leads book themselves into your calendar. Wake up to a full schedule every morning.</p>
+                <div class="feature-number">03</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128200;</div>
+                <h3>Pipeline CRM</h3>
+                <p>Full visibility into your pipeline. Know exactly where every lead is, what they need, and when to close.</p>
+                <div class="feature-number">04</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#127919;</div>
+                <h3>Revenue Attribution</h3>
+                <p>See exactly which ads, campaigns, and channels generate revenue. Every dollar tracked, every ROI measured.</p>
+                <div class="feature-number">05</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128640;</div>
+                <h3>Done For You</h3>
+                <p>We build it, launch it, and optimize it. You focus on closing deals while ONIX handles the rest.</p>
+                <div class="feature-number">06</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section" id="how">
+        <div class="features-header">
+            <span class="section-label">The Process</span>
+            <h2 class="section-title">Three steps to <span class="highlight">autopilot</span></h2>
+        </div>
+        <div class="how-grid">
+            <div class="how-steps">
+                <div class="how-step active">
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <h4>We Build Your Engine</h4>
+                        <p>Custom landing pages, ad creatives, follow-up sequences, and CRM pipelines tailored to your business.</p>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <h4>Leads Flow In Automatically</h4>
+                        <p>Ads go live. Leads land on your pages. ONIX instantly responds, follows up, and books calls on your calendar.</p>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <h4>You Close & Scale</h4>
+                        <p>Show up to pre-qualified calls. Close deals. We optimize everything weekly for maximum ROI.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="how-visual">
+                <div class="orbit-container">
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-ring"></div>
+                    <div class="orbit-center">ONIX</div>
+                    <div class="orbit-dot" style="top: -22px; left: 50%; transform: translateX(-50%);">&#128232;</div>
+                    <div class="orbit-dot" style="bottom: -22px; left: 50%; transform: translateX(-50%);">&#128197;</div>
+                    <div class="orbit-dot" style="top: 50%; left: -22px; transform: translateY(-50%);">&#128200;</div>
+                    <div class="orbit-dot" style="top: 50%; right: -22px; transform: translateY(-50%);">&#128176;</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials" id="testimonials">
+        <div class="features-header">
+            <span class="section-label">Real Results</span>
+            <h2 class="section-title">What our <span class="highlight">clients</span> say</h2>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <blockquote>"ONIX transformed our business. We went from manually chasing leads to having a full calendar every single week. Revenue is up 40%."</blockquote>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">NK</div>
+                    <div><div class="testimonial-name">Nicky K.</div><div class="testimonial-role">Solar Company Owner</div></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <blockquote>"The follow-up automation alone is worth 10x the price. Leads get instant responses and book themselves in. Game changer."</blockquote>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">CM</div>
+                    <div><div class="testimonial-name">Carmeo M.</div><div class="testimonial-role">Agency Director</div></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <blockquote>"We save 10+ hours a week and our booking rate jumped from 12% to 35%. ONIX pays for itself every single month."</blockquote>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">PD</div>
+                    <div><div class="testimonial-name">Paul D.</div><div class="testimonial-role">Trades Business Owner</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+        <div class="features-header">
+            <span class="section-label">Simple Pricing</span>
+            <h2 class="section-title">Invest in <span class="highlight">growth</span></h2>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-tier">Starter</div>
+                <div class="pricing-amount">$497<span>/mo</span></div>
+                <div class="pricing-desc">For businesses getting started with automation.</div>
+                <ul class="pricing-features">
+                    <li><span class="check">&#10003;</span> Lead Capture Pages</li>
+                    <li><span class="check">&#10003;</span> SMS & Email Follow-up</li>
+                    <li><span class="check">&#10003;</span> Calendar Booking</li>
+                    <li><span class="check">&#10003;</span> Basic CRM Pipeline</li>
+                    <li><span class="check">&#10003;</span> Weekly Reporting</li>
+                </ul>
+                <a href="#book" class="pricing-btn secondary">Get Started</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="pricing-tier">Growth</div>
+                <div class="pricing-amount">$997<span>/mo</span></div>
+                <div class="pricing-desc">Full system with ads management included.</div>
+                <ul class="pricing-features">
+                    <li><span class="check">&#10003;</span> Everything in Starter</li>
+                    <li><span class="check">&#10003;</span> Meta & Google Ads Management</li>
+                    <li><span class="check">&#10003;</span> Advanced Multi-touch Sequences</li>
+                    <li><span class="check">&#10003;</span> Revenue Attribution</li>
+                    <li><span class="check">&#10003;</span> Priority Support</li>
+                </ul>
+                <a href="#book" class="pricing-btn primary">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-tier">Scale</div>
+                <div class="pricing-amount">Custom</div>
+                <div class="pricing-desc">Enterprise solutions for high-volume teams.</div>
+                <ul class="pricing-features">
+                    <li><span class="check">&#10003;</span> Everything in Growth</li>
+                    <li><span class="check">&#10003;</span> Dedicated Account Manager</li>
+                    <li><span class="check">&#10003;</span> Custom Integrations</li>
+                    <li><span class="check">&#10003;</span> Multi-location Support</li>
+                    <li><span class="check">&#10003;</span> White-label Options</li>
+                </ul>
+                <a href="#book" class="pricing-btn secondary">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="book">
+        <div class="cta-bg-text">ONIX</div>
+        <h2>Ready to put your leads<br>on <span class="highlight">autopilot?</span></h2>
+        <p>Book a free strategy call and see how ONIX can transform your pipeline in 30 days.</p>
+        <a href="mailto:support@onixmrkt.com" class="cta-btn magnetic">
+            Book Your Free Call <span class="arrow">&rarr;</span>
+        </a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-left">ONIX<span>.</span></div>
+        <div class="footer-center">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Cookies</a>
+            <a href="mailto:support@onixmrkt.com">Contact</a>
+        </div>
+        <div class="footer-right">&copy; 2026 ONIX. All rights reserved.</div>
+    </footer>
+
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ============================================================
+        //  1. SPLIT TEXT — Prepare intro + hero title characters
+        // ============================================================
+        function splitLineIntoChars(line) {
+            let html = '';
+            const processNode = (node) => {
+                if (node.nodeType === 3) {
+                    node.textContent.split('').forEach(ch => {
+                        if (ch === ' ') html += '<span class="char-space"> </span>';
+                        else html += '<span class="char">' + ch + '</span>';
+                    });
+                } else if (node.nodeType === 1) {
+                    html += '<' + node.tagName.toLowerCase();
+                    for (const attr of node.attributes) html += ' ' + attr.name + '="' + attr.value + '"';
+                    html += '>';
+                    node.childNodes.forEach(processNode);
+                    html += '</' + node.tagName.toLowerCase() + '>';
+                }
+            };
+            line.childNodes.forEach(processNode);
+            line.innerHTML = html;
+        }
+
+        // Split hero title into chars
+        document.querySelectorAll('#hero-title .line').forEach(splitLineIntoChars);
+        document.getElementById('hero-title').classList.add('ready');
+
+        // ============================================================
+        //  MASTER TIMELINE — Hero title: Big Center → Shrink to Place → Reveal rest
+        // ============================================================
+        const masterTL = gsap.timeline({
+            onComplete: () => {
+                initAnimations();
+            }
+        });
+
+        const heroTitle = document.getElementById('hero-title');
+
+        // Record the title's natural position in flow
+        const naturalRect = heroTitle.getBoundingClientRect();
+
+        // Switch to fixed so it renders above the overlay
+        heroTitle.classList.add('intro-active');
+        heroTitle.style.left = naturalRect.left + 'px';
+        heroTitle.style.top = naturalRect.top + 'px';
+        heroTitle.style.width = naturalRect.width + 'px';
+
+        // Calculate center & scale
+        const bigScale = 1.8;
+        const vpCx = window.innerWidth / 2;
+        const vpCy = window.innerHeight / 2;
+        const titleCx = naturalRect.left + naturalRect.width / 2;
+        const titleCy = naturalRect.top + naturalRect.height / 2;
+        const startX = vpCx - titleCx;
+        const startY = vpCy - titleCy;
+
+        // Start big & centered
+        gsap.set(heroTitle, {
+            x: startX,
+            y: startY,
+            scale: bigScale,
+            transformOrigin: 'center center'
+        });
+        gsap.set('#hero-title .char', { opacity: 0, y: 60, rotateX: -40 });
+
+        masterTL
+            // PHASE 1: Letters animate in — big & centered
+            .to('#hero-title .char', {
+                opacity: 1,
+                y: 0,
+                rotateX: 0,
+                duration: 0.6,
+                stagger: 0.03,
+                ease: "back.out(1.7)"
+            }, 0.3)
+
+            // PHASE 2: Smoothly shrink & move back to natural position
+            .to(heroTitle, {
+                x: 0,
+                y: 0,
+                scale: 1,
+                duration: 1.6,
+                ease: "power2.inOut"
+            }, 2.2)
+
+            // Overlay fades out during the move
+            .to('#titleIntro', {
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out"
+            }, 2.6)
+
+            // Switch back to normal flow
+            .add(() => {
+                heroTitle.classList.remove('intro-active');
+                heroTitle.style.left = '';
+                heroTitle.style.top = '';
+                heroTitle.style.width = '';
+                gsap.set(heroTitle, { clearProps: 'x,y,scale,transformOrigin' });
+                document.getElementById('titleIntro').style.display = 'none';
+            }, 3.9)
+
+            // PHASE 3: Navbar
+            .add(() => {
+                document.querySelector('.nav-logo').style.opacity = '1';
+            }, 3.4)
+            .to('.nav-links', { opacity: 1, duration: 0.6, ease: "power2.out" }, 3.6)
+            .to('.nav-cta', { opacity: 1, duration: 0.6, ease: "power2.out" }, 3.7)
+
+            // PHASE 4: Hero background
+            .to('.hero-bg-grid', { opacity: 1, duration: 1.5 }, 3.2)
+            .to('.hero-glow', { opacity: 1, duration: 2, scale: 1.2 }, 3.2)
+            .to('.hero-glow-2', { opacity: 1, duration: 2 }, 3.6)
+
+            // PHASE 5: Badge
+            .to('.hero-badge', { opacity: 1, y: 0, duration: 0.8 }, 3.8)
+
+            // PHASE 6: Subtitle
+            .to('.hero-sub', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 4.0)
+
+            // PHASE 7: Buttons
+            .to('.hero-buttons', { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 4.2)
+
+            // PHASE 8: Dashboard
+            .to('#indDashboard', { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 4.0)
+
+            // PHASE 9: Tabs
+            .fromTo('.ind-tab', { opacity: 0, x: -15 }, { opacity: 1, x: 0, duration: 0.5, stagger: 0.08, ease: "power3.out" }, 4.2)
+
+            // PHASE 10: Bento data
+            .add(() => animateDataIn(), 4.4)
+
+            // PHASE 11: Chart data
+            .add(() => animateChartIn(), 4.8)
+
+            // PHASE 12: Scroll indicator
+            .to('.hero-scroll', { opacity: 1, duration: 0.8 }, 6.2);
+
+        // ============================================================
+        //  INDUSTRY DATA — Bento + Charts
+        // ============================================================
+        const industries = {
+            tradies: {
+                title: 'Tradies',
+                bentoClass: 'bento-tradies',
+                shapes: ['s-round', 's-pill', 's-round', 's-cut'],
+                stats: [
+                    { icon: '&#128295;', val: '342', num: 342, lbl: 'Booked Jobs', change: '+38%' },
+                    { icon: '&#128176;', val: '$84k', num: 84, lbl: 'Revenue', change: '+45%' },
+                    { icon: '&#128172;', val: '24.6%', num: 24.6, lbl: 'Reply Rate', change: '+12%' },
+                    { icon: '&#9203;', val: '12s', num: 12, lbl: 'Avg Response', change: '-8s' },
+                ],
+                chart: 'bar',
+                chartTitle: 'Jobs Booked',
+                chartBadge: '+38% growth',
+                bars: [28,42,35,55,48,62,58,72,65,80,88,95],
+                barLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                barColors: ['rgba(201,243,29,0.2)','rgba(201,243,29,0.25)','rgba(201,243,29,0.2)','rgba(201,243,29,0.3)','rgba(201,243,29,0.25)','rgba(201,243,29,0.35)','rgba(201,243,29,0.3)','rgba(201,243,29,0.45)','rgba(201,243,29,0.4)','rgba(201,243,29,0.55)','rgba(201,243,29,0.7)','var(--accent)']
+            },
+            builders: {
+                title: 'Builders',
+                bentoClass: 'bento-builders',
+                shapes: ['s-cut', 's-sharp', 's-cut', 's-soft'],
+                stats: [
+                    { icon: '&#127959;', val: '$214k', num: 214, lbl: 'Project Revenue', change: '+52%' },
+                    { icon: '&#128196;', val: '67', num: 67, lbl: 'Quotes Sent', change: '+28%' },
+                    { icon: '&#127919;', val: '43%', num: 43, lbl: 'Win Rate', change: '+15%' },
+                    { icon: '&#128200;', val: '$32k', num: 32, lbl: 'Avg Deal Size', change: '+$8k' },
+                ],
+                chart: 'line',
+                chartTitle: 'Revenue Growth',
+                chartBadge: '+52% YoY',
+                points: [15,22,30,28,40,48,55,62,70,78,85,92],
+                lineLabels: ['Q1','Q2','Q3','Q4','Q1','Q2','Q3','Q4','Q1','Q2','Q3','Q4']
+            },
+            solar: {
+                title: 'Solar',
+                bentoClass: 'bento-solar',
+                shapes: ['s-pill', 's-pill', 's-round', 's-pill'],
+                stats: [
+                    { icon: '&#9728;', val: '189', num: 189, lbl: 'Installs Booked', change: '+41%' },
+                    { icon: '&#128176;', val: '$12.8', num: 12.8, lbl: 'Cost / Lead', change: '-22%', down: true },
+                    { icon: '&#127919;', val: '31%', num: 31, lbl: 'Close Rate', change: '+9%' },
+                    { icon: '&#9889;', val: '8.2x', num: 8.2, lbl: 'ROI', change: '+3.1x' },
+                ],
+                chart: 'pie',
+                chartTitle: 'Lead Sources',
+                chartBadge: 'This quarter',
+                pie: [
+                    { label: 'Meta Ads', val: 45, color: 'var(--accent)' },
+                    { label: 'Google Ads', val: 30, color: 'rgba(100,200,255,0.8)' },
+                    { label: 'Referral', val: 25, color: 'rgba(255,255,255,0.25)' }
+                ]
+            },
+            insurance: {
+                title: 'Insurance',
+                bentoClass: 'bento-insurance',
+                shapes: ['s-sharp', 's-soft', 's-sharp', 's-round'],
+                stats: [
+                    { icon: '&#128737;', val: '1,247', num: 1247, lbl: 'Leads Captured', change: '+36%' },
+                    { icon: '&#128176;', val: '$392k', num: 392, lbl: 'Premium Value', change: '+58%' },
+                    { icon: '&#128200;', val: '18%', num: 18, lbl: 'Conversion', change: '+6%' },
+                    { icon: '&#9733;', val: '$4.2k', num: 4.2, lbl: 'Avg LTV', change: '+$800' },
+                ],
+                chart: 'area',
+                chartTitle: 'Lead Volume',
+                chartBadge: '+36% this month',
+                points: [10,18,25,22,35,42,38,52,60,65,72,82],
+                lineLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            },
+            agencies: {
+                title: 'Agencies',
+                bentoClass: 'bento-agencies',
+                shapes: ['s-soft', 's-round', 's-pill', 's-soft'],
+                stats: [
+                    { icon: '&#128640;', val: '48', num: 48, lbl: 'Clients Scaled', change: '+32%' },
+                    { icon: '&#128176;', val: '$1.2M', num: 1.2, lbl: 'Client Revenue', change: '+67%' },
+                    { icon: '&#128153;', val: '94%', num: 94, lbl: 'Retention', change: '+8%' },
+                    { icon: '&#9733;', val: '72', num: 72, lbl: 'NPS Score', change: '+12' },
+                ],
+                chart: 'donut',
+                chartTitle: 'Revenue Split',
+                chartBadge: 'All clients',
+                pie: [
+                    { label: 'Paid Ads', val: 40, color: 'var(--accent)' },
+                    { label: 'SEO', val: 25, color: 'rgba(100,200,255,0.8)' },
+                    { label: 'CRM Setup', val: 35, color: 'rgba(255,180,100,0.7)' }
+                ]
+            }
+        };
+
+        let currentInd = 'tradies';
+        let autoRotateTimer = null;
+
+        // ── Render Bento ──
+        function renderBento(ind) {
+            const d = industries[ind];
+            const grid = document.getElementById('bentoGrid');
+            grid.className = 'bento-grid ' + d.bentoClass;
+            grid.innerHTML = d.stats.map((s, i) =>
+                '<div class="bento-box ' + d.shapes[i % d.shapes.length] + '">' +
+                    '<div class="bento-val">' + s.val + '</div>' +
+                    '<div class="bento-lbl">' + s.lbl + '</div>' +
+                    '<div class="bento-change' + (s.down ? ' down' : '') + '">' + s.change + '</div>' +
+                '</div>'
+            ).join('');
+        }
+
+        // ── Render Chart ──
+        function renderChart(ind) {
+            const d = industries[ind];
+            const area = document.getElementById('chartArea');
+            const labels = document.getElementById('chartLabels');
+            document.getElementById('chartTitle').textContent = d.chartTitle;
+            document.getElementById('chartBadge').textContent = d.chartBadge;
+
+            if (d.chart === 'bar') {
+                area.innerHTML = '<div class="chart-bars" id="cBars">' +
+                    d.bars.map((h, i) => '<div class="chart-bar" style="height:0%;background:' + d.barColors[i] + '" data-h="' + h + '"></div>').join('') +
+                    '</div>';
+                labels.innerHTML = d.barLabels.map(l => '<span>' + l + '</span>').join('');
+            }
+            else if (d.chart === 'line' || d.chart === 'area') {
+                const w = 340, h = 100;
+                const step = w / (d.points.length - 1);
+                const coords = d.points.map((p, i) => [i * step, h - (p / 100) * h]);
+                const pts = coords.map(c => c.join(',')).join(' ');
+                const areaD = 'M0,' + h + ' L' + pts + ' L' + w + ',' + h + ' Z';
+                const grad = d.chart === 'area' ? 'url(#areaGradBlue)' : 'url(#areaGrad)';
+                area.innerHTML =
+                    '<svg viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' +
+                    '<path class="svg-area" d="' + areaD + '" fill="' + grad + '" />' +
+                    '<polyline class="svg-line" points="' + pts + '" style="stroke:' + (d.chart === 'area' ? 'rgba(100,200,255,0.8)' : 'var(--accent)') + '" />' +
+                    coords.map(c => '<circle class="svg-dot" cx="' + c[0] + '" cy="' + c[1] + '" r="3"/>').join('') +
+                    '</svg>';
+                labels.innerHTML = d.lineLabels.map(l => '<span>' + l + '</span>').join('');
+            }
+            else if (d.chart === 'pie' || d.chart === 'donut') {
+                const r = 42, cx = 50, cy = 50;
+                const circ = 2 * Math.PI * r;
+                const innerR = d.chart === 'donut' ? 28 : 0;
+                let offset = 0;
+                const segs = d.pie.map(s => {
+                    const dash = (s.val / 100) * circ;
+                    const seg = '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="' + s.color + '" stroke-width="' + (r - innerR) + '" stroke-dasharray="' + dash + ' ' + (circ - dash) + '" stroke-dashoffset="-' + offset + '" class="pie-seg" />';
+                    offset += dash;
+                    return seg;
+                });
+                const legend = d.pie.map(s =>
+                    '<div class="pie-legend-item"><span class="pie-legend-dot" style="background:' + s.color + '"></span>' + s.label + '<span class="pie-legend-val">' + s.val + '%</span></div>'
+                ).join('');
+                area.innerHTML =
+                    '<div class="chart-pie">' +
+                    '<svg viewBox="0 0 100 100"><g transform="rotate(-90 50 50)">' + segs.join('') + '</g>' +
+                    (d.chart === 'donut' ? '<circle cx="50" cy="50" r="' + innerR + '" fill="rgba(20,20,20,0.6)"/>' : '') +
+                    '</svg>' +
+                    '<div class="pie-legend">' + legend + '</div></div>';
+                labels.innerHTML = '';
+            }
+        }
+
+        // ── Animate data text IN — slow typewriter + gentle reveals ──
+        function animateDataIn() {
+            // Values: slow typewriter with cursor blink feel
+            document.querySelectorAll('#bentoGrid .bento-val').forEach((el, i) => {
+                const target = el.textContent;
+                el.textContent = '';
+                gsap.to(el, { opacity: 1, duration: 0.1 });
+                let idx = 0;
+                const type = () => {
+                    if (idx <= target.length) {
+                        el.textContent = target.substring(0, idx);
+                        idx++;
+                        setTimeout(type, 70 + Math.random() * 50);
+                    }
+                };
+                setTimeout(type, 400 + i * 300);
+            });
+
+            // Labels slide up gently with long delay
+            gsap.fromTo('#bentoGrid .bento-lbl',
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, duration: 1, stagger: 0.2, delay: 0.8, ease: "power2.out" }
+            );
+
+            // Change badges scale in with bounce
+            gsap.fromTo('#bentoGrid .bento-change',
+                { opacity: 0, scale: 0.7 },
+                { opacity: 1, scale: 1, duration: 0.8, stagger: 0.2, delay: 1.2, ease: "back.out(1.8)" }
+            );
+        }
+
+        // ── Animate chart data IN — slow and cinematic ──
+        function animateChartIn() {
+            const d = industries[currentInd];
+
+            // Chart title slides in from left
+            gsap.fromTo('#chartTitle',
+                { opacity: 0, x: -20 },
+                { opacity: 1, x: 0, duration: 1, ease: "power3.out" }
+            );
+            // Badge pops in with delay
+            gsap.fromTo('#chartBadge',
+                { opacity: 0, scale: 0.6 },
+                { opacity: 1, scale: 1, duration: 0.8, delay: 0.5, ease: "back.out(2)" }
+            );
+
+            if (d.chart === 'bar') {
+                // Bars rise slowly one by one
+                document.querySelectorAll('#cBars .chart-bar').forEach((bar, i) => {
+                    gsap.fromTo(bar,
+                        { height: '0%' },
+                        { height: bar.dataset.h + '%', duration: 1.4, delay: 0.5 + i * 0.12, ease: "power3.out" }
+                    );
+                });
+            } else if (d.chart === 'line' || d.chart === 'area') {
+                // Line draws very slowly
+                const line = document.querySelector('#chartArea .svg-line');
+                if (line) {
+                    const len = line.getTotalLength ? line.getTotalLength() : 600;
+                    gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
+                    gsap.to(line, { strokeDashoffset: 0, duration: 2.8, delay: 0.4, ease: "power1.inOut" });
+                }
+                // Area fills in slowly behind the line
+                gsap.set('#chartArea .svg-area', { opacity: 0 });
+                gsap.to('#chartArea .svg-area', { opacity: 0.8, duration: 1.8, delay: 1.8, ease: "power2.out" });
+                // Dots pop in one by one after line passes them
+                gsap.set('#chartArea .svg-dot', { scale: 0, transformOrigin: 'center' });
+                gsap.to('#chartArea .svg-dot', { scale: 1, duration: 0.6, stagger: 0.15, delay: 1.5, ease: "elastic.out(1, 0.5)" });
+            } else if (d.chart === 'pie' || d.chart === 'donut') {
+                // Animate each segment by growing its visible dash from 0
+                const segs = document.querySelectorAll('#chartArea .pie-seg');
+                segs.forEach((seg, i) => {
+                    const dashArray = seg.getAttribute('stroke-dasharray');
+                    const dash = parseFloat(dashArray.split(' ')[0]);
+                    const gap = parseFloat(dashArray.split(' ')[1]);
+                    const circ = dash + gap;
+                    // Start invisible (0-length dash)
+                    seg.setAttribute('stroke-dasharray', '0 ' + circ);
+                    // Animate to full segment
+                    gsap.to(seg, {
+                        attr: { 'stroke-dasharray': dash + ' ' + gap },
+                        duration: 2.2,
+                        delay: 0.4 + i * 0.5,
+                        ease: "power2.inOut"
+                    });
+                });
+                // Legend items appear one by one
+                gsap.fromTo('#chartArea .pie-legend-item',
+                    { opacity: 0, x: 15 },
+                    { opacity: 1, x: 0, duration: 1, stagger: 0.3, delay: 1.2, ease: "power2.out" }
+                );
+            }
+
+            // Labels fade in slowly one by one
+            gsap.fromTo('#chartLabels span',
+                { opacity: 0, y: 5 },
+                { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, delay: 1, ease: "power2.out" }
+            );
+        }
+
+        // ── Switch Industry — slow, elegant transitions ──
+        let switching = false;
+        function switchIndustry(ind, fromAutoRotate) {
+            if (ind === currentInd && !fromAutoRotate) return;
+            if (switching) return;
+            switching = true;
+            currentInd = ind;
+
+            // Update tab active state
+            document.querySelectorAll('.ind-tab').forEach(t => t.classList.remove('active'));
+            const activeTab = document.querySelector('.ind-tab[data-ind="' + ind + '"]');
+            activeTab.classList.add('active');
+
+            // Slide indicator — smooth glide
+            const slider = document.getElementById('tabSlider');
+            const tabsContainer = document.getElementById('indTabs');
+            const tabRect = activeTab.getBoundingClientRect();
+            const containerRect = tabsContainer.getBoundingClientRect();
+            gsap.to(slider, { top: tabRect.top - containerRect.top, height: tabRect.height, duration: 0.8, ease: "power3.inOut" });
+
+            // Title: slide down and fade, then new title slides up
+            const title = document.getElementById('indTitle');
+            gsap.to(title, { opacity: 0, y: 12, duration: 0.6, ease: "power2.in", onComplete: () => {
+                title.textContent = industries[ind].title;
+                gsap.fromTo(title, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" });
+            }});
+
+            // Bento text: fade down slowly, then render new + animate in
+            gsap.to('#bentoGrid .bento-val', {
+                opacity: 0, y: 8, duration: 0.6, stagger: 0.08, ease: "power2.in"
+            });
+            gsap.to('#bentoGrid .bento-lbl, #bentoGrid .bento-change', {
+                opacity: 0, duration: 0.5, stagger: 0.05, ease: "power2.in",
+                onComplete: () => {
+                    renderBento(ind);
+                    animateDataIn();
+                }
+            });
+
+            // Chart: fade everything out together, then swap and animate in
+            const chartExitTL = gsap.timeline({
+                onComplete: () => {
+                    renderChart(ind);
+                    gsap.set('#chartArea, #chartTitle, #chartBadge, #chartLabels', { opacity: 1, y: 0, x: 0, scale: 1 });
+                    animateChartIn();
+                    setTimeout(() => { switching = false; }, 2000);
+                }
+            });
+            chartExitTL
+                .to('#chartTitle, #chartBadge', { opacity: 0, duration: 0.5, ease: "power2.in" }, 0)
+                .to('#chartLabels span', { opacity: 0, duration: 0.4, stagger: 0.02, ease: "power2.in" }, 0)
+                .to('#chartArea', { opacity: 0, y: 8, duration: 0.6, ease: "power2.in" }, 0);
+
+            // Safety unlock
+            setTimeout(() => { switching = false; }, 5000);
+        }
+
+        // Initialize
+        renderBento('tradies');
+        renderChart('tradies');
+        setTimeout(() => {
+            const firstTab = document.querySelector('.ind-tab.active');
+            const slider = document.getElementById('tabSlider');
+            const tabsContainer = document.getElementById('indTabs');
+            if (firstTab && tabsContainer) {
+                const tabRect = firstTab.getBoundingClientRect();
+                const containerRect = tabsContainer.getBoundingClientRect();
+                slider.style.top = (tabRect.top - containerRect.top) + 'px';
+                slider.style.height = tabRect.height + 'px';
+            }
+        }, 100);
+
+        // Tab click
+        document.querySelectorAll('.ind-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchIndustry(tab.dataset.ind, false);
+                stopAutoRotate();
+                startAutoRotate();
+            });
+        });
+
+        // Auto-rotate every 7s — enough time for slow animations to breathe
+        function startAutoRotate() {
+            const keys = Object.keys(industries);
+            autoRotateTimer = setInterval(() => {
+                const idx = (keys.indexOf(currentInd) + 1) % keys.length;
+                switchIndustry(keys[idx], true);
+            }, 8000);
+        }
+        function stopAutoRotate() { clearInterval(autoRotateTimer); }
+
+        const dashEl = document.getElementById('indDashboard');
+        dashEl.addEventListener('mouseenter', stopAutoRotate);
+        dashEl.addEventListener('mouseleave', startAutoRotate);
+        setTimeout(startAutoRotate, 7000);
+
+        function initAnimations() {
+
+            // ============================================================
+            //  3. HERO GLOW — follows mouse parallax
+            // ============================================================
+            document.querySelector('.hero').addEventListener('mousemove', (e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                gsap.to('.hero-glow', {
+                    x: x * 100,
+                    y: y * 100,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+            });
+
+            // ============================================================
+            //  4. INFINITE MARQUEE
+            // ============================================================
+            const marquee = document.getElementById('marquee');
+            const marqueeWidth = marquee.scrollWidth / 2;
+            gsap.to(marquee, {
+                x: -marqueeWidth,
+                duration: 30,
+                ease: "none",
+                repeat: -1
+            });
+
+            // ============================================================
+            //  5. STATS — Counter Animation + Staggered Reveal
+            // ============================================================
+            gsap.to('.stat-card', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: '.stats',
+                    start: 'top 80%'
+                }
+            });
+
+            // Animated counters
+            document.querySelectorAll('.stat-number').forEach(el => {
+                const target = parseInt(el.dataset.target);
+                const obj = { val: 0 };
+                ScrollTrigger.create({
+                    trigger: el,
+                    start: 'top 85%',
+                    onEnter: () => {
+                        gsap.to(obj, {
+                            val: target,
+                            duration: 2,
+                            ease: "power2.out",
+                            onUpdate: () => {
+                                const v = Math.floor(obj.val);
+                                if (el.textContent.includes('$')) el.textContent = `$${v}k+`;
+                                else if (el.textContent.includes('hrs')) el.textContent = `${v} hrs`;
+                                else el.textContent = `${v}%`;
+                            }
+                        });
+                    },
+                    once: true
+                });
+            });
+
+            // ============================================================
+            //  6. SECTION LABELS — Fade In
+            // ============================================================
+            gsap.utils.toArray('.section-label').forEach(label => {
+                gsap.to(label, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "power3.out",
+                    scrollTrigger: { trigger: label, start: 'top 85%' }
+                });
+            });
+
+            // ============================================================
+            //  7. SECTION TITLES — Word-by-Word Reveal
+            // ============================================================
+            gsap.utils.toArray('.section-title').forEach(title => {
+                const text = title.innerHTML;
+                // Wrap each word in span, but preserve HTML tags intact
+                title.innerHTML = text.replace(/(<[^>]+>)|(\S+)/g, (match, tag, word) => {
+                    if (tag) return tag; // keep HTML tags as-is
+                    return '<span class="word" style="display:inline-block;opacity:0;transform:translateY(30px)">' + word + '</span>';
+                });
+                const words = title.querySelectorAll('.word');
+                gsap.to(words, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.08,
+                    ease: "power3.out",
+                    scrollTrigger: { trigger: title, start: 'top 85%' }
+                });
+            });
+
+            // ============================================================
+            //  8. HORIZONTAL SCROLL — Features Cards
+            // ============================================================
+            const track = document.getElementById('features-track');
+            const trackWidth = track.scrollWidth - window.innerWidth;
+            gsap.to(track, {
+                x: -trackWidth,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: '.features-section',
+                    start: 'top top',
+                    end: () => `+=${trackWidth}`,
+                    scrub: 1,
+                    pin: true,
+                    anticipatePin: 1,
+                }
+            });
+
+            // ============================================================
+            //  9. FEATURE CARDS — Spotlight follow mouse
+            // ============================================================
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    card.style.setProperty('--mouse-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+                    card.style.setProperty('--mouse-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+                });
+            });
+
+            // ============================================================
+            //  10. HOW IT WORKS — Steps Slide In
+            // ============================================================
+            gsap.utils.toArray('.how-step').forEach((step, i) => {
+                gsap.to(step, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.8,
+                    delay: i * 0.2,
+                    ease: "power3.out",
+                    scrollTrigger: { trigger: step, start: 'top 85%' }
+                });
+            });
+
+            // ============================================================
+            //  11. ORBIT ANIMATION — Rotating dots
+            // ============================================================
+            gsap.to('.orbit-ring:nth-child(1)', {
+                rotation: 360,
+                duration: 20,
+                repeat: -1,
+                ease: "none",
+                transformOrigin: "center center"
+            });
+            gsap.to('.orbit-ring:nth-child(2)', {
+                rotation: -360,
+                duration: 30,
+                repeat: -1,
+                ease: "none",
+                transformOrigin: "center center"
+            });
+            gsap.to('.orbit-center', {
+                scale: 1.05,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            gsap.utils.toArray('.orbit-dot').forEach((dot, i) => {
+                gsap.to(dot, {
+                    y: "random(-10, 10)",
+                    x: "random(-10, 10)",
+                    duration: "random(2, 4)",
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: i * 0.5
+                });
+            });
+
+            // ============================================================
+            //  12. TESTIMONIALS — 3D Card Flip Reveal
+            // ============================================================
+            gsap.to('.testimonial-card', {
+                opacity: 1,
+                y: 0,
+                rotateX: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: '.testimonial-grid',
+                    start: 'top 80%'
+                }
+            });
+
+            // ============================================================
+            //  13. PRICING CARDS — Staggered Scale-Up
+            // ============================================================
+            gsap.to('.pricing-card', {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: "back.out(1.5)",
+                scrollTrigger: {
+                    trigger: '.pricing-grid',
+                    start: 'top 80%'
+                }
+            });
+
+            // ============================================================
+            //  14. CTA — Background Text Parallax
+            // ============================================================
+            gsap.to('.cta-bg-text', {
+                xPercent: -20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: '.cta-section',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1
+                }
+            });
+
+            gsap.from('.cta-section h2', {
+                y: 60,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: { trigger: '.cta-section', start: 'top 75%' }
+            });
+
+            gsap.from('.cta-btn', {
+                scale: 0.8,
+                opacity: 0,
+                duration: 1,
+                delay: 0.3,
+                ease: "elastic.out(1, 0.5)",
+                scrollTrigger: { trigger: '.cta-section', start: 'top 75%' }
+            });
+
+            // ============================================================
+            //  15. FLOATING PARTICLES
+            // ============================================================
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                particlesContainer.appendChild(p);
+                gsap.to(p, {
+                    opacity: "random(0.1, 0.4)",
+                    y: "random(-200, 200)",
+                    x: "random(-100, 100)",
+                    duration: "random(10, 25)",
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                    delay: "random(0, 10)"
+                });
+            }
+
+        } // end initAnimations
+
+        // ============================================================
+        //  16. CUSTOM CURSOR — Smooth Follow
+        // ============================================================
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        gsap.ticker.add(() => {
+            gsap.to(cursor, {
+                x: mouseX - 10,
+                y: mouseY - 10,
+                duration: 0.4,
+                ease: "power2.out"
+            });
+            gsap.to(cursorDot, {
+                x: mouseX - 3,
+                y: mouseY - 3,
+                duration: 0.1
+            });
+        });
+
+        // Hover effect on interactive elements
+        document.querySelectorAll('a, button, .magnetic').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+        });
+
+        // ============================================================
+        //  17. MAGNETIC BUTTON EFFECT
+        // ============================================================
+        document.querySelectorAll('.magnetic').forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(el, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
+            });
+        });
+
+    </script>
+</body>
+</html>
