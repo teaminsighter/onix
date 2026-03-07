@@ -328,7 +328,7 @@ function animateChartIn() {
     );
 }
 
-// ── Switch Industry — slow, elegant transitions ──
+// ── Switch Industry — fast for clicks, smooth for auto-rotate ──
 let switching = false;
 function switchIndustry(ind, fromAutoRotate) {
     if (ind === currentInd && !fromAutoRotate) return;
@@ -336,23 +336,26 @@ function switchIndustry(ind, fromAutoRotate) {
     switching = true;
     currentInd = ind;
 
+    // Speed: fast for click, slow for auto-rotate
+    const speed = fromAutoRotate ? 1 : 0.4;
+
     // Update tab active state
     document.querySelectorAll('.ind-tab').forEach(t => t.classList.remove('active'));
     const activeTab = document.querySelector('.ind-tab[data-ind="' + ind + '"]');
     activeTab.classList.add('active');
 
-    // Slide indicator — smooth glide
+    // Slide indicator
     const slider = document.getElementById('tabSlider');
     const tabsContainer = document.getElementById('indTabs');
     const tabRect = activeTab.getBoundingClientRect();
     const containerRect = tabsContainer.getBoundingClientRect();
-    gsap.to(slider, { top: tabRect.top - containerRect.top, height: tabRect.height, duration: 0.8, ease: "power3.inOut" });
+    gsap.to(slider, { top: tabRect.top - containerRect.top, height: tabRect.height, duration: 0.3 * speed, ease: "power2.out" });
 
-    // Title: slide down and fade, then new title slides up
+    // Title: quick fade
     const title = document.getElementById('indTitle');
-    gsap.to(title, { opacity: 0, y: 12, duration: 0.6, ease: "power2.in", onComplete: () => {
+    gsap.to(title, { opacity: 0, y: 8, duration: 0.2 * speed, ease: "power2.in", onComplete: () => {
         title.textContent = industries[ind].title;
-        gsap.fromTo(title, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" });
+        gsap.fromTo(title, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.25 * speed, ease: "power2.out" });
     }});
 
     // Bento: update values with counting animation (no fade out)
@@ -400,13 +403,14 @@ function switchIndustry(ind, fromAutoRotate) {
             renderChart(ind);
             gsap.set('#chartArea, #chartTitle, #chartBadge, #chartLabels', { opacity: 1, y: 0, x: 0, scale: 1 });
             animateChartIn();
-            setTimeout(() => { switching = false; }, 2000);
+            // Faster unlock for clicks, slower for auto-rotate
+            setTimeout(() => { switching = false; }, fromAutoRotate ? 1500 : 400);
         }
     });
     chartExitTL
-        .to('#chartTitle, #chartBadge', { opacity: 0, duration: 0.5, ease: "power2.in" }, 0)
-        .to('#chartLabels span', { opacity: 0, duration: 0.4, stagger: 0.02, ease: "power2.in" }, 0)
-        .to('#chartArea', { opacity: 0, y: 8, duration: 0.6, ease: "power2.in" }, 0);
+        .to('#chartTitle, #chartBadge', { opacity: 0, duration: 0.2 * speed, ease: "power2.in" }, 0)
+        .to('#chartLabels span', { opacity: 0, duration: 0.15 * speed, stagger: 0.01, ease: "power2.in" }, 0)
+        .to('#chartArea', { opacity: 0, y: 5, duration: 0.25 * speed, ease: "power2.in" }, 0);
 
     // Safety unlock
     setTimeout(() => { switching = false; }, 5000);
