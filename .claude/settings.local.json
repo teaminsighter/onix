@@ -3,7 +3,18 @@
     "allow": [
       "WebFetch(domain:onixmrkt.com)",
       "Bash(start:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(cat:*)",
+      "Bash(lsof:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd enhanced animations and feature card illustrations\n\n- Fix split text intro animation visibility \\(z-index, perspective\\)\n- Add word-by-word subtitle animation with typewriter effect\n- Add blur+scale button entrance animation\n- Implement counting animation for dashboard stat numbers\n- Add typewriter animation for stat labels\n- Add smart navbar \\(hide on scroll down, show on scroll up\\)\n- Update feature cards with illustration images\n- Add lime green color to feature card numbers\n- Add hero badge visibility fix\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(wc:*)",
+      "Bash(node --check:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

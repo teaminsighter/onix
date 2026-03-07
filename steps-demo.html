@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steps Animation Demo - Choose Your Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #111111;
+            --accent: #c9f31d;
+            --white: #f5f5f5;
+            --gray: #888888;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .demo-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+        }
+
+        .demo-nav a {
+            color: var(--gray);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .demo-nav a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .demo-nav a.active {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* Section styling */
+        .demo-section {
+            min-height: 100vh;
+            padding: 8rem 4rem 4rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+        }
+
+        .demo-section h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-section h2 span {
+            color: var(--accent);
+        }
+
+        .demo-section .subtitle {
+            color: var(--gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .demo-label {
+            position: absolute;
+            top: 6rem;
+            right: 4rem;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .replay-btn {
+            position: absolute;
+            top: 6rem;
+            right: 10rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .replay-btn:hover {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        /* ========================================
+           STYLE 1: PIPELINE FLOW
+        ======================================== */
+        .pipeline-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .pipeline-step {
+            width: 280px;
+            padding: 2rem;
+            background: var(--bg2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            position: relative;
+            z-index: 2;
+            opacity: 0.3;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
+
+        .pipeline-step.active {
+            opacity: 1;
+            transform: scale(1);
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(201,243,29,0.15);
+        }
+
+        .pipeline-step .step-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: 0.2;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+        }
+
+        .pipeline-step.active .step-num {
+            opacity: 1;
+        }
+
+        .pipeline-step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pipeline-step p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .pipeline-line {
+            width: 80px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pipeline-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: width 0.8s ease;
+        }
+
+        .pipeline-line.filled::after {
+            width: 100%;
+        }
+
+        .pipeline-particle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        /* ========================================
+           STYLE 2: STACKED CARDS
+        ======================================== */
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 500px;
+            perspective: 1000px;
+            margin-top: 2rem;
+        }
+
+        .cards-wrapper {
+            position: relative;
+            width: 350px;
+            height: 400px;
+        }
+
+        .stack-card {
+            position: absolute;
+            width: 100%;
+            padding: 2.5rem;
+            background: var(--bg2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 24px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .stack-card:nth-child(1) {
+            z-index: 3;
+            transform: translateY(0) scale(1);
+        }
+
+        .stack-card:nth-child(2) {
+            z-index: 2;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        .stack-card:nth-child(3) {
+            z-index: 1;
+            transform: translateY(40px) scale(0.9);
+        }
+
+        .cards-wrapper.spread .stack-card:nth-child(1) {
+            transform: translateX(-380px) rotate(-5deg);
+        }
+
+        .cards-wrapper.spread .stack-card:nth-child(2) {
+            transform: translateX(0) translateY(0) rotate(0deg) scale(1);
+            z-index: 3;
+        }
+
+        .cards-wrapper.spread .stack-card:nth-child(3) {
+            transform: translateX(380px) rotate(5deg);
+        }
+
+        .stack-card .card-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--accent);
+            opacity: 0.15;
+            line-height: 1;
+        }
+
+        .stack-card h3 {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .stack-card p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           STYLE 3: TYPEWRITER BUILD
+        ======================================== */
+        .typewriter-container {
+            max-width: 700px;
+            margin: 4rem auto;
+        }
+
+        .type-step {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--bg2);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .type-step.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.5s ease;
+        }
+
+        .type-step .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .type-step .step-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .type-step h3 {
+            font-size: 1.3rem;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid var(--accent);
+            width: 0;
+        }
+
+        .type-step h3.typing {
+            animation: typing 1.5s steps(30) forwards, blink 0.5s step-end infinite alternate;
+        }
+
+        .type-step h3.done {
+            width: 100%;
+            border-right: none;
+        }
+
+        @keyframes typing {
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), #a8cc18);
+            border-radius: 10px;
+            transition: width 1.5s ease;
+        }
+
+        .type-step.complete .fill {
+            width: 100%;
+        }
+
+        .build-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .build-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(201,243,29,0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .build-icon.pop {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .checkmark {
+            color: var(--accent);
+            font-size: 1.5rem;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .checkmark.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ========================================
+           STYLE 4: CIRCULAR WHEEL
+        ======================================== */
+        .wheel-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .wheel {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        .wheel-track {
+            position: absolute;
+            inset: 0;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .wheel-track::before {
+            content: '';
+            position: absolute;
+            inset: 30px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: var(--bg2);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 0 60px rgba(201,243,29,0.2);
+        }
+
+        .wheel-center .current-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .wheel-center .current-title {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-align: center;
+            padding: 0 1rem;
+        }
+
+        .wheel-item {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--bg2);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .wheel-item:hover {
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .wheel-item.active {
+            background: var(--accent);
+            color: var(--bg);
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(201,243,29,0.4);
+        }
+
+        .wheel-item:nth-child(2) { top: 0; left: 50%; transform: translateX(-50%); }
+        .wheel-item:nth-child(3) { bottom: 15%; right: 5%; }
+        .wheel-item:nth-child(4) { bottom: 15%; left: 5%; }
+
+        .wheel-details {
+            max-width: 350px;
+        }
+
+        .wheel-details h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .wheel-details p {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .wheel-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .wheel-icons span {
+            width: 50px;
+            height: 50px;
+            background: rgba(201,243,29,0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        /* ========================================
+           STYLE 5: 3D FUNNEL/CONVEYOR
+        ======================================== */
+        .funnel-container {
+            margin-top: 4rem;
+            perspective: 1200px;
+        }
+
+        .conveyor {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 2rem;
+            transform: rotateX(15deg);
+            transform-style: preserve-3d;
+        }
+
+        .funnel-step {
+            width: 280px;
+            padding: 2rem;
+            background: linear-gradient(180deg, var(--bg2) 0%, rgba(17,17,17,0.8) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .funnel-step::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 10%;
+            right: 10%;
+            height: 20px;
+            background: rgba(0,0,0,0.3);
+            filter: blur(10px);
+            border-radius: 50%;
+        }
+
+        .funnel-visual {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .funnel-step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .funnel-step p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Animated elements */
+        .lead-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .email-icon {
+            font-size: 2rem;
+            opacity: 0;
+        }
+
+        .email-icon.fly {
+            animation: flyEmail 1s ease-out forwards;
+        }
+
+        @keyframes flyEmail {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(0.5); }
+        }
+
+        .money-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .money-bill {
+            width: 50px;
+            height: 25px;
+            background: linear-gradient(135deg, var(--accent) 0%, #7cb518 100%);
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .money-bill.stack {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .arrow-connector {
+            font-size: 2rem;
+            color: var(--accent);
+            opacity: 0.5;
+            align-self: center;
+        }
+
+        /* Funnel shape */
+        .funnel-shape {
+            width: 100px;
+            height: 80px;
+            position: relative;
+        }
+
+        .funnel-shape::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: rgba(201,243,29,0.1);
+            border: 1px solid rgba(201,243,29,0.3);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .funnel-shape::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 30%;
+            right: 30%;
+            height: 40px;
+            background: rgba(201,243,29,0.2);
+            border: 1px solid rgba(201,243,29,0.3);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Footer */
+        .demo-footer {
+            text-align: center;
+            padding: 4rem;
+            color: var(--gray);
+        }
+
+        .demo-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="demo-nav">
+        <a href="#style1" class="active">1. Pipeline Flow</a>
+        <a href="#style2">2. Stacked Cards</a>
+        <a href="#style3">3. Typewriter Build</a>
+        <a href="#style4">4. Circular Wheel</a>
+        <a href="#style5">5. 3D Funnel</a>
+    </nav>
+
+    <!-- ============================================
+         STYLE 1: PIPELINE FLOW
+    ============================================= -->
+    <section class="demo-section" id="style1">
+        <span class="demo-label">Style 1</span>
+        <button class="replay-btn" onclick="replayPipeline()">Replay</button>
+        <h2>Pipeline <span>Flow</span></h2>
+        <p class="subtitle">Glowing particles travel through connected steps, activating each one</p>
+
+        <div class="pipeline-container" id="pipelineDemo">
+            <div class="pipeline-step" id="pipe-step-1">
+                <span class="step-num">01</span>
+                <h3>We Build Your Engine</h3>
+                <p>Custom landing pages, follow-up sequences, and CRM pipelines.</p>
+            </div>
+
+            <div class="pipeline-line" id="pipe-line-1">
+                <div class="pipeline-particle" id="particle-1"></div>
+            </div>
+
+            <div class="pipeline-step" id="pipe-step-2">
+                <span class="step-num">02</span>
+                <h3>Leads Flow Automatically</h3>
+                <p>ONIX responds, follows up, and books calls on your calendar.</p>
+            </div>
+
+            <div class="pipeline-line" id="pipe-line-2">
+                <div class="pipeline-particle" id="particle-2"></div>
+            </div>
+
+            <div class="pipeline-step" id="pipe-step-3">
+                <span class="step-num">03</span>
+                <h3>You Close & Scale</h3>
+                <p>Show up to pre-qualified calls. Close deals. We optimize weekly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         STYLE 2: STACKED CARDS
+    ============================================= -->
+    <section class="demo-section" id="style2">
+        <span class="demo-label">Style 2</span>
+        <button class="replay-btn" onclick="replayCards()">Replay</button>
+        <h2>Stacked <span>Cards</span></h2>
+        <p class="subtitle">Cards deal out and spread as you scroll or click</p>
+
+        <div class="cards-container">
+            <div class="cards-wrapper" id="cardsWrapper">
+                <div class="stack-card">
+                    <div class="card-num">01</div>
+                    <h3>We Build Your Engine</h3>
+                    <p>Custom landing pages, ad creatives, follow-up sequences, and CRM pipelines tailored to your business.</p>
+                </div>
+                <div class="stack-card">
+                    <div class="card-num">02</div>
+                    <h3>Leads Flow Automatically</h3>
+                    <p>Ads go live. Leads land on your pages. ONIX instantly responds and books calls on your calendar.</p>
+                </div>
+                <div class="stack-card">
+                    <div class="card-num">03</div>
+                    <h3>You Close & Scale</h3>
+                    <p>Show up to pre-qualified calls. Close deals. We optimize everything weekly for maximum ROI.</p>
+                </div>
+            </div>
+        </div>
+        <p style="text-align: center; color: var(--gray); margin-top: 1rem;">Click the cards to toggle spread</p>
+    </section>
+
+    <!-- ============================================
+         STYLE 3: TYPEWRITER BUILD
+    ============================================= -->
+    <section class="demo-section" id="style3">
+        <span class="demo-label">Style 3</span>
+        <button class="replay-btn" onclick="replayTypewriter()">Replay</button>
+        <h2>Typewriter <span>Build</span></h2>
+        <p class="subtitle">Each step types itself out with a progress bar and icon reveals</p>
+
+        <div class="typewriter-container" id="typewriterDemo">
+            <div class="type-step" id="type-step-1">
+                <div class="step-header">
+                    <span class="step-num">01</span>
+                    <h3 data-text="We Build Your Engine">We Build Your Engine</h3>
+                    <span class="checkmark">✓</span>
+                </div>
+                <div class="progress-bar"><div class="fill"></div></div>
+                <div class="build-icons">
+                    <div class="build-icon">📄</div>
+                    <div class="build-icon">📧</div>
+                    <div class="build-icon">📊</div>
+                    <div class="build-icon">🎯</div>
+                </div>
+            </div>
+
+            <div class="type-step" id="type-step-2">
+                <div class="step-header">
+                    <span class="step-num">02</span>
+                    <h3 data-text="Leads Flow Automatically">Leads Flow Automatically</h3>
+                    <span class="checkmark">✓</span>
+                </div>
+                <div class="progress-bar"><div class="fill"></div></div>
+                <div class="build-icons">
+                    <div class="build-icon">🚀</div>
+                    <div class="build-icon">💬</div>
+                    <div class="build-icon">📅</div>
+                </div>
+            </div>
+
+            <div class="type-step" id="type-step-3">
+                <div class="step-header">
+                    <span class="step-num">03</span>
+                    <h3 data-text="You Close & Scale">You Close & Scale</h3>
+                    <span class="checkmark">✓</span>
+                </div>
+                <div class="progress-bar"><div class="fill"></div></div>
+                <div class="build-icons">
+                    <div class="build-icon">💰</div>
+                    <div class="build-icon">📈</div>
+                    <div class="build-icon">🏆</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         STYLE 4: CIRCULAR WHEEL
+    ============================================= -->
+    <section class="demo-section" id="style4">
+        <span class="demo-label">Style 4</span>
+        <h2>Circular <span>Wheel</span></h2>
+        <p class="subtitle">Interactive wheel with rotating steps - click numbers to navigate</p>
+
+        <div class="wheel-container">
+            <div class="wheel">
+                <div class="wheel-track"></div>
+                <div class="wheel-item active" data-step="1">01</div>
+                <div class="wheel-item" data-step="2">02</div>
+                <div class="wheel-item" data-step="3">03</div>
+                <div class="wheel-center">
+                    <div class="current-num" id="wheelNum">01</div>
+                    <div class="current-title" id="wheelTitle">Build</div>
+                </div>
+            </div>
+
+            <div class="wheel-details">
+                <h3 id="wheelHeading">We Build Your Engine</h3>
+                <p id="wheelDesc">Custom landing pages, ad creatives, follow-up sequences, and CRM pipelines tailored to your business.</p>
+                <div class="wheel-icons" id="wheelIcons">
+                    <span>📄</span>
+                    <span>📧</span>
+                    <span>📊</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         STYLE 5: 3D FUNNEL/CONVEYOR
+    ============================================= -->
+    <section class="demo-section" id="style5">
+        <span class="demo-label">Style 5</span>
+        <button class="replay-btn" onclick="replayFunnel()">Replay</button>
+        <h2>3D <span>Funnel</span></h2>
+        <p class="subtitle">Isometric conveyor with leads transforming through each stage</p>
+
+        <div class="funnel-container">
+            <div class="conveyor" id="funnelDemo">
+                <div class="funnel-step">
+                    <div class="funnel-visual" id="funnel-vis-1">
+                        <div class="funnel-shape"></div>
+                    </div>
+                    <h3>Leads Enter</h3>
+                    <p>Capture every click with high-converting pages</p>
+                </div>
+
+                <div class="arrow-connector">→</div>
+
+                <div class="funnel-step">
+                    <div class="funnel-visual" id="funnel-vis-2">
+                        <span class="email-icon" id="email1">📧</span>
+                        <span class="email-icon" id="email2">📧</span>
+                        <span class="email-icon" id="email3">📧</span>
+                    </div>
+                    <h3>Auto Response</h3>
+                    <p>Instant SMS & email follow-up sequences</p>
+                </div>
+
+                <div class="arrow-connector">→</div>
+
+                <div class="funnel-step">
+                    <div class="funnel-visual" id="funnel-vis-3">
+                        <div class="money-stack">
+                            <div class="money-bill" id="bill1"></div>
+                            <div class="money-bill" id="bill2"></div>
+                            <div class="money-bill" id="bill3"></div>
+                            <div class="money-bill" id="bill4"></div>
+                        </div>
+                    </div>
+                    <h3>Revenue Out</h3>
+                    <p>Close deals and watch revenue stack up</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="demo-footer">
+        <p>Choose your favorite style and <a href="index.html">go back to the main site</a></p>
+    </div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ============================================
+        // STYLE 1: PIPELINE FLOW
+        // ============================================
+        function animatePipeline() {
+            const tl = gsap.timeline();
+
+            // Reset
+            gsap.set('.pipeline-step', { opacity: 0.3, scale: 0.95 });
+            gsap.set('.pipeline-line::after', { width: '0%' });
+            document.querySelectorAll('.pipeline-step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.pipeline-line').forEach(l => l.classList.remove('filled'));
+
+            // Step 1 activates
+            tl.to('#pipe-step-1', { opacity: 1, scale: 1, duration: 0.5 })
+              .add(() => document.getElementById('pipe-step-1').classList.add('active'))
+
+              // Particle travels through line 1
+              .to('#particle-1', { opacity: 1, left: '0%', duration: 0.1 }, '+=0.5')
+              .to('#particle-1', { left: '100%', duration: 0.8, ease: 'power1.inOut' })
+              .add(() => document.getElementById('pipe-line-1').classList.add('filled'), '-=0.8')
+              .to('#particle-1', { opacity: 0, duration: 0.1 })
+
+              // Step 2 activates
+              .to('#pipe-step-2', { opacity: 1, scale: 1, duration: 0.5 })
+              .add(() => document.getElementById('pipe-step-2').classList.add('active'))
+
+              // Particle travels through line 2
+              .to('#particle-2', { opacity: 1, left: '0%', duration: 0.1 }, '+=0.3')
+              .to('#particle-2', { left: '100%', duration: 0.8, ease: 'power1.inOut' })
+              .add(() => document.getElementById('pipe-line-2').classList.add('filled'), '-=0.8')
+              .to('#particle-2', { opacity: 0, duration: 0.1 })
+
+              // Step 3 activates with burst
+              .to('#pipe-step-3', { opacity: 1, scale: 1, duration: 0.5 })
+              .add(() => document.getElementById('pipe-step-3').classList.add('active'))
+              .to('#pipe-step-3', { boxShadow: '0 0 80px rgba(201,243,29,0.4)', duration: 0.3 })
+              .to('#pipe-step-3', { boxShadow: '0 0 40px rgba(201,243,29,0.15)', duration: 0.5 });
+        }
+
+        function replayPipeline() {
+            animatePipeline();
+        }
+
+        // Auto-play on scroll
+        ScrollTrigger.create({
+            trigger: '#style1',
+            start: 'top 60%',
+            onEnter: animatePipeline,
+            once: true
+        });
+
+        // ============================================
+        // STYLE 2: STACKED CARDS
+        // ============================================
+        const cardsWrapper = document.getElementById('cardsWrapper');
+        cardsWrapper.addEventListener('click', () => {
+            cardsWrapper.classList.toggle('spread');
+        });
+
+        function replayCards() {
+            cardsWrapper.classList.remove('spread');
+            setTimeout(() => cardsWrapper.classList.add('spread'), 100);
+        }
+
+        ScrollTrigger.create({
+            trigger: '#style2',
+            start: 'top 50%',
+            onEnter: () => cardsWrapper.classList.add('spread'),
+            once: true
+        });
+
+        // ============================================
+        // STYLE 3: TYPEWRITER BUILD
+        // ============================================
+        function animateTypewriter() {
+            const steps = document.querySelectorAll('.type-step');
+
+            // Reset
+            steps.forEach(step => {
+                step.classList.remove('visible', 'complete');
+                step.querySelector('h3').classList.remove('typing', 'done');
+                step.querySelector('h3').style.width = '0';
+                step.querySelector('.checkmark').classList.remove('show');
+                step.querySelectorAll('.build-icon').forEach(i => i.classList.remove('pop'));
+            });
+
+            let delay = 0;
+
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    step.classList.add('visible');
+
+                    setTimeout(() => {
+                        const h3 = step.querySelector('h3');
+                        h3.classList.add('typing');
+
+                        setTimeout(() => {
+                            h3.classList.remove('typing');
+                            h3.classList.add('done');
+                            step.classList.add('complete');
+
+                            // Pop icons one by one
+                            const icons = step.querySelectorAll('.build-icon');
+                            icons.forEach((icon, i) => {
+                                setTimeout(() => icon.classList.add('pop'), i * 150);
+                            });
+
+                            // Show checkmark
+                            setTimeout(() => {
+                                step.querySelector('.checkmark').classList.add('show');
+                            }, icons.length * 150 + 200);
+
+                        }, 1500);
+                    }, 200);
+
+                }, delay);
+
+                delay += 3000;
+            });
+        }
+
+        function replayTypewriter() {
+            animateTypewriter();
+        }
+
+        ScrollTrigger.create({
+            trigger: '#style3',
+            start: 'top 60%',
+            onEnter: animateTypewriter,
+            once: true
+        });
+
+        // ============================================
+        // STYLE 4: CIRCULAR WHEEL
+        // ============================================
+        const wheelData = {
+            1: {
+                num: '01',
+                title: 'Build',
+                heading: 'We Build Your Engine',
+                desc: 'Custom landing pages, ad creatives, follow-up sequences, and CRM pipelines tailored to your business.',
+                icons: ['📄', '📧', '📊']
+            },
+            2: {
+                num: '02',
+                title: 'Flow',
+                heading: 'Leads Flow Automatically',
+                desc: 'Ads go live. Leads land on your pages. ONIX instantly responds, follows up, and books calls on your calendar.',
+                icons: ['🚀', '💬', '📅']
+            },
+            3: {
+                num: '03',
+                title: 'Scale',
+                heading: 'You Close & Scale',
+                desc: 'Show up to pre-qualified calls. Close deals. We optimize everything weekly for maximum ROI.',
+                icons: ['💰', '📈', '🏆']
+            }
+        };
+
+        document.querySelectorAll('.wheel-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const step = item.dataset.step;
+                const data = wheelData[step];
+
+                // Update active state
+                document.querySelectorAll('.wheel-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                // Animate content change
+                gsap.to('#wheelNum, #wheelTitle, #wheelHeading, #wheelDesc, #wheelIcons', {
+                    opacity: 0,
+                    y: -10,
+                    duration: 0.2,
+                    onComplete: () => {
+                        document.getElementById('wheelNum').textContent = data.num;
+                        document.getElementById('wheelTitle').textContent = data.title;
+                        document.getElementById('wheelHeading').textContent = data.heading;
+                        document.getElementById('wheelDesc').textContent = data.desc;
+                        document.getElementById('wheelIcons').innerHTML = data.icons.map(i => `<span>${i}</span>`).join('');
+
+                        gsap.to('#wheelNum, #wheelTitle, #wheelHeading, #wheelDesc, #wheelIcons', {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.3,
+                            stagger: 0.05
+                        });
+                    }
+                });
+            });
+        });
+
+        // Auto rotate wheel
+        let wheelIndex = 1;
+        setInterval(() => {
+            wheelIndex = wheelIndex >= 3 ? 1 : wheelIndex + 1;
+            document.querySelector(`.wheel-item[data-step="${wheelIndex}"]`).click();
+        }, 4000);
+
+        // ============================================
+        // STYLE 5: 3D FUNNEL
+        // ============================================
+        function animateFunnel() {
+            const tl = gsap.timeline();
+
+            // Reset
+            gsap.set('.money-bill', { opacity: 0, y: 20 });
+            gsap.set('.email-icon', { opacity: 0, y: 0, scale: 1 });
+            document.querySelectorAll('.money-bill').forEach(b => b.classList.remove('stack'));
+
+            // Lead dots enter funnel
+            const funnel1 = document.getElementById('funnel-vis-1');
+            for (let i = 0; i < 5; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'lead-dot';
+                dot.style.cssText = `top: ${20 + Math.random() * 40}px; left: ${20 + Math.random() * 60}px; opacity: 0;`;
+                funnel1.appendChild(dot);
+
+                tl.to(dot, { opacity: 1, duration: 0.2 }, i * 0.15)
+                  .to(dot, { y: 30, opacity: 0, duration: 0.5 }, `+=${0.3}`);
+            }
+
+            // Emails fly out
+            tl.to('#email1', { opacity: 1, duration: 0.1 }, '+=0.2')
+              .to('#email1', { y: -40, opacity: 0, duration: 0.5 })
+              .to('#email2', { opacity: 1, duration: 0.1 }, '-=0.3')
+              .to('#email2', { y: -40, opacity: 0, duration: 0.5 })
+              .to('#email3', { opacity: 1, duration: 0.1 }, '-=0.3')
+              .to('#email3', { y: -40, opacity: 0, duration: 0.5 });
+
+            // Money stacks up
+            tl.add(() => document.getElementById('bill1').classList.add('stack'), '+=0.3')
+              .add(() => document.getElementById('bill2').classList.add('stack'), '+=0.2')
+              .add(() => document.getElementById('bill3').classList.add('stack'), '+=0.2')
+              .add(() => document.getElementById('bill4').classList.add('stack'), '+=0.2');
+        }
+
+        function replayFunnel() {
+            // Clear old dots
+            document.querySelectorAll('#funnel-vis-1 .lead-dot').forEach(d => d.remove());
+            animateFunnel();
+        }
+
+        ScrollTrigger.create({
+            trigger: '#style5',
+            start: 'top 60%',
+            onEnter: animateFunnel,
+            once: true
+        });
+
+        // ============================================
+        // NAV ACTIVE STATE
+        // ============================================
+        const navLinks = document.querySelectorAll('.demo-nav a');
+        const sections = document.querySelectorAll('.demo-section');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -430,7 +430,7 @@ function initTypewriterSteps() {
     // Hide all icons initially
     mazeIcons.forEach(icon => icon.classList.remove('visible'));
 
-    // Typewriter effect for title
+    // FAST typewriter effect for title (25ms per char)
     function typeTitle(titleEl, callback) {
         const text = titleEl.getAttribute('data-text');
         titleEl.textContent = '';
@@ -448,40 +448,34 @@ function initTypewriterSteps() {
                 titleEl.classList.add('done');
                 if (callback) callback();
             }
-        }, 50);
+        }, 25); // FAST typing
     }
 
-    // Show icons by step
-    // Step 1: OUTER ring (4 icons)
-    // Step 2: OUTER + MIDDLE ring (4 + 3 = 7 icons)
+    // Show icons progressively
     function showIconsForStep(stepNum) {
-        // Hide all icons first
-        mazeIcons.forEach(icon => icon.classList.remove('visible'));
-
-        // Show icons based on step
         let delay = 0;
         mazeIcons.forEach(icon => {
             const iconStep = parseInt(icon.dataset.step);
-            if (iconStep <= stepNum) {
+            if (iconStep <= stepNum && !icon.classList.contains('visible')) {
                 setTimeout(() => {
                     icon.classList.add('visible');
                 }, delay);
-                delay += 150;
+                delay += 100;
             }
         });
 
-        // Update center number with animation
+        // Update center number
         if (centerNum) {
             gsap.to(centerNum, {
                 opacity: 0,
                 scale: 0.5,
-                duration: 0.2,
+                duration: 0.15,
                 onComplete: () => {
                     centerNum.textContent = '0' + stepNum;
                     gsap.to(centerNum, {
                         opacity: 1,
                         scale: 1,
-                        duration: 0.3,
+                        duration: 0.2,
                         ease: "back.out(1.7)"
                     });
                 }
@@ -489,48 +483,45 @@ function initTypewriterSteps() {
         }
     }
 
-    // Animate a single step
-    function animateStep(index) {
-        if (index >= steps.length) return;
+    // FAST animation - all steps animate quickly with overlapping subtitles
+    function animateAllSteps() {
+        steps.forEach((step, index) => {
+            const title = step.querySelector('.tw-title');
+            const subtitle = step.querySelector('.tw-subtitle');
+            const checkmark = step.querySelector('.tw-checkmark');
 
-        const step = steps[index];
-        const title = step.querySelector('.tw-title');
-        const checkmark = step.querySelector('.tw-checkmark');
+            // Timing for each step
+            const titleDelay = index * 600;      // Title starts every 600ms
+            const subtitleDelay = titleDelay + 400; // Subtitle starts 400ms after its title
+            const checkDelay = titleDelay + 500;    // Checkmark after title done
 
-        // Make step visible
-        step.classList.add('visible', 'active');
+            // Make step visible immediately
+            setTimeout(() => {
+                step.classList.add('visible', 'active');
+                steps.forEach((s, i) => {
+                    if (i < index) s.classList.remove('active');
+                });
 
-        // Remove active from previous steps (but keep them visible)
-        steps.forEach((s, i) => {
-            if (i < index) {
-                s.classList.remove('active');
-            }
+                // Show icons for this step
+                showIconsForStep(index + 1);
+
+                // Type title FAST
+                typeTitle(title, () => {
+                    checkmark.classList.add('show');
+                    step.classList.add('complete');
+                });
+            }, titleDelay);
+
+            // Fade in subtitle SLOWLY (independent of title)
+            setTimeout(() => {
+                subtitle.classList.add('fade-in');
+            }, subtitleDelay);
         });
 
-        // Show icons for this step
-        showIconsForStep(index + 1);
-
-        // Start typewriter effect
+        // Keep last step active after all done
         setTimeout(() => {
-            typeTitle(title, () => {
-                // Show checkmark
-                checkmark.classList.add('show');
-
-                // Complete progress bar
-                step.classList.add('complete');
-
-                // Move to next step after delay
-                setTimeout(() => {
-                    currentStep++;
-                    if (currentStep < steps.length) {
-                        animateStep(currentStep);
-                    } else {
-                        // All done - keep last step active
-                        step.classList.add('active');
-                    }
-                }, 800);
-            });
-        }, 300);
+            steps[steps.length - 1].classList.add('active');
+        }, steps.length * 600 + 500);
     }
 
     // Scroll-based OPPOSITE rotation for outer and middle rings
@@ -588,7 +579,7 @@ function initTypewriterSteps() {
         onEnter: () => {
             if (!hasAnimated) {
                 hasAnimated = true;
-                animateStep(0);
+                animateAllSteps();
             }
         }
     });
