@@ -1267,104 +1267,120 @@ body {
     color: var(--gray);
 }
 
-/* ========== PRICING ========== */
-.pricing {
+/* ========== BOOK A CALL ========== */
+.book-call {
     padding: 8rem 4rem;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 4rem;
+
+.section-subtitle {
+    color: var(--gray);
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    text-align: center;
 }
-.pricing-card {
+
+.book-call-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    margin-top: 4rem;
     background: var(--bg2);
     border: 1px solid rgba(255,255,255,0.05);
     border-radius: 24px;
-    padding: 3rem;
-    text-align: center;
-    position: relative;
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(40px);
 }
-.pricing-card.featured {
-    border-color: var(--accent);
-    background: linear-gradient(180deg, rgba(201, 243, 29, 0.05), var(--bg2));
+
+.book-call-info {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
-.pricing-card.featured::before {
-    content: 'MOST POPULAR';
-    position: absolute;
-    top: 1rem;
-    right: -2rem;
-    background: var(--accent);
-    color: var(--bg);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    padding: 0.3rem 3rem;
-    transform: rotate(45deg);
-}
-.pricing-tier {
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1rem;
-}
-.pricing-amount {
+
+.book-call-info h3 {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 3.5rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-.pricing-amount span { font-size: 1.2rem; color: var(--gray); }
-.pricing-desc {
-    color: var(--gray);
-    font-size: 0.9rem;
     margin-bottom: 2rem;
 }
-.pricing-features {
+
+.benefits-list {
     list-style: none;
-    text-align: left;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
-.pricing-features li {
-    padding: 0.6rem 0;
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.7);
-    border-bottom: 1px solid rgba(255,255,255,0.03);
+
+.benefits-list li {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.pricing-features li .check {
+
+.benefit-icon {
     color: var(--accent);
-    font-weight: bold;
-}
-.pricing-btn {
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    border-radius: 100px;
-    text-decoration: none;
     font-weight: 700;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s;
+    font-size: 1.1rem;
 }
-.pricing-btn.primary {
-    background: var(--accent);
-    color: var(--bg);
+
+.book-call-note {
+    background: rgba(201, 243, 29, 0.05);
+    border-left: 3px solid var(--accent);
+    padding: 1.5rem;
+    border-radius: 0 12px 12px 0;
 }
-.pricing-btn.secondary {
-    border: 1px solid rgba(255,255,255,0.15);
+
+.book-call-note p {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.book-call-note p strong {
     color: var(--white);
 }
-.pricing-btn:hover { transform: translateY(-2px); }
+
+.book-call-calendar {
+    background: #111;
+    min-height: 700px;
+    border-radius: 0 24px 24px 0;
+    overflow: hidden;
+}
+
+/* Calendly container styling */
+.calendly-inline-widget {
+    border-radius: 0 24px 24px 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .book-call-container {
+        grid-template-columns: 1fr;
+    }
+
+    .book-call-calendar {
+        border-radius: 0 0 24px 24px;
+        min-height: 600px;
+    }
+
+    .book-call-info {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .book-call {
+        padding: 4rem 1.5rem;
+    }
+
+    .book-call-calendar {
+        min-height: 550px;
+    }
+}
 
 /* ========== CTA ========== */
 .cta-section {
