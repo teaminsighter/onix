@@ -8,18 +8,18 @@ class LogoRain {
         this.container = document.querySelector(containerSelector);
         if (!this.container) return;
 
-        // 10 logos
+        // 10 logos (absolute paths for production)
         this.icons = [
-            'logos/logot1.jpeg',
-            'logos/logot2.png',
-            'logos/logot3.png',
-            'logos/logot4.png',
-            'logos/logot5.png',
-            'logos/logot6.png',
-            'logos/logot7.png',
-            'logos/logot8.png',
-            'logos/logot9.png',
-            'logos/logot10.png'
+            '/logos/logot1.jpeg',
+            '/logos/logot2.png',
+            '/logos/logot3.png',
+            '/logos/logot4.png',
+            '/logos/logot5.png',
+            '/logos/logot6.png',
+            '/logos/logot7.png',
+            '/logos/logot8.png',
+            '/logos/logot9.png',
+            '/logos/logot10.png'
         ];
 
         // 16 fixed positions - zig-zag pattern, no vertical alignment

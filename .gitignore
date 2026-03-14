@@ -12,3 +12,9 @@ dist/
 !logos/*.jpg
 !images/team/*.jpg
 !images/team/*.png
+!public/images/*.png
+!public/images/*.jpg
+!public/images/*.jpeg
+!public/logos/*.png
+!public/logos/*.jpg
+!public/logos/*.jpeg
