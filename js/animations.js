@@ -96,6 +96,7 @@ function initTypewriterSteps() {
     animateSectionTitle('.testimonials');
     animateSectionTitle('.team-section');
     animateSectionTitle('.book-call');
+    animateSectionTitle('.contact-section');
 
     // Animate maze circle on scroll
     if (mazeCircle) {
@@ -512,7 +513,8 @@ function initScrollAnimations() {
         if (title.closest('.how-section') ||
             title.closest('.testimonials') ||
             title.closest('.team-section') ||
-            title.closest('.book-call')) return;
+            title.closest('.book-call') ||
+            title.closest('.contact-section')) return;
         // Simpler approach: process text and highlight spans separately
         const processTitle = (element) => {
             let html = '';
@@ -798,6 +800,98 @@ function initScrollAnimations() {
                 bookSubtitle.classList.add('animate');
             },
             once: true
+        });
+    }
+
+    // Contact Section Animations
+    const contactSection = document.querySelector('.contact-section');
+    if (contactSection) {
+        // Section label fade in
+        gsap.to('.contact-header .section-label', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.contact-section',
+                start: 'top 80%'
+            }
+        });
+
+        // Form card slide in from left
+        gsap.to('.contact-form-card', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.contact-grid',
+                start: 'top 75%'
+            }
+        });
+
+        // Info card slide in from right
+        gsap.to('.contact-info-card', {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            delay: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.contact-grid',
+                start: 'top 75%'
+            }
+        });
+
+        // Info blocks staggered reveal
+        gsap.to('.contact-info-card .info-block', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.contact-info-card',
+                start: 'top 75%'
+            }
+        });
+
+        // Social links reveal
+        gsap.to('.social-links', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            delay: 0.3,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.contact-info-card',
+                start: 'top 75%'
+            }
+        });
+
+        // Social icons bounce in
+        gsap.from('.social-icon', {
+            scale: 0,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "back.out(2)",
+            scrollTrigger: {
+                trigger: '.social-icons',
+                start: 'top 85%'
+            }
+        });
+
+        // Footer bar fade in
+        gsap.to('.footer-bar', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.footer-bar',
+                start: 'top 95%'
+            }
         });
     }
 }
