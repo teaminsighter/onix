@@ -10,8 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Preload Calendly -->
+    <link rel="preconnect" href="https://calendly.com">
+    <link rel="preconnect" href="https://assets.calendly.com">
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
+
 </head>
 <body>
 
@@ -29,10 +32,11 @@
     <nav class="navbar" id="navbar">
         <a href="#" class="nav-logo">ONIX<span>.</span></a>
         <ul class="nav-links">
+            <li><a href="#services" class="magnetic">Services</a></li>
             <li><a href="#features" class="magnetic">Features</a></li>
-            <li><a href="#how" class="magnetic">How it Works</a></li>
-            <li><a href="#book" class="magnetic">Book a Call</a></li>
+            <li><a href="#team" class="magnetic">Team</a></li>
             <li><a href="#testimonials" class="magnetic">Results</a></li>
+            <li><a href="#contact" class="magnetic">Contact</a></li>
         </ul>
         <a href="#book" class="nav-cta magnetic">Book a Call</a>
     </nav>
@@ -42,6 +46,7 @@
         <div class="hero-bg-grid"></div>
         <div class="hero-glow"></div>
         <div class="hero-glow-2"></div>
+        <div class="hero-inner">
         <div class="hero-content">
             <div class="hero-badge"><span class="dot"></span> Now Automating 50+ Businesses</div>
             <h1 id="hero-title">
@@ -49,7 +54,7 @@
                 <span class="line"><span class="highlight">Leads.</span> Start</span>
                 <span class="line">Closing <span class="highlight">Deals.</span></span>
             </h1>
-            <p class="hero-sub">ONIX automates your entire lead acquisition and follow-up pipeline so you book more calls, close more deals, and scale faster.</p>
+            <p class="hero-sub">ONIX automates your entire lead acquisition and follow-up pipeline so you <span class="hero-highlight">book more calls</span>, <span class="hero-highlight">close more deals</span>, and <span class="hero-highlight">scale faster</span>.</p>
             <div class="hero-buttons">
                 <a href="#book" class="btn-primary magnetic"><span class="btn-shine"></span>Book Free Strategy Call</a>
                 <a href="#how" class="btn-secondary magnetic">See How It Works</a>
@@ -77,9 +82,9 @@
                         <span class="tab-icon">🛡</span>
                         <span class="tab-name">Insurance</span>
                     </div>
-                    <div class="ind-tab" data-ind="agencies">
-                        <span class="tab-icon">🚀</span>
-                        <span class="tab-name">Agencies</span>
+                    <div class="ind-tab" data-ind="realestate">
+                        <span class="tab-icon">🏠</span>
+                        <span class="tab-name">Real Estate</span>
                     </div>
                 </div>
                 <div class="ind-content">
@@ -99,47 +104,193 @@
                 </div>
             </div>
         </div>
+        </div><!-- end hero-inner -->
         <div class="hero-scroll">
             <span>Scroll</span>
             <div class="scroll-line"></div>
         </div>
     </section>
 
-    <!-- MARQUEE -->
-    <section class="marquee-section">
+    <!-- LOGO MARQUEE -->
+    <section class="marquee-section logo-marquee">
         <div class="marquee-track" id="marquee">
-            <div class="marquee-item">Lead Capture <span class="sep"></span></div>
-            <div class="marquee-item">SMS Follow-up <span class="sep"></span></div>
-            <div class="marquee-item">Auto Booking <span class="sep"></span></div>
-            <div class="marquee-item">CRM Pipeline <span class="sep"></span></div>
-            <div class="marquee-item">Ad Management <span class="sep"></span></div>
-            <div class="marquee-item">Reporting <span class="sep"></span></div>
-            <div class="marquee-item">Lead Capture <span class="sep"></span></div>
-            <div class="marquee-item">SMS Follow-up <span class="sep"></span></div>
-            <div class="marquee-item">Auto Booking <span class="sep"></span></div>
-            <div class="marquee-item">CRM Pipeline <span class="sep"></span></div>
-            <div class="marquee-item">Ad Management <span class="sep"></span></div>
-            <div class="marquee-item">Reporting <span class="sep"></span></div>
+            <div class="logo-item"><img src="logos/logot1.jpeg" alt="Partner 1"></div>
+            <div class="logo-item"><img src="logos/logot2.png" alt="Partner 2"></div>
+            <div class="logo-item"><img src="logos/logot3.png" alt="Partner 3"></div>
+            <div class="logo-item"><img src="logos/logot4.png" alt="Partner 4"></div>
+            <div class="logo-item"><img src="logos/logot5.png" alt="Partner 5"></div>
+            <div class="logo-item"><img src="logos/logot6.png" alt="Partner 6"></div>
+            <div class="logo-item"><img src="logos/logot7.png" alt="Partner 7"></div>
+            <div class="logo-item"><img src="logos/logot8.png" alt="Partner 8"></div>
+            <div class="logo-item"><img src="logos/logot9.png" alt="Partner 9"></div>
+            <div class="logo-item"><img src="logos/logot10.png" alt="Partner 10"></div>
+            <!-- Duplicate for seamless loop -->
+            <div class="logo-item"><img src="logos/logot1.jpeg" alt="Partner 1"></div>
+            <div class="logo-item"><img src="logos/logot2.png" alt="Partner 2"></div>
+            <div class="logo-item"><img src="logos/logot3.png" alt="Partner 3"></div>
+            <div class="logo-item"><img src="logos/logot4.png" alt="Partner 4"></div>
+            <div class="logo-item"><img src="logos/logot5.png" alt="Partner 5"></div>
+            <div class="logo-item"><img src="logos/logot6.png" alt="Partner 6"></div>
+            <div class="logo-item"><img src="logos/logot7.png" alt="Partner 7"></div>
+            <div class="logo-item"><img src="logos/logot8.png" alt="Partner 8"></div>
+            <div class="logo-item"><img src="logos/logot9.png" alt="Partner 9"></div>
+            <div class="logo-item"><img src="logos/logot10.png" alt="Partner 10"></div>
         </div>
     </section>
 
-    <!-- STATS -->
-    <section class="stats" id="stats">
-        <div class="stat-card">
-            <div class="stat-number" data-target="45">0%</div>
-            <div class="stat-label">Booking Uplift</div>
+    <!-- TRUSTED BY + STATS -->
+    <section class="trusted-stats-section" id="stats">
+        <!-- Raining Logos Background -->
+        <div id="logo-rain-bg"><div id="grain-layer"></div></div>
+
+        <div class="trusted-content">
+            <div class="trusted-header">
+                <h2 class="trusted-title">Trusted By</h2>
+                <div class="trusted-subtitle-wrap">
+                    <span class="trusted-subtitle" id="trustedSubtitle">Leading Brands in New Zealand</span>
+                </div>
+            </div>
+            <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" data-target="45">0%</div>
+                <div class="stat-label">Booking Uplift</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="30">0%</div>
+                <div class="stat-label">Reply Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="10" data-prefix="">0 hrs</div>
+                <div class="stat-label">Saved Weekly</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" data-target="100">$0k+</div>
+                <div class="stat-label">Revenue Impact</div>
+            </div>
+            </div>
         </div>
-        <div class="stat-card">
-            <div class="stat-number" data-target="30">0%</div>
-            <div class="stat-label">Reply Rate</div>
+    </section>
+
+    <!-- EXPERTS IN / SERVICES -->
+    <section class="experts-section" id="services">
+        <div class="experts-header">
+            <span class="section-label">Our Expertise</span>
+            <h2 class="experts-title">Experts In</h2>
+            <p class="experts-sub">Industries where we deliver exceptional lead generation results</p>
         </div>
-        <div class="stat-card">
-            <div class="stat-number" data-target="10" data-prefix="">0 hrs</div>
-            <div class="stat-label">Saved Weekly</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-number" data-target="100">$0k+</div>
-            <div class="stat-label">Revenue Impact</div>
+        <div class="experts-grid">
+            <a href="/services/life-insurance.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">💜</span>
+                        <h3>Life Insurance</h3>
+                        <p>Connect with families actively searching for peace of mind. High-intent, ready-to-buy leads.</p>
+                        <div class="card-stat"><span>12k+</span> Leads/Year</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
+            <a href="/services/income-protection.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">💼</span>
+                        <h3>Income Protection</h3>
+                        <p>Reach professionals who value their lifestyle. Pre-qualified leads who understand the need.</p>
+                        <div class="card-stat"><span>8k+</span> Leads/Year</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
+            <a href="/services/health-insurance.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">❤️‍🩹</span>
+                        <h3>Health Insurance</h3>
+                        <p>Tap into the wave of health-conscious Kiwis ready to enroll. Quote-ready prospects delivered daily.</p>
+                        <div class="card-stat"><span>20k+</span> Leads/Year</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
+            <a href="/services/solar.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">☀️</span>
+                        <h3>Solar</h3>
+                        <p>Homeowners actively researching solar. Warm leads ready to book site inspections today.</p>
+                        <div class="card-stat"><span>40k+</span> Leads/Year</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
+            <a href="/services/real-estate.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">🏠</span>
+                        <h3>Real Estate</h3>
+                        <p>Serious buyers and motivated sellers in your area. Close more deals, grow your portfolio.</p>
+                        <div class="card-stat"><span>156+</span> Deals Closed</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
+            <a href="/services/mortgage-loans.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">💰</span>
+                        <h3>Mortgage & Loans</h3>
+                        <p>First-home buyers and refinancers searching now. Convert browsers into signed applications.</p>
+                        <div class="card-stat"><span>8-15%</span> Conversion</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
+            <a href="/services/tradies.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">🔧</span>
+                        <h3>Tradies</h3>
+                        <p>Locals searching for plumbers, sparkies & more. Fill your calendar with quality jobs.</p>
+                        <div class="card-stat"><span>5k+</span> Jobs Booked</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
+            <a href="/services/builders.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">🏗️</span>
+                        <h3>Builders</h3>
+                        <p>Land owners and developers ready to build. Secure high-value projects on autopilot.</p>
+                        <div class="card-stat"><span>$2.5M</span> Project Value</div>
+                    </div>
+                    <div class="card-button">
+                        <h4>Learn More</h4>
+                        <div class="dot-slot"><div class="dot"></div></div>
+                    </div>
+                </div>
+            </a>
         </div>
     </section>
 
@@ -152,7 +303,7 @@
         <div class="features-track" id="features-track">
             <div class="feature-card">
                 <div class="feature-img">
-                    <img src="images/feature-1-lead-capture.png" alt="Instant Lead Capture">
+                    <img src="/images/feature-1-lead-capture.png" alt="Instant Lead Capture">
                 </div>
                 <div class="feature-content">
                     <h3>Instant Lead Capture</h3>
@@ -162,7 +313,7 @@
             </div>
             <div class="feature-card">
                 <div class="feature-img">
-                    <img src="images/feature-2-sms-email.png" alt="Auto SMS & Email">
+                    <img src="/images/feature-2-sms-email.png" alt="Auto SMS & Email">
                 </div>
                 <div class="feature-content">
                     <h3>Auto SMS & Email</h3>
@@ -172,7 +323,7 @@
             </div>
             <div class="feature-card">
                 <div class="feature-img">
-                    <img src="images/feature-3-booking.png" alt="Smart Booking">
+                    <img src="/images/feature-3-booking.png" alt="Smart Booking">
                 </div>
                 <div class="feature-content">
                     <h3>Smart Booking</h3>
@@ -182,7 +333,7 @@
             </div>
             <div class="feature-card">
                 <div class="feature-img">
-                    <img src="images/feature-4-crm.png" alt="Pipeline CRM">
+                    <img src="/images/feature-4-crm.png" alt="Pipeline CRM">
                 </div>
                 <div class="feature-content">
                     <h3>Pipeline CRM</h3>
@@ -192,7 +343,7 @@
             </div>
             <div class="feature-card">
                 <div class="feature-img">
-                    <img src="images/feature-5-revenue.png" alt="Revenue Attribution">
+                    <img src="/images/feature-5-revenue.png" alt="Revenue Attribution">
                 </div>
                 <div class="feature-content">
                     <h3>Revenue Attribution</h3>
@@ -328,35 +479,322 @@
         </div>
     </section>
 
-    <!-- TESTIMONIALS -->
+    <!-- TESTIMONIALS - Google Reviews Style -->
     <section class="testimonials" id="testimonials">
         <div class="features-header">
             <span class="section-label">Real Results</span>
             <h2 class="section-title">What our <span class="highlight">clients</span> say</h2>
+            <div class="google-rating">
+                <div class="rating-line">
+                    <span class="rating-score">4.9</span>
+                    <div class="rating-stars">
+                        <span class="star filled">★</span>
+                        <span class="star filled">★</span>
+                        <span class="star filled">★</span>
+                        <span class="star filled">★</span>
+                        <span class="star half">★</span>
+                    </div>
+                </div>
+                <div class="google-line">
+                    <span class="rating-count">Based on 150+ reviews on</span>
+                    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google" class="google-logo">
+                </div>
+            </div>
         </div>
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <blockquote>"ONIX transformed our business. We went from manually chasing leads to having a full calendar every single week. Revenue is up 40%."</blockquote>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">NK</div>
-                    <div><div class="testimonial-name">Nicky K.</div><div class="testimonial-role">Solar Company Owner</div></div>
+
+        <!-- Row 1 - Slides Left -->
+        <div class="review-row review-row-left">
+            <div class="review-track" id="reviewTrack1">
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Nicky M." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Nicky M.</span>
+                            <span class="review-location">No1 Real Estate Agent — West Auckland</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Sean's leads and system have given us an extra $100k on our bottom line year on year."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Carolyn M." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Carolyn M.</span>
+                            <span class="review-location">Real Estate Agent — Napier</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Sean is a sharp, smart mover who gets things done. He is always one step ahead."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Amanda S." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Amanda S.</span>
+                            <span class="review-location">Real Estate Agent — Wellington</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"The leads we've been getting have cost us 12% of our gross commission. We're very happy!"</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="David K." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">David K.</span>
+                            <span class="review-location">Solar Company Owner — Auckland</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"ONIX transformed our business. Revenue is up 40% and we have a full calendar every week."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Sarah L." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Sarah L.</span>
+                            <span class="review-location">Insurance Broker — Hamilton</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"We've doubled our lead conversion rate since using ONIX. The automation is incredible."</p>
+                </div>
+                <!-- Duplicate for seamless loop -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Nicky M." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Nicky M.</span>
+                            <span class="review-location">No1 Real Estate Agent — West Auckland</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Sean's leads and system have given us an extra $100k on our bottom line year on year."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Carolyn M." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Carolyn M.</span>
+                            <span class="review-location">Real Estate Agent — Napier</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Sean is a sharp, smart mover who gets things done. He is always one step ahead."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Amanda S." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Amanda S.</span>
+                            <span class="review-location">Real Estate Agent — Wellington</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"The leads we've been getting have cost us 12% of our gross commission. We're very happy!"</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="David K." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">David K.</span>
+                            <span class="review-location">Solar Company Owner — Auckland</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"ONIX transformed our business. Revenue is up 40% and we have a full calendar every week."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Sarah L." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Sarah L.</span>
+                            <span class="review-location">Insurance Broker — Hamilton</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"We've doubled our lead conversion rate since using ONIX. The automation is incredible."</p>
                 </div>
             </div>
-            <div class="testimonial-card">
-                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <blockquote>"The follow-up automation alone is worth 10x the price. Leads get instant responses and book themselves in. Game changer."</blockquote>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">CM</div>
-                    <div><div class="testimonial-name">Carmeo M.</div><div class="testimonial-role">Agency Director</div></div>
+        </div>
+
+        <!-- Row 2 - Slides Right -->
+        <div class="review-row review-row-right">
+            <div class="review-track" id="reviewTrack2">
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Rachel J." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Rachel J.</span>
+                            <span class="review-location">CEO — Fiji Yacht Cruises</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Careful what you wish for working with Sean. He'll have your business flying in a flash!"</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Paul S." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Paul S.</span>
+                            <span class="review-location">Risk Insurance</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"I've invested 17k and my return was $110k. Super happy and just gets better year on year."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Mike M." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Mike M.</span>
+                            <span class="review-location">ACC Business Advice</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"My site generates 20 to 25 leads a month returning $8k - $10k to me in commission per month. It works!"</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="James T." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">James T.</span>
+                            <span class="review-location">Trades Business Owner</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"We save 10+ hours a week. Our booking rate jumped from 12% to 35%. ONIX pays for itself."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/55.jpg" alt="Lisa R." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Lisa R.</span>
+                            <span class="review-location">Mortgage Broker — Christchurch</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"The follow-up automation is worth 10x the price. Leads book themselves in. Game changer."</p>
+                </div>
+                <!-- Duplicate for seamless loop -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Rachel J." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Rachel J.</span>
+                            <span class="review-location">CEO — Fiji Yacht Cruises</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Careful what you wish for working with Sean. He'll have your business flying in a flash!"</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Paul S." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Paul S.</span>
+                            <span class="review-location">Risk Insurance</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"I've invested 17k and my return was $110k. Super happy and just gets better year on year."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="Mike M." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Mike M.</span>
+                            <span class="review-location">ACC Business Advice</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"My site generates 20 to 25 leads a month returning $8k - $10k to me in commission per month. It works!"</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="James T." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">James T.</span>
+                            <span class="review-location">Trades Business Owner</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"We save 10+ hours a week. Our booking rate jumped from 12% to 35%. ONIX pays for itself."</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="https://randomuser.me/api/portraits/women/55.jpg" alt="Lisa R." class="review-avatar">
+                        <div class="review-info">
+                            <span class="review-name">Lisa R.</span>
+                            <span class="review-location">Mortgage Broker — Christchurch</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"The follow-up automation is worth 10x the price. Leads book themselves in. Game changer."</p>
                 </div>
             </div>
-            <div class="testimonial-card">
-                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <blockquote>"We save 10+ hours a week and our booking rate jumped from 12% to 35%. ONIX pays for itself every single month."</blockquote>
-                <div class="testimonial-author">
-                    <div class="testimonial-avatar">PD</div>
-                    <div><div class="testimonial-name">Paul D.</div><div class="testimonial-role">Trades Business Owner</div></div>
+        </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="team-section" id="team">
+        <div class="features-header">
+            <span class="section-label">Our Team</span>
+            <h2 class="section-title">Meet the <span class="highlight">experts</span></h2>
+            <p class="section-subtitle">The people behind your growth</p>
+        </div>
+
+        <div class="team-container">
+            <!-- Founders -->
+            <div class="team-founders">
+                <div class="team-member founder">
+                    <div class="member-image">
+                        <img src="images/team/jordan.jpg" alt="Jordan Burkett">
+                    </div>
+                    <div class="member-info">
+                        <h3>Jordan Burkett</h3>
+                        <span class="member-role">Co-Founder</span>
+                        <p>Working closely with over <span class="highlight-text" data-text="200+ clients">200+ clients</span> within local business and tradies. Setting up and managing 1-1 marketing systems for the past 2 years. Together, we have managed over <span class="highlight-text" data-text="$7.8M in Annual ad spend">$7.8M in Annual ad spend</span>.</p>
+                    </div>
+                </div>
+
+                <div class="team-member founder">
+                    <div class="member-image">
+                        <img src="images/team/sean.jpg" alt="Sean McArthur">
+                    </div>
+                    <div class="member-info">
+                        <h3>Sean McArthur</h3>
+                        <span class="member-role">Co-Founder</span>
+                        <p>A rare blend of financial leadership and marketing expertise. Former Marketing Finance Manager at eBay UK managing <span class="highlight-text" data-text="$100M USD budget">$100M USD budget</span>, and CFO at Gartshore NZ. Now co-leads a <span class="highlight-text" data-text="$5M+ agency">$5M+ agency</span> specialising in pay-per-lead campaigns.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Grid -->
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="images/team/ardern.jpg" alt="Ardern Williams-Green">
+                    </div>
+                    <div class="member-info">
+                        <h3>Ardern Williams-Green</h3>
+                        <span class="member-role">Operations Manager & Media Buyer</span>
+                        <p>Oversees paid and organic growth strategies for local service contractors. Fractional CMO experience with UK firms, with a background in database admin and client management.</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="images/team/scott.jpg" alt="Scott">
+                    </div>
+                    <div class="member-info">
+                        <h3>Scott</h3>
+                        <span class="member-role">Media Buyer & Social Strategist</span>
+                        <p>Expert in paid media buying and social media strategies. Drives client campaigns across multiple platforms for maximum ROI.</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="images/team/fathama.jpg" alt="Fathama">
+                    </div>
+                    <div class="member-info">
+                        <h3>Fathama</h3>
+                        <span class="member-role">Admin & Design</span>
+                        <p>All things admin, design, and keeping the team running smoothly. The backbone of our daily operations.</p>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="images/team/sarah.jpg" alt="Sarah Henderson">
+                    </div>
+                    <div class="member-info">
+                        <h3>Sarah Henderson</h3>
+                        <span class="member-role">Lead Calling Machine</span>
+                        <p>Relentless lead caller who converts prospects into booked appointments. Your pipeline's best friend.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -365,9 +803,9 @@
     <!-- BOOK A CALL -->
     <section class="book-call" id="book">
         <div class="features-header">
-            <span class="section-label">Book a Call</span>
+            <span class="section-label">15 Minute Booking</span>
             <h2 class="section-title">Let's install your <span class="highlight">pipeline.</span></h2>
-            <p class="section-subtitle">Pick a time — we'll confirm fit and show the system.</p>
+            <p class="book-subtitle" id="bookSubtitle">Time is value, let's have a quick chat to see if we're the fit?</p>
         </div>
         <div class="book-call-container">
             <!-- Left: What you get -->
@@ -399,7 +837,6 @@
             <!-- Right: Calendly Embed -->
             <div class="book-call-calendar">
                 <div class="calendly-inline-widget" data-url="https://calendly.com/jordan-burkett/my-reno-quotes-get-more-jobs-clone-clone?hide_gdpr_banner=1&background_color=111111&text_color=ffffff&primary_color=c9f31d" style="min-width:320px;height:750px;"></div>
-                <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
             </div>
         </div>
     </section>
@@ -426,13 +863,11 @@
         <div class="footer-right">&copy; 2026 ONIX. All rights reserved.</div>
     </footer>
 
-    <!-- GSAP CDN -->
+    <!-- GSAP CDN (loaded before modules) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-    <!-- App Scripts (order matters) -->
-    <script src="js/dashboard.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/app.js"></script>
+    <!-- Vite Entry Point -->
+    <script type="module" src="/js/main.js"></script>
 </body>
 </html>

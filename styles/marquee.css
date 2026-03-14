@@ -1,0 +1,125 @@
+/* ========== Logo Marquee Section ========== */
+
+.marquee-section {
+    padding: 3rem 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    overflow: hidden;
+}
+
+.marquee-section.logo-marquee {
+    padding: 3rem 0;
+}
+
+/* Trusted By Header */
+.trusted-header {
+    text-align: center;
+}
+
+.trusted-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 6rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    visibility: hidden; /* Hide until JS processes */
+}
+
+.trusted-title.ready {
+    visibility: visible;
+}
+
+.trusted-title .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(50px) rotateX(-40deg);
+}
+
+.trusted-subtitle-wrap {
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.trusted-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 500;
+    color: var(--accent);
+    opacity: 0;
+    display: inline-block;
+}
+
+/* Typewriter cursor */
+.trusted-subtitle::after {
+    content: '|';
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink 0.7s infinite;
+    color: var(--accent);
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    gap: 2rem;
+    animation: none;
+    will-change: transform;
+    align-items: center;
+}
+
+/* Logo item with white background */
+.logo-item {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    height: 60px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.logo-item img {
+    max-width: 120px;
+    max-height: 40px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(0%);
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.logo-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Old text marquee styles (kept for reference) */
+.marquee-item {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 600;
+    white-space: nowrap;
+    color: rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.marquee-item .sep {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+}

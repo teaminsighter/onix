@@ -1,0 +1,181 @@
+/* ========== Trusted + Stats Section ========== */
+
+.trusted-stats-section {
+    position: relative;
+    padding: 5rem 4rem 6rem;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Raining Logos Background */
+#logo-rain-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(10, 10, 10, 0.95);
+    --icon-size: 90px;
+    z-index: 0;
+}
+
+#grain-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700' width='700' height='700'%3E%3Cdefs%3E%3Cfilter id='nnnoise-filter' x='-20%25' y='-20%25' width='140%25' height='140%25' filterUnits='objectBoundingBox' primitiveUnits='userSpaceOnUse' color-interpolation-filters='linearRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.159' numOctaves='4' seed='15' stitchTiles='stitch' x='0%25' y='0%25' width='100%25' height='100%25' result='turbulence'%3E%3C/feTurbulence%3E%3CfeSpecularLighting surfaceScale='10' specularConstant='1.2' specularExponent='20' lighting-color='%2390f754' x='0%25' y='0%25' width='100%25' height='100%25' in='turbulence' result='specularLighting'%3E%3CfeDistantLight azimuth='3' elevation='143'%3E%3C/feDistantLight%3E%3C/feSpecularLighting%3E%3C/filter%3E%3C/defs%3E%3Crect width='700' height='700' fill='transparent'%3E%3C/rect%3E%3Crect width='700' height='700' fill='%2390f754' filter='url(%23nnnoise-filter)'%3E%3C/rect%3E%3C/svg%3E");
+    background-size: 300px 300px;
+    background-repeat: repeat;
+    will-change: transform;
+    width: 200%;
+    height: 200%;
+    mix-blend-mode: soft-light;
+    opacity: 0.15;
+}
+
+/* Icon Animation Wrappers */
+.icon-wrapper {
+    position: absolute;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    animation: slowDrift var(--duration, 8s) ease-in-out forwards;
+}
+
+@keyframes slowDrift {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(30px);
+    }
+}
+
+.layer-1 {
+    overflow: hidden;
+    position: absolute;
+    height: var(--icon-size);
+    width: var(--icon-size);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px;
+    box-sizing: border-box;
+    animation: slideReveal var(--duration, 8s) ease-in-out forwards;
+}
+
+.layer-2 {
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Reveal Animation - Slow open and close */
+@keyframes slideReveal {
+    0% {
+        clip-path: inset(0 0 100% 0);
+    }
+    30% {
+        clip-path: inset(0 0 0% 0);
+    }
+    70% {
+        clip-path: inset(0 0 0% 0);
+    }
+    100% {
+        clip-path: inset(100% 0 0 0);
+    }
+}
+
+/* Simple fade for wrapper */
+@keyframes logoFadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+
+/* Content Layer - Above Background */
+.trusted-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 4rem;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 3rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.stat-card:hover::before { opacity: 1; }
+
+.stat-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--gray);
+    letter-spacing: 0.05em;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .trusted-stats-section {
+        padding: 4rem 1.5rem;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    #logo-rain-bg {
+        --icon-size: 48px;
+    }
+}

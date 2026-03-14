@@ -1,0 +1,335 @@
+/* ========== Experts In Section - Neumorphic Design ========== */
+
+.experts-section {
+    position: relative;
+    padding: 6rem 4rem;
+    --s: 200px;
+    /* Option 4: Reduced pattern opacity - darker colors */
+    --c1: #0a0a0a;
+    --c2: #1a1a1a;
+    --c3: #151515;
+    background: repeating-conic-gradient(
+                from 30deg,
+                #0000 0 120deg,
+                var(--c3) 0 50%
+            )
+            calc(var(--s) / 2) calc(var(--s) * 0.577 / 2),
+        repeating-conic-gradient(
+            from 30deg,
+            var(--c1) 0 60deg,
+            var(--c2) 0 120deg,
+            var(--c3) 0 50%
+        );
+    background-size: var(--s) calc(var(--s) * 0.577);
+    /* Vignette effect */
+    box-shadow: inset 0 0 150px 50px rgba(0, 0, 0, 0.8);
+}
+
+/* Option 1: Gradient fade at top edge */
+.experts-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom, #0a0a0a 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Option 1: Gradient fade at bottom edge */
+.experts-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to top, #0a0a0a 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Header */
+.experts-header {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.experts-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    visibility: hidden; /* Hide until JS processes */
+}
+
+.experts-title.ready {
+    visibility: visible;
+}
+
+.experts-title .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.experts-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--gray);
+    max-width: 500px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Grid */
+.experts-grid {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Liquid Glass Card */
+.expert-card {
+    position: relative;
+    height: 26em;
+    width: 18em;
+    background: rgba(40, 40, 40, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2.5em;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.expert-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Inner Card */
+.inner-card {
+    position: relative;
+    height: 24em;
+    width: 16em;
+    background: rgba(30, 30, 30, 0.2);
+    border-radius: 2em;
+    box-shadow: inset 0.3em 0.3em 0.4em rgba(0, 0, 0, 0.3),
+        inset -0.3em -0.3em 0.4em rgba(255, 255, 255, 0.05);
+}
+
+/* Card Info */
+.card-info {
+    color: #f4f4f4;
+    position: absolute;
+    left: 1.2em;
+    right: 1.2em;
+    top: 1.2em;
+    text-align: center;
+    font-family: 'Inter', helvetica, sans-serif;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.card-info h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0.8em;
+    color: var(--white);
+}
+
+.card-info p {
+    font-weight: 300;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    letter-spacing: 0.03em;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 1em;
+}
+
+.card-stat {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.card-stat span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.2em;
+}
+
+/* Button */
+.card-button {
+    position: absolute;
+    height: 4em;
+    width: 13em;
+    left: calc(50% - 6.5em);
+    bottom: 1.5em;
+    background: linear-gradient(0deg, #2e2e2e 0%, #303030 50%, #404040 100%);
+    border-radius: 3em;
+    box-shadow: 0.3em 0.3em 0.4em rgba(0, 0, 0, 0.5),
+        -0.3em -0.3em 0.4em rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-button h4 {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    left: 1.5em;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+.card-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0.4em 0.4em 0.6em rgba(0, 0, 0, 0.6),
+        -0.3em -0.3em 0.5em rgba(255, 255, 255, 0.15);
+}
+
+.card-button:hover h4 {
+    color: var(--accent);
+}
+
+.card-button:active {
+    box-shadow: inset 0.3em 0.3em 0.4em rgba(0, 0, 0, 0.5),
+        inset -0.3em -0.3em 0.4em rgba(255, 255, 255, 0.1);
+}
+
+/* Pulsing Dot */
+.dot-slot {
+    position: absolute;
+    height: 2em;
+    width: 2em;
+    background: #303030;
+    right: 0.8em;
+    top: calc(50% - 1em);
+    border-radius: 50%;
+    box-shadow: inset 0.2em 0.2em 0.4em rgba(0, 0, 0, 0.5),
+        inset -0.2em -0.2em 0.4em rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dot {
+    height: 0.8em;
+    width: 0.8em;
+    border-radius: 50%;
+    background-color: hsla(75deg, 0%, 50%, 0.1);
+    border: 1px solid hsla(75deg, 0%, 60%, 0.6);
+    box-sizing: border-box;
+    box-shadow: 1px 1px 2px -1px #f4f4f4 inset, 0 2px 1px #00000010,
+        0 4px 2px #00000010, 0 8px 4px #00000010;
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        background-color: hsla(75deg, 50%, 50%, 0);
+        box-shadow: 1px 1px 2px -1px #f4f4f4 inset, 0 2px 1px #00000010,
+            0 4px 2px #00000010, 0 8px 4px #00000010;
+    }
+    50% {
+        background-color: hsla(75deg, 100%, 55%, 1);
+        box-shadow: 0 0 1.5em hsla(75deg, 100%, 55%, 1),
+            0 0 3em hsla(75deg, 100%, 55%, 1);
+    }
+}
+
+.card-button:hover .dot {
+    animation: none;
+    background-color: hsla(75deg, 100%, 55%, 1);
+    box-shadow: 0 0 1.5em hsla(75deg, 100%, 55%, 1),
+        0 0 3em hsla(75deg, 100%, 55%, 1);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 1200px) {
+    .experts-grid {
+        gap: 2rem;
+    }
+
+    .expert-card {
+        height: 24em;
+        width: 16em;
+    }
+
+    .inner-card {
+        height: 22em;
+        width: 14em;
+    }
+}
+
+@media (max-width: 768px) {
+    .experts-section {
+        padding: 4rem 1.5rem;
+        --s: 150px;
+    }
+
+    .experts-grid {
+        gap: 2rem;
+    }
+
+    .expert-card {
+        height: 24em;
+        width: 17em;
+    }
+
+    .inner-card {
+        height: 22em;
+        width: 15em;
+    }
+}
+
+@media (max-width: 480px) {
+    .expert-card {
+        width: 100%;
+        max-width: 18em;
+    }
+
+    .inner-card {
+        width: calc(100% - 2em);
+    }
+}

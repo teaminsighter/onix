@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | ONIX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #111111;
+            --accent: #c9f31d;
+            --white: #f5f5f5;
+            --gray: #888888;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 243, 29, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 243, 29, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle 15s infinite;
+        }
+
+        @keyframes floatParticle {
+            0%, 100% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-100vh) scale(1); }
+        }
+
+        /* Scan Lines */
+        .scan-lines {
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            pointer-events: none;
+            animation: scanMove 8s linear infinite;
+        }
+
+        @keyframes scanMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Main Container */
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        /* 404 Glitch Text */
+        .glitch-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .glitch {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(6rem, 20vw, 12rem);
+            font-weight: 700;
+            color: var(--white);
+            position: relative;
+            text-shadow: 0 0 10px rgba(201, 243, 29, 0.5);
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            color: #ff00ff;
+            animation: glitch-1 2s infinite linear alternate-reverse;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+        }
+
+        .glitch::after {
+            color: #00ffff;
+            animation: glitch-2 3s infinite linear alternate-reverse;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch-1 {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(3px, -3px); }
+            40% { transform: translate(3px, 3px); }
+            60% { transform: translate(-3px, -3px); }
+            80% { transform: translate(-3px, 3px); }
+        }
+
+        /* Service Name */
+        .service-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Coming Soon Text */
+        .coming-soon {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .coming-soon::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: var(--accent);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Terminal Box */
+        .terminal {
+            background: rgba(17, 17, 17, 0.9);
+            border: 1px solid rgba(201, 243, 29, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            max-width: 500px;
+            margin: 0 auto 3rem;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .terminal-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca40; }
+
+        .terminal-line {
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: typeLine 0.5s forwards;
+        }
+
+        .terminal-line:nth-child(2) { animation-delay: 0.5s; }
+        .terminal-line:nth-child(3) { animation-delay: 1s; }
+        .terminal-line:nth-child(4) { animation-delay: 1.5s; }
+        .terminal-line:nth-child(5) { animation-delay: 2s; }
+
+        @keyframes typeLine {
+            to { opacity: 1; }
+        }
+
+        .terminal-line .accent { color: var(--accent); }
+        .terminal-line .white { color: var(--white); }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 1rem;
+            opacity: 0;
+            animation: typeLine 0.5s forwards 2.5s;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #a8cc18);
+            border-radius: 3px;
+            width: 0%;
+            animation: fillProgress 3s ease-out forwards 3s;
+        }
+
+        @keyframes fillProgress {
+            to { width: 73%; }
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+
+        .back-btn:hover {
+            color: var(--bg);
+        }
+
+        .back-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .back-btn .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover .arrow {
+            transform: translateX(-4px);
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: orbFloat 10s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            top: -200px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: #00ffff;
+            bottom: -150px;
+            left: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 30px) scale(1.1); }
+        }
+
+        /* Circuit Lines */
+        .circuit {
+            position: fixed;
+            stroke: rgba(201, 243, 29, 0.1);
+            stroke-width: 1;
+            fill: none;
+        }
+
+        .circuit-1 {
+            top: 10%;
+            left: 5%;
+            animation: circuitPulse 4s infinite;
+        }
+
+        .circuit-2 {
+            bottom: 10%;
+            right: 5%;
+            animation: circuitPulse 4s infinite 2s;
+        }
+
+        @keyframes circuitPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Logo */
+        .logo {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo -->
+    <a href="/" class="logo">ONIX<span>.</span></a>
+
+    <!-- Background Effects -->
+    <div class="grid-bg"></div>
+    <div class="scan-lines"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Circuit Decorations -->
+    <svg class="circuit circuit-1" width="200" height="150" viewBox="0 0 200 150">
+        <path d="M0 75 H50 L70 50 H120 L140 75 H200" />
+        <path d="M50 75 V100 H100" />
+        <circle cx="50" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
+        <circle cx="70" cy="50" r="4" fill="rgba(201, 243, 29, 0.3)" />
+        <circle cx="140" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
+    </svg>
+
+    <svg class="circuit circuit-2" width="200" height="150" viewBox="0 0 200 150">
+        <path d="M200 75 H150 L130 100 H80 L60 75 H0" />
+        <path d="M150 75 V50 H100" />
+        <circle cx="150" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
+        <circle cx="130" cy="100" r="4" fill="rgba(201, 243, 29, 0.3)" />
+        <circle cx="60" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
+    </svg>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="glitch-wrapper">
+            <h1 class="glitch" data-text="404">404</h1>
+        </div>
+
+        <p class="service-name" id="serviceName">Service Page</p>
+        <p class="coming-soon">Building something amazing</p>
+
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+            </div>
+            <div class="terminal-line"><span class="accent">$</span> <span class="white">initializing</span> service_page...</div>
+            <div class="terminal-line"><span class="accent">></span> Loading assets... <span class="accent">OK</span></div>
+            <div class="terminal-line"><span class="accent">></span> Configuring routes... <span class="accent">OK</span></div>
+            <div class="terminal-line"><span class="accent">></span> Building components... <span class="white">IN PROGRESS</span></div>
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span>Progress</span>
+                    <span class="accent">73%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <a href="/" class="back-btn">
+            <span class="arrow">&larr;</span>
+            Back to Home
+        </a>
+    </div>
+
+    <script>
+        // Generate particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Get service name from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const service = 'mortgage-loans';
+        const serviceName = service.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        document.getElementById('serviceName').textContent = serviceName;
+        document.title = serviceName + ' | Coming Soon | ONIX';
+    </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+/* ========== Responsive Styles ========== */
+
+/* ========== Ultrawide Screens (> 1920px) ========== */
+@media (min-width: 1921px) {
+    .hero-inner {
+        max-width: 1500px;
+        gap: 5rem;
+    }
+
+    .hero {
+        padding: 6rem 6rem 2rem;
+    }
+
+    .navbar {
+        padding: 1.5rem 6rem;
+    }
+
+    .ind-dashboard {
+        max-width: 560px;
+    }
+}
+
+/* ========== Large Desktop (1440px - 1920px) ========== */
+@media (min-width: 1440px) and (max-width: 1920px) {
+    .hero-inner {
+        max-width: 1400px;
+        gap: 4rem;
+    }
+}
+
+/* ========== Medium Desktop (1200px - 1440px) ========== */
+@media (min-width: 1200px) and (max-width: 1439px) {
+    .hero-inner {
+        max-width: 1200px;
+        gap: 3rem;
+    }
+
+    .hero {
+        padding: 6rem 3rem 2rem;
+    }
+
+    .ind-dashboard {
+        max-width: 480px;
+        height: 450px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.2rem, 4.5vw, 4rem);
+    }
+}
+
+/* ========== Small Desktop (1024px - 1200px) ========== */
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .hero-inner {
+        max-width: 1000px;
+        gap: 2.5rem;
+    }
+
+    .hero {
+        padding: 6rem 2.5rem 2rem;
+    }
+
+    .ind-dashboard {
+        max-width: 440px;
+        height: 420px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .bento-val {
+        font-size: 1.1rem;
+    }
+
+    .bento-lbl {
+        font-size: 0.6rem;
+    }
+}
+
+/* ========== Tablet (768px - 1024px) ========== */
+@media (max-width: 1024px) {
+    .how-typewriter-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .maze-circle {
+        width: 400px;
+        height: 400px;
+    }
+
+    .maze-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.2rem;
+    }
+
+    .maze-icon.outer { --ring-distance: -175px; }
+    .maze-icon.middle { --ring-distance: -110px; }
+
+    .maze-center-num {
+        font-size: 1.5rem;
+    }
+
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .trusted-stats-section { padding: 4rem 2rem 5rem; }
+    .pricing-grid { grid-template-columns: 1fr; max-width: 450px; margin-left: auto; margin-right: auto; }
+    .testimonial-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .how-grid { grid-template-columns: 1fr; }
+    .how-visual { display: none; }
+
+    /* Hero - Stack on tablet */
+    .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        max-width: 700px;
+    }
+
+    .hero-right {
+        justify-content: center; /* Center when stacked */
+    }
+
+    .ind-dashboard {
+        max-width: 520px;
+        height: 480px;
+    }
+
+    /* Book a Call - Tablet */
+    .book-call-container {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .book-call-calendar {
+        border-radius: 0 0 24px 24px;
+        min-height: 700px;
+    }
+
+    .book-call-info {
+        padding: 2rem;
+    }
+
+    .calendly-inline-widget {
+        min-height: 700px;
+    }
+}
+
+/* ========== Mobile (< 768px) ========== */
+@media (max-width: 768px) {
+    /* Navbar - Mobile */
+    .navbar {
+        padding: 1rem 1.5rem;
+    }
+    .navbar.scrolled {
+        top: 0.5rem;
+        padding: 0.5rem 0.8rem 0.5rem 1rem;
+        gap: 0.8rem;
+        max-width: calc(100% - 1rem);
+    }
+    .nav-logo { font-size: 1.4rem; }
+    .navbar.scrolled .nav-logo { font-size: 1.2rem; }
+    .nav-links { display: none; }
+    .nav-cta {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.75rem;
+    }
+    .navbar.scrolled .nav-cta {
+        padding: 0.5rem 1rem;
+        font-size: 0.7rem;
+    }
+
+    /* Hero - Mobile */
+    .hero {
+        padding: 5rem 1.5rem 2rem;
+    }
+
+    .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .hero-right {
+        margin-top: 1rem;
+    }
+
+    .ind-dashboard {
+        height: 440px;
+        max-width: 100%;
+    }
+
+    .ind-tabs {
+        min-width: 48px;
+    }
+
+    .ind-tab .tab-name {
+        font-size: 0.5rem;
+    }
+
+    /* Stats - Mobile */
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .trusted-stats-section {
+        padding: 3rem 1.5rem 4rem;
+    }
+
+    /* Sections - Mobile */
+    .features-header,
+    .how-section,
+    .testimonials,
+    .pricing,
+    .cta-section {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    /* Footer - Mobile */
+    .footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    /* Cursor - Hide on mobile */
+    .cursor, .cursor-dot {
+        display: none;
+    }
+    body {
+        cursor: auto;
+    }
+
+    /* Maze Circle - Hide on mobile */
+    .maze-circle {
+        display: none;
+    }
+
+    /* Book a Call - Mobile */
+    .book-call {
+        padding: 3rem 1.5rem;
+    }
+
+    .book-call-calendar {
+        min-height: 650px;
+    }
+
+    .calendly-inline-widget {
+        min-height: 650px;
+    }
+}
+
+/* ========== Small Mobile (< 480px) ========== */
+@media (max-width: 480px) {
+    .hero {
+        padding: 5rem 1rem 2rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(1.8rem, 8vw, 2.5rem);
+    }
+
+    .hero-sub {
+        font-size: 0.95rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* ========== Reduced Motion ========== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

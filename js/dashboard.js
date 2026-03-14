@@ -3,9 +3,7 @@
  * Handles industry data, bento grid, charts, and tab switching
  */
 
-// ============================================================
-//  INDUSTRY DATA — Bento + Charts
-// ============================================================
+// Industry data configuration
 const industries = {
     tradies: {
         title: 'Tradies',
@@ -64,42 +62,40 @@ const industries = {
         bentoClass: 'bento-insurance',
         shapes: ['s-sharp', 's-soft', 's-sharp', 's-round'],
         stats: [
-            { icon: '&#128737;', val: '1,247', num: 1247, lbl: 'Leads Captured', change: '+36%' },
-            { icon: '&#128176;', val: '$392k', num: 392, lbl: 'Premium Value', change: '+58%' },
-            { icon: '&#128200;', val: '18%', num: 18, lbl: 'Conversion', change: '+6%' },
-            { icon: '&#9733;', val: '$4.2k', num: 4.2, lbl: 'Avg LTV', change: '+$800' },
+            { icon: '&#128737;', val: '3,500', num: 3500, lbl: 'Leads/Month', change: '+42%' },
+            { icon: '&#128176;', val: '$958k', num: 958, lbl: 'Premiums/Month', change: '+58%' },
+            { icon: '&#128200;', val: '11%', num: 11, lbl: 'Conversion Rate', change: '+3%' },
+            { icon: '&#128176;', val: '$11.5M', num: 11.5, lbl: 'Annual Revenue', change: '+52%' },
         ],
         chart: 'area',
         chartTitle: 'Lead Volume',
-        chartBadge: '+36% this month',
-        points: [10,18,25,22,35,42,38,52,60,65,72,82],
+        chartBadge: '+42% this month',
+        points: [18,25,32,38,48,55,62,70,78,85,92,100],
         lineLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     },
-    agencies: {
-        title: 'Agencies',
-        bentoClass: 'bento-agencies',
+    realestate: {
+        title: 'Real Estate',
+        bentoClass: 'bento-realestate',
         shapes: ['s-soft', 's-round', 's-pill', 's-soft'],
         stats: [
-            { icon: '&#128640;', val: '48', num: 48, lbl: 'Clients Scaled', change: '+32%' },
-            { icon: '&#128176;', val: '$1.2M', num: 1.2, lbl: 'Client Revenue', change: '+67%' },
-            { icon: '&#128153;', val: '94%', num: 94, lbl: 'Retention', change: '+8%' },
-            { icon: '&#9733;', val: '72', num: 72, lbl: 'NPS Score', change: '+12' },
+            { icon: '&#127968;', val: '156', num: 156, lbl: 'Listings Sold', change: '+28%' },
+            { icon: '&#128176;', val: '$4.8M', num: 4.8, lbl: 'Total Sales', change: '+52%' },
+            { icon: '&#128100;', val: '892', num: 892, lbl: 'Buyer Leads', change: '+41%' },
+            { icon: '&#128197;', val: '64', num: 64, lbl: 'Showings Booked', change: '+35%' },
         ],
-        chart: 'donut',
-        chartTitle: 'Revenue Split',
-        chartBadge: 'All clients',
-        pie: [
-            { label: 'Paid Ads', val: 40, color: 'var(--accent)' },
-            { label: 'SEO', val: 25, color: 'rgba(100,200,255,0.8)' },
-            { label: 'CRM Setup', val: 35, color: 'rgba(255,180,100,0.7)' }
-        ]
+        chart: 'area',
+        chartTitle: 'Properties Sold',
+        chartBadge: '+28% growth',
+        points: [8,12,15,18,22,28,32,38,45,52,58,68],
+        lineLabels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     }
 };
 
 let currentInd = 'tradies';
 let autoRotateTimer = null;
+let switching = false;
 
-// ── Format number based on original format string ──
+// Format number based on original format string
 function formatNumber(num, format) {
     const prefix = format.match(/^[^0-9.]*/)[0] || '';
     const suffix = format.match(/[^0-9.]*$/)[0] || '';
@@ -116,7 +112,7 @@ function formatNumber(num, format) {
     return prefix + formatted + suffix;
 }
 
-// ── Count up animation for stat numbers ──
+// Count up animation for stat numbers
 function animateCountUp(element, duration = 1.5, delay = 0) {
     const target = parseFloat(element.dataset.target);
     const format = element.dataset.format;
@@ -137,7 +133,7 @@ function animateCountUp(element, duration = 1.5, delay = 0) {
     );
 }
 
-// ── Typewriter animation for labels ──
+// Typewriter animation for labels
 function typewriterLabel(element, text, delay = 0) {
     element.textContent = '';
     element.style.opacity = '1';
@@ -156,10 +152,12 @@ function typewriterLabel(element, text, delay = 0) {
     }, delay);
 }
 
-// ── Render Bento ──
+// Render Bento grid
 function renderBento(ind, skipValues = false) {
     const d = industries[ind];
     const grid = document.getElementById('bentoGrid');
+    if (!grid) return;
+
     grid.className = 'bento-grid ' + d.bentoClass;
     grid.innerHTML = d.stats.map((s, i) =>
         '<div class="bento-box ' + d.shapes[i % d.shapes.length] + '">' +
@@ -170,11 +168,13 @@ function renderBento(ind, skipValues = false) {
     ).join('');
 }
 
-// ── Render Chart ──
+// Render Chart
 function renderChart(ind) {
     const d = industries[ind];
     const area = document.getElementById('chartArea');
     const labels = document.getElementById('chartLabels');
+    if (!area || !labels) return;
+
     document.getElementById('chartTitle').textContent = d.chartTitle;
     document.getElementById('chartBadge').textContent = d.chartBadge;
 
@@ -233,8 +233,8 @@ function renderChart(ind) {
     }
 }
 
-// ── Animate data text IN — counting + typewriter ──
-function animateDataIn(isInitial = true) {
+// Animate data text IN — counting + typewriter
+export function animateDataIn(isInitial = true) {
     const d = industries[currentInd];
 
     // Values: counting animation
@@ -259,8 +259,8 @@ function animateDataIn(isInitial = true) {
     }
 }
 
-// ── Animate chart data IN — slow and cinematic ──
-function animateChartIn() {
+// Animate chart data IN — slow and cinematic
+export function animateChartIn() {
     const d = industries[currentInd];
 
     // Chart title slides in from left
@@ -275,7 +275,6 @@ function animateChartIn() {
     );
 
     if (d.chart === 'bar') {
-        // Bars rise slowly one by one
         document.querySelectorAll('#cBars .chart-bar').forEach((bar, i) => {
             gsap.fromTo(bar,
                 { height: '0%' },
@@ -283,30 +282,24 @@ function animateChartIn() {
             );
         });
     } else if (d.chart === 'line' || d.chart === 'area') {
-        // Line draws very slowly
         const line = document.querySelector('#chartArea .svg-line');
         if (line) {
             const len = line.getTotalLength ? line.getTotalLength() : 600;
             gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
             gsap.to(line, { strokeDashoffset: 0, duration: 2.8, delay: 0.4, ease: "power1.inOut" });
         }
-        // Area fills in slowly behind the line
         gsap.set('#chartArea .svg-area', { opacity: 0 });
         gsap.to('#chartArea .svg-area', { opacity: 0.8, duration: 1.8, delay: 1.8, ease: "power2.out" });
-        // Dots pop in one by one after line passes them
         gsap.set('#chartArea .svg-dot', { scale: 0, transformOrigin: 'center' });
         gsap.to('#chartArea .svg-dot', { scale: 1, duration: 0.6, stagger: 0.15, delay: 1.5, ease: "elastic.out(1, 0.5)" });
     } else if (d.chart === 'pie' || d.chart === 'donut') {
-        // Animate each segment by growing its visible dash from 0
         const segs = document.querySelectorAll('#chartArea .pie-seg');
         segs.forEach((seg, i) => {
             const dashArray = seg.getAttribute('stroke-dasharray');
             const dash = parseFloat(dashArray.split(' ')[0]);
             const gap = parseFloat(dashArray.split(' ')[1]);
             const circ = dash + gap;
-            // Start invisible (0-length dash)
             seg.setAttribute('stroke-dasharray', '0 ' + circ);
-            // Animate to full segment
             gsap.to(seg, {
                 attr: { 'stroke-dasharray': dash + ' ' + gap },
                 duration: 2.2,
@@ -314,7 +307,6 @@ function animateChartIn() {
                 ease: "power2.inOut"
             });
         });
-        // Legend items appear one by one
         gsap.fromTo('#chartArea .pie-legend-item',
             { opacity: 0, x: 15 },
             { opacity: 1, x: 0, duration: 1, stagger: 0.3, delay: 1.2, ease: "power2.out" }
@@ -328,15 +320,13 @@ function animateChartIn() {
     );
 }
 
-// ── Switch Industry — fast for clicks, smooth for auto-rotate ──
-let switching = false;
+// Switch Industry — fast for clicks, smooth for auto-rotate
 function switchIndustry(ind, fromAutoRotate) {
     if (ind === currentInd && !fromAutoRotate) return;
     if (switching) return;
     switching = true;
     currentInd = ind;
 
-    // Speed: fast for click, slow for auto-rotate
     const speed = fromAutoRotate ? 1 : 0.4;
 
     // Update tab active state
@@ -358,13 +348,12 @@ function switchIndustry(ind, fromAutoRotate) {
         gsap.fromTo(title, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.25 * speed, ease: "power2.out" });
     }});
 
-    // Bento: update values with counting animation (no fade out)
+    // Bento: update values with counting animation
     const newData = industries[ind];
     const bentoVals = document.querySelectorAll('#bentoGrid .bento-val');
     const bentoLbls = document.querySelectorAll('#bentoGrid .bento-lbl');
     const bentoChanges = document.querySelectorAll('#bentoGrid .bento-change');
 
-    // Update data attributes and animate count to new values
     bentoVals.forEach((el, i) => {
         const stat = newData.stats[i];
         el.dataset.target = stat.num;
@@ -372,7 +361,6 @@ function switchIndustry(ind, fromAutoRotate) {
         animateCountUp(el, 1, i * 0.1);
     });
 
-    // Update labels with typewriter animation
     bentoLbls.forEach((el, i) => {
         gsap.to(el, {
             opacity: 0,
@@ -383,7 +371,6 @@ function switchIndustry(ind, fromAutoRotate) {
         });
     });
 
-    // Update change badges with subtle fade
     bentoChanges.forEach((el, i) => {
         gsap.to(el, {
             opacity: 0,
@@ -397,13 +384,12 @@ function switchIndustry(ind, fromAutoRotate) {
         });
     });
 
-    // Chart: fade everything out together, then swap and animate in
+    // Chart: fade out, swap, animate in
     const chartExitTL = gsap.timeline({
         onComplete: () => {
             renderChart(ind);
             gsap.set('#chartArea, #chartTitle, #chartBadge, #chartLabels', { opacity: 1, y: 0, x: 0, scale: 1 });
             animateChartIn();
-            // Faster unlock for clicks, slower for auto-rotate
             setTimeout(() => { switching = false; }, fromAutoRotate ? 1500 : 400);
         }
     });
@@ -412,11 +398,10 @@ function switchIndustry(ind, fromAutoRotate) {
         .to('#chartLabels span', { opacity: 0, duration: 0.15 * speed, stagger: 0.01, ease: "power2.in" }, 0)
         .to('#chartArea', { opacity: 0, y: 5, duration: 0.25 * speed, ease: "power2.in" }, 0);
 
-    // Safety unlock
     setTimeout(() => { switching = false; }, 5000);
 }
 
-// ── Auto-rotate functions ──
+// Auto-rotate functions
 function startAutoRotate() {
     const keys = Object.keys(industries);
     autoRotateTimer = setInterval(() => {
@@ -429,15 +414,12 @@ function stopAutoRotate() {
     clearInterval(autoRotateTimer);
 }
 
-// ============================================================
-//  INITIALIZE DASHBOARD
-// ============================================================
-function initDashboard() {
-    // Render with 0 values, will count up on animation
+// Initialize Dashboard
+export function initDashboard() {
     renderBento('tradies', true);
     renderChart('tradies');
 
-    // Position the slider on first tab
+    // Position slider on first tab
     setTimeout(() => {
         const firstTab = document.querySelector('.ind-tab.active');
         const slider = document.getElementById('tabSlider');
@@ -468,11 +450,4 @@ function initDashboard() {
 
     // Start auto-rotate after initial animations
     setTimeout(startAutoRotate, 7000);
-}
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDashboard);
-} else {
-    initDashboard();
 }

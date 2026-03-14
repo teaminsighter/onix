@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+*.log
+.env
+.env.local
+dist/
+*.png
+*.jpg
+*.jpeg
+!logos/*.png
+!logos/*.jpeg
+!logos/*.jpg
+!images/team/*.jpg
+!images/team/*.png

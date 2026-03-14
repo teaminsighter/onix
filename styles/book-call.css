@@ -1,0 +1,121 @@
+/* ========== Book a Call Section ========== */
+
+.book-call {
+    padding: 4rem 4rem 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.book-call .features-header {
+    margin-bottom: 2rem;
+}
+
+/* Book Subtitle with Typewriter Animation */
+.book-subtitle {
+    color: var(--accent);
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-top: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid var(--accent);
+    width: 0;
+    display: inline-block;
+}
+
+.book-subtitle.animate {
+    animation: typewriter 2s steps(60, end) forwards, blink 0.7s step-end infinite;
+}
+
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 620px; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
+}
+
+.book-call-container {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 0;
+    background: var(--bg2);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 24px;
+    overflow: hidden;
+    min-height: 750px;
+}
+
+.book-call-info {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--bg2);
+}
+
+.book-call-info h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.benefits-list {
+    list-style: none;
+    margin-bottom: 2rem;
+}
+
+.benefits-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.benefit-icon {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.book-call-note {
+    background: rgba(201, 243, 29, 0.05);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem;
+    border-radius: 0 12px 12px 0;
+}
+
+.book-call-note p {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.book-call-note p + p {
+    margin-top: 0.5rem;
+}
+
+.book-call-note p strong {
+    color: var(--white);
+}
+
+.book-call-calendar {
+    background: #111;
+    min-height: 750px;
+    border-radius: 0 24px 24px 0;
+    overflow: hidden;
+}
+
+/* Calendly container styling */
+.calendly-inline-widget {
+    border-radius: 0 24px 24px 0;
+    width: 100%;
+    height: 100% !important;
+    min-height: 750px;
+}

@@ -1,0 +1,18 @@
+/* ========== ONIX - Main Stylesheet ========== */
+/* This file imports all section styles */
+
+@import './base.css';
+@import './cursor.css';
+@import './navbar.css';
+@import './hero.css';
+@import './marquee.css';
+@import './stats.css';
+@import './experts.css';
+@import './features.css';
+@import './how-it-works.css';
+@import './testimonials.css';
+@import './team.css';
+@import './book-call.css';
+@import './cta.css';
+@import './footer.css';
+@import './responsive.css';
