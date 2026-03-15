@@ -410,17 +410,20 @@ function initScrollAnimations() {
     }
 
     // Stats — Counter Animation + Staggered Reveal
-    gsap.to('.stat-card', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-            trigger: '.stats',
-            start: 'top 80%'
-        }
-    });
+    const statCards = document.querySelectorAll('.stat-card');
+    if (statCards.length) {
+        gsap.to(statCards, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.stats',
+                start: 'top 80%'
+            }
+        });
+    }
 
     // Animated counters for stats section
     document.querySelectorAll('.stat-number').forEach(el => {
@@ -482,17 +485,20 @@ function initScrollAnimations() {
         });
 
         // Animate expert cards with stagger
-        gsap.to('.expert-card', {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            stagger: 0.1,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: '.experts-grid',
-                start: 'top 80%'
-            }
-        });
+        const expertCards = document.querySelectorAll('.expert-card');
+        if (expertCards.length) {
+            gsap.to(expertCards, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: '.experts-grid',
+                    start: 'top 80%'
+                }
+            });
+        }
     }
 
     // Section Labels — Fade In
@@ -599,95 +605,114 @@ function initScrollAnimations() {
     setTimeout(() => ScrollTrigger.refresh(), 100);
 
     // Feature Cards — Spotlight follow mouse
-    document.querySelectorAll('.feature-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            card.style.setProperty('--mouse-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
-            card.style.setProperty('--mouse-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    const featureCards = document.querySelectorAll('.feature-card');
+    if (featureCards.length) {
+        featureCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+                card.style.setProperty('--mouse-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+            });
         });
-    });
+    }
 
     // How It Works — Typewriter Animation
     initTypewriterSteps();
 
     // Testimonials — 3D Card Flip Reveal
-    gsap.to('.testimonial-card', {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-            trigger: '.testimonial-grid',
-            start: 'top 80%'
-        }
-    });
+    if (document.querySelector('.testimonial-grid')) {
+        gsap.to('.testimonial-card', {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.testimonial-grid',
+                start: 'top 80%'
+            }
+        });
+    }
 
     // Team Section — Founders Animation
-    gsap.to('.founder-card', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.3,
-        ease: "power3.out",
-        scrollTrigger: {
-            trigger: '.team-founders',
-            start: 'top 80%'
-        }
-    });
+    const teamFounders = document.querySelectorAll('.team-founders .team-member');
+    if (teamFounders.length) {
+        gsap.from(teamFounders, {
+            opacity: 0,
+            y: 40,
+            duration: 1,
+            stagger: 0.3,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.team-founders',
+                start: 'top 80%'
+            }
+        });
 
-    // Team Section — Image Scale & Reveal
-    gsap.from('.founder-card .team-image-placeholder', {
-        scale: 0.5,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-            trigger: '.team-founders',
-            start: 'top 75%'
+        // Team Section — Image Scale & Reveal
+        const founderImages = document.querySelectorAll('.team-founders .member-image');
+        if (founderImages.length) {
+            gsap.from(founderImages, {
+                scale: 0.8,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.2,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: '.team-founders',
+                    start: 'top 75%'
+                }
+            });
         }
-    });
+    }
 
     // Team Grid Cards — Staggered Reveal
-    gsap.to('.team-grid .team-card', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-            trigger: '.team-grid',
-            start: 'top 80%'
-        }
-    });
+    const teamGridMembers = document.querySelectorAll('.team-grid .team-member');
+    if (teamGridMembers.length) {
+        gsap.from(teamGridMembers, {
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.team-grid',
+                start: 'top 80%'
+            }
+        });
 
-    // Team Grid — Image Pop Animation
-    gsap.from('.team-grid .team-image-placeholder', {
-        scale: 0,
-        rotation: -10,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "back.out(2)",
-        scrollTrigger: {
-            trigger: '.team-grid',
-            start: 'top 75%'
+        // Team Grid — Image Pop Animation
+        const gridImages = document.querySelectorAll('.team-grid .member-image');
+        if (gridImages.length) {
+            gsap.from(gridImages, {
+                scale: 0,
+                rotation: -10,
+                duration: 0.6,
+                stagger: 0.1,
+                ease: "back.out(2)",
+                scrollTrigger: {
+                    trigger: '.team-grid',
+                    start: 'top 75%'
+                }
+            });
         }
-    });
+    }
 
     // Pricing Cards — Staggered Scale-Up
-    gsap.to('.pricing-card', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "back.out(1.5)",
-        scrollTrigger: {
-            trigger: '.pricing-grid',
-            start: 'top 80%'
-        }
-    });
+    if (document.querySelector('.pricing-grid')) {
+        gsap.to('.pricing-card', {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "back.out(1.5)",
+            scrollTrigger: {
+                trigger: '.pricing-grid',
+                start: 'top 80%'
+            }
+        });
+    }
 
     // Contact — Background Text Parallax
     gsap.to('.contact-section .cta-bg-text', {
@@ -834,29 +859,20 @@ function initScrollAnimations() {
         });
 
         // Social icons bounce in
-        gsap.from('.social-icon', {
-            scale: 0,
-            opacity: 0,
-            duration: 0.5,
-            stagger: 0.08,
-            ease: "back.out(2)",
-            scrollTrigger: {
-                trigger: '.social-icons',
-                start: 'top 85%'
-            }
-        });
-
-        // Footer bar fade in
-        gsap.to('.footer-bar', {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: '.footer-bar',
-                start: 'top 95%'
-            }
-        });
+        const socialIcons = document.querySelectorAll('.social-links .footer-socials a');
+        if (socialIcons.length) {
+            gsap.from(socialIcons, {
+                scale: 0,
+                opacity: 0,
+                duration: 0.5,
+                stagger: 0.08,
+                ease: "back.out(2)",
+                scrollTrigger: {
+                    trigger: '.social-links',
+                    start: 'top 85%'
+                }
+            });
+        }
     }
 }
 
