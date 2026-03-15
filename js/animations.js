@@ -845,34 +845,7 @@ function initScrollAnimations() {
             }
         });
 
-        // Social links reveal
-        gsap.to('.social-links', {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            delay: 0.9,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: '.contact-info-card',
-                start: 'top 75%'
-            }
-        });
-
-        // Social icons bounce in
-        const socialIcons = document.querySelectorAll('.social-links .footer-socials a');
-        if (socialIcons.length) {
-            gsap.from(socialIcons, {
-                scale: 0,
-                opacity: 0,
-                duration: 0.5,
-                stagger: 0.08,
-                ease: "back.out(2)",
-                scrollTrigger: {
-                    trigger: '.social-links',
-                    start: 'top 85%'
-                }
-            });
-        }
+        // Social icons are now visible by default (no animation needed)
     }
 }
 
