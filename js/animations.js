@@ -689,83 +689,16 @@ function initScrollAnimations() {
         }
     });
 
-    // CTA — Background Text Parallax
-    gsap.to('.cta-bg-text', {
+    // Contact — Background Text Parallax
+    gsap.to('.contact-section .cta-bg-text', {
         xPercent: -20,
         ease: "none",
         scrollTrigger: {
-            trigger: '.cta-section',
+            trigger: '.contact-section',
             start: 'top bottom',
             end: 'bottom top',
             scrub: 1
         }
-    });
-
-    // CTA Section Title — Character SplitText Animation
-    const ctaTitle = document.querySelector('.cta-section h2');
-    if (ctaTitle) {
-        // Split into characters while preserving <br> and <span class="highlight">
-        const splitCtaChars = (html) => {
-            let result = '';
-            let i = 0;
-            while (i < html.length) {
-                if (html.substring(i, i + 4) === '<br>') {
-                    result += '<br>';
-                    i += 4;
-                } else if (html.substring(i, i + 24) === '<span class="highlight">') {
-                    const closeIndex = html.indexOf('</span>', i);
-                    const innerText = html.substring(i + 24, closeIndex);
-                    let innerChars = '';
-                    for (let j = 0; j < innerText.length; j++) {
-                        const c = innerText[j];
-                        if (c === ' ') innerChars += ' ';
-                        else innerChars += `<span class="char">${c}</span>`;
-                    }
-                    result += `<span class="highlight">${innerChars}</span>`;
-                    i = closeIndex + 7;
-                } else if (html[i] === '<') {
-                    const closeTag = html.indexOf('>', i);
-                    result += html.substring(i, closeTag + 1);
-                    i = closeTag + 1;
-                } else if (html[i] === ' ') {
-                    result += ' ';
-                    i++;
-                } else {
-                    result += `<span class="char">${html[i]}</span>`;
-                    i++;
-                }
-            }
-            return result;
-        };
-
-        ctaTitle.innerHTML = splitCtaChars(ctaTitle.innerHTML);
-        ctaTitle.classList.add('ready'); // Show after processing
-        gsap.set(ctaTitle.querySelectorAll('.char'), { opacity: 0, y: 40, rotateX: -40 });
-
-        ScrollTrigger.create({
-            trigger: '.cta-section',
-            start: 'top 75%',
-            onEnter: () => {
-                gsap.to(ctaTitle.querySelectorAll('.char'), {
-                    opacity: 1,
-                    y: 0,
-                    rotateX: 0,
-                    duration: 0.5,
-                    stagger: 0.02,
-                    ease: "back.out(1.7)"
-                });
-            },
-            once: true
-        });
-    }
-
-    gsap.from('.cta-btn', {
-        scale: 0.8,
-        opacity: 0,
-        duration: 1,
-        delay: 0.3,
-        ease: "elastic.out(1, 0.5)",
-        scrollTrigger: { trigger: '.cta-section', start: 'top 75%' }
     });
 
     // Floating Particles
@@ -843,12 +776,43 @@ function initScrollAnimations() {
             }
         });
 
-        // Info blocks staggered reveal
-        gsap.to('.contact-info-card .info-block', {
+        // Response badge pop in
+        gsap.fromTo('.response-badge',
+            { opacity: 0, scale: 0.8, y: 10 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.6,
+                delay: 0.3,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: '.contact-info-card',
+                    start: 'top 75%'
+                }
+            }
+        );
+
+        // Info items staggered reveal
+        gsap.to('.contact-info-card .info-item', {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.12,
+            delay: 0.4,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: '.contact-info-card',
+                start: 'top 75%'
+            }
+        });
+
+        // Location visual reveal
+        gsap.to('.location-visual', {
             opacity: 1,
             y: 0,
             duration: 0.8,
-            stagger: 0.15,
+            delay: 0.7,
             ease: "power3.out",
             scrollTrigger: {
                 trigger: '.contact-info-card',
@@ -861,7 +825,7 @@ function initScrollAnimations() {
             opacity: 1,
             y: 0,
             duration: 0.8,
-            delay: 0.3,
+            delay: 0.9,
             ease: "power3.out",
             scrollTrigger: {
                 trigger: '.contact-info-card',

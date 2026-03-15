@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # ONIX Website
 
 Lead generation automation platform marketing website. Dark theme with lime green (#c9f31d) accent.
