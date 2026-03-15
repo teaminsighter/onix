@@ -6,6 +6,7 @@
     max-width: 100%;
     margin: 0 auto;
     overflow: hidden;
+    background: var(--bg);
 }
 
 /* Raining Logos Background */
@@ -15,24 +16,14 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: rgba(10, 10, 10, 0.95);
+    background-color: var(--bg);
     --icon-size: 90px;
     z-index: 0;
 }
 
+/* Grain layer disabled - keeping pure black background */
 #grain-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 700' width='700' height='700'%3E%3Cdefs%3E%3Cfilter id='nnnoise-filter' x='-20%25' y='-20%25' width='140%25' height='140%25' filterUnits='objectBoundingBox' primitiveUnits='userSpaceOnUse' color-interpolation-filters='linearRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.159' numOctaves='4' seed='15' stitchTiles='stitch' x='0%25' y='0%25' width='100%25' height='100%25' result='turbulence'%3E%3C/feTurbulence%3E%3CfeSpecularLighting surfaceScale='10' specularConstant='1.2' specularExponent='20' lighting-color='%2390f754' x='0%25' y='0%25' width='100%25' height='100%25' in='turbulence' result='specularLighting'%3E%3CfeDistantLight azimuth='3' elevation='143'%3E%3C/feDistantLight%3E%3C/feSpecularLighting%3E%3C/filter%3E%3C/defs%3E%3Crect width='700' height='700' fill='transparent'%3E%3C/rect%3E%3Crect width='700' height='700' fill='%2390f754' filter='url(%23nnnoise-filter)'%3E%3C/rect%3E%3C/svg%3E");
-    background-size: 300px 300px;
-    background-repeat: repeat;
-    will-change: transform;
-    width: 200%;
-    height: 200%;
-    mix-blend-mode: soft-light;
-    opacity: 0.15;
+    display: none;
 }
 
 /* Icon Animation Wrappers */
