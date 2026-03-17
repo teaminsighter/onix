@@ -1,67 +1,18 @@
-/* ========== Experts In Section - Neumorphic Design ========== */
+/* ========== Experts In Section ========== */
+/*
+ * NOTE: The original geometric hexagon background has been extracted to:
+ * /backgrounds/geometric-hexagon.css
+ * Add classes "bg-hexagon bg-hexagon-fade-top bg-hexagon-fade-bottom" to re-enable
+ */
 
 .experts-section {
     position: relative;
     padding: 6rem 4rem;
-    --s: 200px;
-    /* Option 4: Reduced pattern opacity - darker colors */
-    --c1: #0a0a0a;
-    --c2: #1a1a1a;
-    --c3: #151515;
-    background: repeating-conic-gradient(
-                from 30deg,
-                #0000 0 120deg,
-                var(--c3) 0 50%
-            )
-            calc(var(--s) / 2) calc(var(--s) * 0.577 / 2),
-        repeating-conic-gradient(
-            from 30deg,
-            var(--c1) 0 60deg,
-            var(--c2) 0 120deg,
-            var(--c3) 0 50%
-        );
-    background-size: var(--s) calc(var(--s) * 0.577);
-    /* Vignette effect */
-    box-shadow: inset 0 0 150px 50px rgba(0, 0, 0, 0.8);
-}
-
-/* Gradient fade at top edge - smooth blend with previous section */
-.experts-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 200px;
-    background: linear-gradient(to bottom,
-        var(--bg) 0%,
-        var(--bg) 20%,
-        rgba(10, 10, 10, 0.9) 40%,
-        rgba(10, 10, 10, 0.6) 60%,
-        rgba(10, 10, 10, 0.3) 80%,
-        transparent 100%
-    );
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Option 1: Gradient fade at bottom edge */
-.experts-section::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 120px;
-    background: linear-gradient(to top, #0a0a0a 0%, transparent 100%);
-    pointer-events: none;
-    z-index: 1;
+    background: var(--bg);
 }
 
 /* Header */
 .experts-header {
-    position: relative;
-    z-index: 2;
     text-align: center;
     margin-bottom: 4rem;
 }
@@ -97,8 +48,6 @@
 
 /* Grid */
 .experts-grid {
-    position: relative;
-    z-index: 2;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -312,7 +261,6 @@
 @media (max-width: 768px) {
     .experts-section {
         padding: 4rem 1.5rem;
-        --s: 150px;
     }
 
     .experts-grid {

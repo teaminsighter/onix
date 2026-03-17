@@ -6,40 +6,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Lead generation automation platform marketing website. Dark theme with lime green (#c9f31d) accent.
 
-## Project Structure
-
-```
-onix/
-├── index.html              # Main website
-├── package.json            # Vite + dependencies
-├── vite.config.js          # Vite configuration
-├── styles/
-│   ├── main.css            # Imports all styles
-│   ├── base.css            # Variables, reset, shared
-│   ├── cursor.css          # Custom cursor
-│   ├── navbar.css          # Navigation
-│   ├── hero.css            # Hero + dashboard + charts
-│   ├── marquee.css         # Scrolling marquee
-│   ├── stats.css           # Statistics section
-│   ├── features.css        # Feature cards
-│   ├── how-it-works.css    # Typewriter + maze circle
-│   ├── testimonials.css    # Testimonial cards
-│   ├── book-call.css       # Calendly booking
-│   ├── cta.css             # CTA + particles
-│   ├── footer.css          # Footer
-│   └── responsive.css      # Media queries
-├── js/
-│   ├── main.js             # Entry point, imports all modules
-│   ├── cursor.js           # Custom cursor effects
-│   ├── utils.js            # Magnetic buttons, navbar
-│   ├── dashboard.js        # Industry data, charts, tabs
-│   └── animations.js       # GSAP ScrollTrigger animations
-├── public/
-│   └── images/             # Feature images (5 files)
-├── animation-demo.html     # Animation development demo
-└── steps-demo.html         # Typewriter steps demo
-```
-
 ## Development
 
 ```bash
@@ -49,75 +15,109 @@ npm run build        # Build for production
 npm run preview      # Preview production build
 ```
 
-## Technologies
+## Project Structure
 
-- **Vite** - Build tool with hot reload
-- **GSAP 3.12.5** + ScrollTrigger (CDN)
-- **Calendly** embed widget
-- ES Modules for JavaScript
-- CSS with @import for organization
+```
+onix/
+├── index.html              # Main website
+├── vite.config.js          # Multi-page Vite config
+├── services/               # Industry-specific landing pages
+│   ├── life-insurance.html
+│   ├── income-protection.html
+│   ├── health-insurance.html
+│   ├── solar.html
+│   ├── real-estate.html
+│   ├── mortgage-loans.html
+│   ├── tradies.html
+│   ├── builders.html
+│   └── coming-soon.html
+├── styles/
+│   ├── main.css            # Imports all section styles
+│   ├── base.css            # CSS variables, reset, shared styles
+│   ├── responsive.css      # All media queries
+│   └── [section].css       # One CSS file per section (navbar, hero, etc.)
+├── js/
+│   ├── main.js             # Entry point, imports all modules
+│   ├── animations.js       # GSAP hero intro + scroll animations
+│   ├── dashboard.js        # Industry dashboard, charts, tab switching
+│   ├── utils.js            # Magnetic buttons, smart navbar
+│   ├── cursor.js           # Custom cursor effects
+│   └── logo-rain.js        # Raining logos animation in stats section
+├── logos/                  # Partner/client logos (10 files)
+└── images/                 # Feature images, team photos
+```
+
+## Architecture
+
+**JS Module System**: ES modules with Vite bundling. Entry point `js/main.js` imports and initializes all modules on DOMContentLoaded.
+
+**CSS Organization**: `styles/main.css` uses `@import` to combine section-specific stylesheets. Variables defined in `base.css`.
+
+**Animation System**: GSAP 3.12.5 + ScrollTrigger loaded via CDN (not bundled). All animations in `animations.js` with two main functions:
+- `initAnimations()` - Hero intro sequence (skipped if user scrolled past 100px)
+- `initScrollAnimations()` - All scroll-triggered effects
+
+**Dashboard**: `js/dashboard.js` exports `industries` object containing stats, charts, and styling for each industry. Auto-rotates tabs every 8 seconds. Exports `animateDataIn()` and `animateChartIn()` for animation triggers.
 
 ## Key Sections
 
 | Section | ID | Description |
 |---------|-----|-------------|
 | Hero | - | Title animation, industry dashboard with auto-rotating tabs |
-| Stats | `#stats` | Animated counters (45% uplift, 30% reply, 10hrs saved, $100k+) |
-| Features | `#features` | 6 feature cards with images, horizontal scroll on desktop |
-| How it Works | `#how` | Typewriter animation + rotating maze circle SVG |
-| Testimonials | `#testimonials` | 3 flip-reveal cards |
+| Stats | `#stats` | Animated counters + raining logos background |
+| Services | `#services` | 8 expert cards linking to service pages |
+| Features | `#features` | 6 feature cards, horizontal scroll (pinned) |
+| How it Works | `#how` | Typewriter steps + rotating maze circle SVG |
+| Testimonials | `#testimonials` | 2 rows of sliding review cards |
+| Team | `#team` | Founder bios + team grid |
 | Book a Call | `#book` | Calendly embed + benefits list |
-| CTA | `#cta` | Final call-to-action |
+| Contact | `#contact` | Form + info card with NZ map |
 
 ## Dashboard Industries
 
-Defined in `js/dashboard.js`. Each industry has:
-- Bento grid stats (4 cards)
-- Chart type (bar, line, pie, area, donut)
-- Auto-rotates every 8 seconds
+Defined in `js/dashboard.js`. Each industry object has:
+- `stats[]` - 4 bento card objects with `val`, `num`, `lbl`, `change`
+- `chart` - Type: `bar`, `line`, `area`, `pie`, or `donut`
+- Chart data arrays (`bars`, `points`, or `pie`)
 
-Industries: **Tradies, Builders, Solar, Insurance, Agencies**
+Industries: **Tradies, Builders, Solar, Insurance, Real Estate**
 
 ## Animation System
 
-### Hero Intro (`js/animations.js`)
-1. Title appears big & centered, animates characters
-2. Shrinks and moves to final position
-3. Navbar, badge, subtitle, buttons reveal
-4. Dashboard slides in with data animations
+### Hero Intro (`initAnimations`)
+1. Title scales up centered, characters animate in with `back.out` easing
+2. Shrinks/moves to final position over 1.6s
+3. Sequential reveal: navbar → badge → subtitle words → buttons → dashboard
+4. Dashboard tabs slide in, then `animateDataIn()` and `animateChartIn()` fire
 
-### Scroll Animations
-- Section labels/titles reveal on scroll
-- Stats counter animation (ScrollTrigger)
-- Feature cards horizontal scroll (pinned)
-- Testimonials flip reveal (rotateX from -20deg)
-- CTA section parallax
-- Floating particles
+If `window.scrollY > 100` on load, intro is skipped and elements set to final state.
 
-### Typewriter Steps (`#how` section)
-- Steps reveal sequentially on scroll
-- Maze circle rings rotate opposite directions on scroll
-- Progress bars fill per step
+### Scroll Animations (`initScrollAnimations`)
+- Section titles split into chars with 3D rotation reveal
+- Stats counters animate values on scroll
+- Features horizontal scroll (pinned section)
+- Maze circle rings rotate opposite directions based on scroll delta
+- Floating particles with random GSAP tweens
 
-## Editing Tips
-
-### Add new industry
-Edit `js/dashboard.js` - add to `industries` object with:
-- `title`, `bentoClass`, `shapes`
-- `stats` array (4 objects with val, num, lbl, change)
-- `chart`, `chartTitle`, `chartBadge`, chart data
-
-### Modify animations
-Edit `js/animations.js`:
-- `initAnimations()` - hero intro sequence
-- `initScrollAnimations()` - scroll-triggered effects
-- `initTypewriterSteps()` - How it Works section
-
-### Update styling
-Edit files in `styles/` folder:
-- Each section has its own CSS file
-- `base.css` contains shared variables and styles
-- `responsive.css` handles all media queries
+### Adding a New Industry
+Add to `industries` object in `js/dashboard.js`:
+```js
+newIndustry: {
+    title: 'Industry Name',
+    bentoClass: 'bento-newindustry',
+    shapes: ['s-round', 's-pill', 's-round', 's-cut'],
+    stats: [
+        { icon: '&#128295;', val: '342', num: 342, lbl: 'Label', change: '+38%' },
+        // ... 3 more stats
+    ],
+    chart: 'bar', // or 'line', 'area', 'pie', 'donut'
+    chartTitle: 'Chart Title',
+    chartBadge: '+XX% growth',
+    bars: [28, 42, 35, ...], // or points/pie array
+    barLabels: ['Jan', 'Feb', ...]
+}
+```
+Then add a tab in `index.html` inside `#indTabs`.
 
 ## CSS Variables
 
@@ -131,8 +131,8 @@ Edit files in `styles/` folder:
 --dark-gray: #1a1a1a;
 ```
 
-## External Dependencies
+## External Dependencies (CDN)
 
 - Google Fonts: Inter, Space Grotesk
-- GSAP: `cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`
-- Calendly: `assets.calendly.com/assets/external/widget.js`
+- GSAP 3.12.5 + ScrollTrigger
+- Calendly widget

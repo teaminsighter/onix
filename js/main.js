@@ -11,7 +11,7 @@ import { initCursor } from './cursor.js';
 import { initMagnetic, initNavbar } from './utils.js';
 import { initDashboard } from './dashboard.js';
 import { initAnimations } from './animations.js';
-import { initLogoRain } from './logo-rain.js';
+// Logo rain moved to: components/logo-rain/ (import if needed)
 
 // Initialize when DOM is ready
 function init() {
@@ -20,7 +20,6 @@ function init() {
     initNavbar();
     initDashboard();
     initAnimations();
-    initLogoRain();
 }
 
 if (document.readyState === 'loading') {

@@ -1,0 +1,101 @@
+/* ========== Geometric Hexagon Background ========== */
+/*
+ * Reusable geometric pattern background
+ * Usage: Add class "bg-hexagon" to any section
+ *
+ * CSS Variables (customize per use):
+ *   --hex-size: 200px (pattern size)
+ *   --hex-c1: #0a0a0a (darkest color)
+ *   --hex-c2: #1a1a1a (medium color)
+ *   --hex-c3: #151515 (lightest color)
+ *   --hex-fade-top: true/false (gradient fade at top)
+ *   --hex-fade-bottom: true/false (gradient fade at bottom)
+ */
+
+.bg-hexagon {
+    position: relative;
+    --hex-size: 200px;
+    --hex-c1: #0a0a0a;
+    --hex-c2: #1a1a1a;
+    --hex-c3: #151515;
+
+    background: repeating-conic-gradient(
+                from 30deg,
+                #0000 0 120deg,
+                var(--hex-c3) 0 50%
+            )
+            calc(var(--hex-size) / 2) calc(var(--hex-size) * 0.577 / 2),
+        repeating-conic-gradient(
+            from 30deg,
+            var(--hex-c1) 0 60deg,
+            var(--hex-c2) 0 120deg,
+            var(--hex-c3) 0 50%
+        );
+    background-size: var(--hex-size) calc(var(--hex-size) * 0.577);
+
+    /* Vignette effect */
+    box-shadow: inset 0 0 150px 50px rgba(0, 0, 0, 0.8);
+}
+
+/* Top fade gradient overlay */
+.bg-hexagon-fade-top::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom,
+        #0a0a0a 0%,
+        #0a0a0a 20%,
+        rgba(10, 10, 10, 0.9) 40%,
+        rgba(10, 10, 10, 0.6) 60%,
+        rgba(10, 10, 10, 0.3) 80%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Bottom fade gradient overlay */
+.bg-hexagon-fade-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to top, #0a0a0a 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Responsive - smaller pattern on mobile */
+@media (max-width: 768px) {
+    .bg-hexagon {
+        --hex-size: 150px;
+    }
+}
+
+/* ========== Color Variants ========== */
+
+/* Accent tinted version */
+.bg-hexagon-accent {
+    --hex-c1: #0a0a0a;
+    --hex-c2: #0f120a;
+    --hex-c3: #0d0f0a;
+}
+
+/* Blue tinted version */
+.bg-hexagon-blue {
+    --hex-c1: #0a0a0f;
+    --hex-c2: #0f1218;
+    --hex-c3: #0c0f14;
+}
+
+/* Purple tinted version */
+.bg-hexagon-purple {
+    --hex-c1: #0a0a0f;
+    --hex-c2: #120f18;
+    --hex-c3: #0f0c14;
+}
