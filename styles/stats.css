@@ -60,6 +60,89 @@
 
 .stat-card:hover::before { opacity: 1; }
 
+/* Mobile animated top glow - different colors for each card */
+@media (max-width: 768px) {
+    .stat-card::before {
+        width: 80%;
+        height: 3px;
+        border-radius: 0 0 3px 3px;
+        opacity: 1;
+    }
+
+    /* Card 1 - Lime to Cyan */
+    .stat-card:nth-child(1)::before {
+        background: linear-gradient(90deg, transparent, #c9f31d, #00f0ff, transparent);
+        animation: glowPulse1 3s ease-in-out infinite;
+    }
+
+    /* Card 2 - Purple to Pink */
+    .stat-card:nth-child(2)::before {
+        background: linear-gradient(90deg, transparent, #a855f7, #ec4899, transparent);
+        animation: glowPulse2 2.5s ease-in-out infinite;
+        animation-delay: 0.5s;
+    }
+
+    /* Card 3 - Cyan to Blue */
+    .stat-card:nth-child(3)::before {
+        background: linear-gradient(90deg, transparent, #00f0ff, #3b82f6, transparent);
+        animation: glowPulse3 3.5s ease-in-out infinite;
+        animation-delay: 1s;
+    }
+
+    /* Card 4 - Orange to Yellow */
+    .stat-card:nth-child(4)::before {
+        background: linear-gradient(90deg, transparent, #f97316, #eab308, transparent);
+        animation: glowPulse4 2.8s ease-in-out infinite;
+        animation-delay: 0.3s;
+    }
+}
+
+@keyframes glowPulse1 {
+    0%, 100% {
+        opacity: 0.6;
+        filter: blur(0px);
+        background: linear-gradient(90deg, transparent, #c9f31d, transparent);
+    }
+    50% {
+        opacity: 1;
+        filter: blur(2px);
+        background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+    }
+}
+
+@keyframes glowPulse2 {
+    0%, 100% {
+        opacity: 0.6;
+        background: linear-gradient(90deg, transparent, #a855f7, transparent);
+    }
+    50% {
+        opacity: 1;
+        background: linear-gradient(90deg, transparent, #ec4899, transparent);
+    }
+}
+
+@keyframes glowPulse3 {
+    0%, 100% {
+        opacity: 0.6;
+        background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+    }
+    50% {
+        opacity: 1;
+        background: linear-gradient(90deg, transparent, #c9f31d, transparent);
+    }
+}
+
+@keyframes glowPulse4 {
+    0%, 100% {
+        opacity: 0.6;
+        background: linear-gradient(90deg, transparent, #f97316, transparent);
+    }
+    50% {
+        opacity: 1;
+        background: linear-gradient(90deg, transparent, #eab308, transparent);
+    }
+}
+
 .stat-number {
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(2.5rem, 4vw, 3.5rem);
@@ -81,13 +164,108 @@
     }
 }
 
+@media (max-width: 768px) {
+    .trusted-stats-section {
+        padding: 3rem 1rem;
+    }
+
+    .trusted-title {
+        font-size: clamp(2.5rem, 10vw, 4rem);
+    }
+
+    /* Bento-style stacked cards layout */
+    .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto;
+        gap: 0.6rem;
+        margin-top: 2rem;
+        max-width: 400px;
+    }
+
+    /* Card 1: Wide - spans 2 columns */
+    .stat-card:nth-child(1) {
+        grid-column: 1 / 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        border-radius: 16px;
+    }
+
+    .stat-card:nth-child(1) .stat-number {
+        font-size: 2.2rem;
+        margin-bottom: 0;
+    }
+
+    .stat-card:nth-child(1) .stat-label {
+        font-size: 0.75rem;
+        text-align: left;
+    }
+
+    /* Card 2: Small square - left */
+    .stat-card:nth-child(2) {
+        padding: 1rem 0.6rem;
+        border-radius: 14px;
+    }
+
+    .stat-card:nth-child(2) .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .stat-card:nth-child(2) .stat-label {
+        font-size: 0.6rem;
+    }
+
+    /* Card 3: Tall - right, spans 2 rows */
+    .stat-card:nth-child(3) {
+        grid-row: 2 / 4;
+        padding: 1.5rem 0.8rem;
+        border-radius: 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .stat-card:nth-child(3) .stat-number {
+        font-size: 2rem;
+    }
+
+    .stat-card:nth-child(3) .stat-label {
+        font-size: 0.65rem;
+    }
+
+    /* Card 4: Small square - bottom left */
+    .stat-card:nth-child(4) {
+        padding: 1rem 0.6rem;
+        border-radius: 14px;
+    }
+
+    .stat-card:nth-child(4) .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .stat-card:nth-child(4) .stat-label {
+        font-size: 0.6rem;
+    }
+
+    .stat-number {
+        margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+        letter-spacing: 0.02em;
+    }
+}
+
 @media (max-width: 480px) {
     .trusted-stats-section {
-        padding: 4rem 1.5rem;
+        padding: 2.5rem 1rem;
     }
 
     .stats {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
     }
 }

@@ -296,3 +296,56 @@
 .maze-icon:hover svg {
     transform: scale(1.1);
 }
+
+/* ========== Mobile Responsive ========== */
+@media (max-width: 768px) {
+    .how-section {
+        padding: 3rem 1rem;
+    }
+
+    .how-section .section-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .how-typewriter-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .typewriter-steps {
+        gap: 0.8rem;
+    }
+
+    .tw-step {
+        padding: 1rem 1.2rem;
+        border-radius: 14px;
+    }
+
+    .tw-step-header {
+        gap: 0.6rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .tw-num {
+        font-size: 1.3rem;
+    }
+
+    .tw-title {
+        font-size: 0.95rem;
+    }
+
+    .tw-checkmark {
+        font-size: 0.9rem;
+    }
+
+    .tw-subtitle {
+        font-size: 0.75rem;
+        line-height: 1.5;
+        margin-bottom: 0.6rem;
+    }
+
+    .tw-progress {
+        height: 3px;
+    }
+}

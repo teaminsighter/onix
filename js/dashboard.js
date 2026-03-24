@@ -334,7 +334,13 @@ function switchIndustry(ind, fromAutoRotate) {
     const activeTab = document.querySelector('.ind-tab[data-ind="' + ind + '"]');
     activeTab.classList.add('active');
 
-    // Slide indicator
+    // Update glass glider position (mobile)
+    const glassGlider = document.getElementById('glassGlider');
+    if (glassGlider && activeTab.dataset.index !== undefined) {
+        glassGlider.setAttribute('data-position', activeTab.dataset.index);
+    }
+
+    // Slide indicator (desktop)
     const slider = document.getElementById('tabSlider');
     const tabsContainer = document.getElementById('indTabs');
     const tabRect = activeTab.getBoundingClientRect();
@@ -429,6 +435,12 @@ export function initDashboard() {
             const containerRect = tabsContainer.getBoundingClientRect();
             slider.style.top = (tabRect.top - containerRect.top) + 'px';
             slider.style.height = tabRect.height + 'px';
+        }
+
+        // Initialize glass glider position (mobile)
+        const glassGlider = document.getElementById('glassGlider');
+        if (glassGlider) {
+            glassGlider.setAttribute('data-position', '0');
         }
     }, 100);
 

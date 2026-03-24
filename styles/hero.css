@@ -164,6 +164,11 @@
         inset 0 0.5px 0 rgba(255,255,255,0.15);
 }
 
+/* Glass glider - hidden on desktop, shown only on mobile */
+.glass-glider {
+    display: none;
+}
+
 /* Content area */
 .ind-content {
     flex: 1;

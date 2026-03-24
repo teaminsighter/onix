@@ -220,22 +220,87 @@
 
 @media (max-width: 768px) {
     .team-section {
-        padding: 4rem 1.5rem;
+        padding: 3rem 1rem;
+    }
+
+    .team-section .features-header {
+        margin-bottom: 2rem;
+    }
+
+    .team-section .section-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .team-section .section-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .team-founders {
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
 
     .team-member {
         flex-direction: column;
         text-align: center;
         align-items: center;
+        padding: 1.2rem;
+        border-radius: 16px;
+        gap: 1rem;
     }
 
     .member-image {
-        margin-bottom: 1rem;
+        width: 100px;
+        height: 120px;
+        border-radius: 12px;
+        margin-bottom: 0;
+    }
+
+    .member-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .member-role {
+        font-size: 0.75rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .member-info p {
+        font-size: 0.75rem;
+        line-height: 1.5;
     }
 
     .team-grid {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-        margin: 0 auto;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        max-width: 100%;
+    }
+
+    .team-grid .team-member {
+        padding: 1rem;
+    }
+
+    .team-grid .member-image {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 0.8rem;
+    }
+
+    .team-grid .member-info h3 {
+        font-size: 0.9rem;
+    }
+
+    .team-grid .member-role {
+        font-size: 0.65rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-grid .member-info p {
+        font-size: 0.7rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 }

@@ -600,87 +600,172 @@
 
 @media (max-width: 768px) {
     .contact-section {
-        padding: 4rem 1.5rem 3rem;
+        padding: 2.5rem 1rem 2rem;
+    }
+
+    .contact-header {
+        margin-bottom: 2rem;
+    }
+
+    .contact-header .section-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .contact-subtitle {
+        font-size: 0.85rem;
+        margin-top: 1rem;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .contact-form-card {
+        padding: 1.2rem;
+        border-radius: 16px;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 0.8rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 10px;
+    }
+
+    .contact-form-card .btn-primary {
+        padding: 0.9rem 1.5rem;
+        font-size: 0.85rem;
     }
 
     .contact-info-card {
         padding: 0;
+        gap: 0.8rem;
         transform: translateY(40px);
     }
 
     .response-badge {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+        padding: 0.5rem 1rem;
     }
 
     .info-item {
-        padding: 1rem;
+        padding: 0.8rem;
+        border-radius: 12px;
+        gap: 0.75rem;
     }
 
     .info-icon {
-        width: 44px;
-        height: 44px;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    .icon-emoji {
+        font-size: 1.2rem;
+    }
+
+    .info-content h4 {
+        font-size: 0.65rem;
+    }
+
+    .info-content a,
+    .info-content p {
+        font-size: 0.85rem;
     }
 
     .location-visual {
         padding: 1rem;
+        border-radius: 12px;
     }
 
     .map-container {
-        height: 120px;
+        height: 100px;
     }
 
+    .map-nz {
+        width: 90px;
+    }
+
+    .location-label {
+        font-size: 0.65rem;
+    }
+
+    .social-links h4 {
+        font-size: 0.65rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .social-links .footer-socials a {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    /* Footer */
     .footer {
-        padding: 3rem 1.5rem 2rem;
+        padding: 2rem 1rem 1.5rem;
     }
 
     .footer-main {
         flex-direction: column;
-        gap: 3rem;
+        gap: 2rem;
         text-align: center;
+        padding-bottom: 2rem;
     }
 
-    .footer-brand {
-        max-width: 100%;
+    .footer-logo {
+        font-size: 1.4rem;
+    }
+
+    .footer-tagline {
+        font-size: 0.8rem;
     }
 
     .footer-nav {
         width: 100%;
         justify-content: center;
-        gap: 3rem;
+        gap: 2rem;
         flex-wrap: wrap;
     }
 
-    .footer-col {
-        text-align: center;
+    .footer-col h5 {
+        font-size: 0.75rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .footer-col a {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
     }
 
     .footer-bottom {
         flex-direction: column;
-        gap: 1.5rem;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .contact-section {
-        padding: 3rem 1rem 2rem;
+        gap: 1rem;
+        padding-top: 1.5rem;
     }
 
-    .contact-form-card {
-        padding: 1.5rem;
+    .footer-bottom p {
+        font-size: 0.75rem;
     }
 
-    .social-links .footer-socials {
-        justify-content: center;
+    .footer-socials a {
+        width: 36px;
+        height: 36px;
     }
 
-    .footer-nav {
-        flex-direction: column;
-        gap: 2rem;
+    .footer-socials svg {
+        width: 16px;
+        height: 16px;
     }
 }

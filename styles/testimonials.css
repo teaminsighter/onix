@@ -169,28 +169,69 @@
 /* Responsive */
 @media (max-width: 768px) {
     .testimonials {
-        padding: 4rem 0;
+        padding: 2.5rem 0;
     }
 
     .testimonials .features-header {
-        padding: 0 1.5rem;
+        padding: 0 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .testimonials .section-title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .google-rating {
+        margin-top: 1rem;
+    }
+
+    .rating-score {
+        font-size: 1.2rem;
+    }
+
+    .rating-stars .star {
+        font-size: 1.1rem;
+    }
+
+    .rating-count {
+        font-size: 0.8rem;
+    }
+
+    .review-row {
+        margin-bottom: 1rem;
+    }
+
+    .review-track {
+        gap: 1rem;
     }
 
     .review-card {
-        min-width: 280px;
-        max-width: 320px;
-        padding: 1rem 1.25rem;
+        min-width: 240px;
+        max-width: 280px;
+        padding: 0.9rem 1rem;
+        border-radius: 12px;
+    }
+
+    .review-avatar {
+        width: 32px;
+        height: 32px;
+    }
+
+    .review-name {
+        font-size: 0.8rem;
+    }
+
+    .review-location {
+        font-size: 0.65rem;
+    }
+
+    .review-text {
+        font-size: 0.75rem;
+        line-height: 1.4;
     }
 
     .review-row-left .review-track,
     .review-row-right .review-track {
-        animation-duration: 30s;
-    }
-}
-
-@media (max-width: 480px) {
-    .review-card {
-        min-width: 260px;
-        max-width: 290px;
+        animation-duration: 25s;
     }
 }

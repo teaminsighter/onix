@@ -397,12 +397,44 @@ function initScrollAnimations() {
         });
     }
 
-    // Infinite Marquee
+    // Logo Marquee Section - Scroll triggered reveal
+    const logoMarquee = document.querySelector('.logo-marquee');
+    if (logoMarquee) {
+        ScrollTrigger.create({
+            trigger: logoMarquee,
+            start: 'top 95%',
+            onEnter: () => {
+                gsap.to(logoMarquee, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: "power2.out"
+                });
+            },
+            once: true
+        });
+    }
+
+    // Infinite Marquee - Row 1 (Right to Left)
     const marquee = document.getElementById('marquee');
     if (marquee) {
         const marqueeWidth = marquee.scrollWidth / 2;
         gsap.to(marquee, {
             x: -marqueeWidth,
+            duration: 30,
+            ease: "none",
+            repeat: -1
+        });
+    }
+
+    // Infinite Marquee - Row 2 (Left to Right)
+    const marqueeReverse = document.getElementById('marqueeReverse');
+    if (marqueeReverse) {
+        const marqueeReverseWidth = marqueeReverse.scrollWidth / 2;
+        // Start from negative position and animate to 0
+        gsap.set(marqueeReverse, { x: -marqueeReverseWidth });
+        gsap.to(marqueeReverse, {
+            x: 0,
             duration: 30,
             ease: "none",
             repeat: -1
@@ -486,18 +518,44 @@ function initScrollAnimations() {
 
         // Animate expert cards with stagger
         const expertCards = document.querySelectorAll('.expert-card');
+        const isMobileView = window.innerWidth <= 768;
+
         if (expertCards.length) {
-            gsap.to(expertCards, {
-                opacity: 1,
-                y: 0,
-                duration: 0.8,
-                stagger: 0.1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: '.experts-grid',
-                    start: 'top 80%'
-                }
-            });
+            if (isMobileView) {
+                // Mobile: Lazy load each card individually when it comes into view
+                expertCards.forEach((card, index) => {
+                    // Set initial state
+                    gsap.set(card, { opacity: 0, y: 40 });
+
+                    ScrollTrigger.create({
+                        trigger: card,
+                        start: 'top 90%',
+                        onEnter: () => {
+                            gsap.to(card, {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.6,
+                                delay: (index % 2) * 0.1, // Slight delay for right column
+                                ease: "power3.out"
+                            });
+                        },
+                        once: true
+                    });
+                });
+            } else {
+                // Desktop: Stagger all cards at once
+                gsap.to(expertCards, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: '.experts-grid',
+                        start: 'top 80%'
+                    }
+                });
+            }
         }
     }
 
@@ -583,9 +641,11 @@ function initScrollAnimations() {
         });
     });
 
-    // Horizontal Scroll — Features Cards
+    // Horizontal Scroll — Features Cards (Desktop only)
     const track = document.getElementById('features-track');
-    if (track) {
+    const isMobileView = window.innerWidth <= 768;
+
+    if (track && !isMobileView) {
         const trackWidth = track.scrollWidth - window.innerWidth;
         gsap.to(track, {
             x: -trackWidth,
@@ -916,25 +976,40 @@ export function initAnimations() {
         });
 
         const naturalRect = heroTitle.getBoundingClientRect();
+        const isMobile = window.innerWidth <= 768;
 
         heroTitle.classList.add('intro-active');
-        heroTitle.style.left = naturalRect.left + 'px';
         heroTitle.style.top = naturalRect.top + 'px';
         heroTitle.style.width = naturalRect.width + 'px';
 
-        const bigScale = 1.8;
+        // Calculate center position offset
         const vpCx = window.innerWidth / 2;
         const vpCy = window.innerHeight / 2;
         const titleCx = naturalRect.left + naturalRect.width / 2;
         const titleCy = naturalRect.top + naturalRect.height / 2;
-        const startX = vpCx - titleCx;
-        const startY = vpCy - titleCy;
+
+        // On mobile: keep title at left edge with padding, only center vertically
+        // On desktop: center both horizontally and vertically
+        let startX, startY;
+        if (isMobile) {
+            // Keep title at natural left position (no horizontal centering)
+            heroTitle.style.left = '1.5rem';
+            startX = 0;
+            startY = vpCy - titleCy;
+        } else {
+            heroTitle.style.left = naturalRect.left + 'px';
+            startX = vpCx - titleCx;
+            startY = vpCy - titleCy;
+        }
+
+        // Responsive scale - no scale on mobile to prevent overflow
+        const bigScale = isMobile ? 1 : 1.8;
 
         gsap.set(heroTitle, {
             x: startX,
             y: startY,
             scale: bigScale,
-            transformOrigin: 'center center'
+            transformOrigin: isMobile ? 'left center' : 'center center'
         });
         gsap.set('#hero-title .char', { opacity: 0, y: 60, rotateX: -40 });
 

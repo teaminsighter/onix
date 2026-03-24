@@ -9,6 +9,11 @@
 
 .marquee-section.logo-marquee {
     padding: 3rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 /* Trusted By Header */

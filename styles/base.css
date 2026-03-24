@@ -13,7 +13,10 @@
     --dark-gray: #1a1a1a;
 }
 
-html { scroll-behavior: auto; }
+html {
+    scroll-behavior: auto;
+    overflow-x: hidden;
+}
 
 body {
     background: var(--bg);

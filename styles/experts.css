@@ -260,31 +260,104 @@
 
 @media (max-width: 768px) {
     .experts-section {
-        padding: 4rem 1.5rem;
+        padding: 3rem 1rem 4rem;
+        margin-bottom: 0;
     }
 
+    .experts-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .experts-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .experts-sub {
+        font-size: 0.9rem;
+    }
+
+    /* 2x3 Grid Layout */
     .experts-grid {
-        gap: 2rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        padding: 0;
+        max-width: 100%;
     }
 
+    /* Compact grid cards - hidden initially for scroll animation */
     .expert-card {
-        height: 24em;
-        width: 17em;
-    }
-
-    .inner-card {
-        height: 22em;
-        width: 15em;
-    }
-}
-
-@media (max-width: 480px) {
-    .expert-card {
+        height: 14em;
         width: 100%;
-        max-width: 18em;
+        border-radius: 1.2em;
+        opacity: 0;
+        transform: translateY(40px);
     }
 
     .inner-card {
-        width: calc(100% - 2em);
+        height: 12.5em;
+        width: calc(100% - 1em);
+        border-radius: 1em;
+    }
+
+    .card-info {
+        left: 0.6em;
+        right: 0.6em;
+        top: 0.6em;
+    }
+
+    .card-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.2em;
+    }
+
+    .card-info h3 {
+        font-size: 0.7rem;
+        margin-bottom: 0.3em;
+    }
+
+    .card-info p {
+        font-size: 0.55rem;
+        line-height: 1.3;
+        margin-bottom: 0.3em;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .card-stat {
+        font-size: 0.5rem;
+    }
+
+    .card-stat span {
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+
+    /* Smaller button */
+    .card-button {
+        height: 2.2em;
+        width: 7.5em;
+        left: calc(50% - 3.75em);
+        bottom: 0.5em;
+        border-radius: 1.5em;
+    }
+
+    .card-button h4 {
+        font-size: 0.55rem;
+        left: 0.8em;
+    }
+
+    .dot-slot {
+        height: 1.2em;
+        width: 1.2em;
+        right: 0.4em;
+        top: calc(50% - 0.6em);
+    }
+
+    .dot {
+        height: 0.5em;
+        width: 0.5em;
     }
 }
