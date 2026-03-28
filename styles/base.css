@@ -84,3 +84,35 @@ body {
 
 /* Magnetic button effect */
 .magnetic { display: inline-block; }
+
+/* ========== Desktop-Only Mode (Feature Flag) ========== */
+/* When body has 'desktop-only' class, force desktop view on mobile */
+/* To enable mobile view: remove 'desktop-only' class from <body> in index.html */
+body.desktop-only {
+    min-width: 1200px;
+    overflow-x: auto;
+}
+
+@media (max-width: 1200px) {
+    body.desktop-only {
+        transform-origin: top left;
+    }
+}
+
+/* Hide hamburger menu in desktop-only mode */
+body.desktop-only .hamburger {
+    display: none !important;
+}
+
+body.desktop-only .mobile-menu {
+    display: none !important;
+}
+
+/* Show nav links in desktop-only mode */
+body.desktop-only .nav-links {
+    display: flex !important;
+}
+
+body.desktop-only .nav-cta {
+    display: inline-block !important;
+}

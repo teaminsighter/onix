@@ -155,19 +155,35 @@
     .navbar.scrolled {
         top: 0.5rem;
         padding: 0.5rem 0.8rem 0.5rem 1rem;
-        gap: 0.8rem;
+        gap: 0.6rem;
         max-width: calc(100% - 1rem);
     }
     .nav-logo { font-size: 1.4rem; }
     .navbar.scrolled .nav-logo { font-size: 1.2rem; }
     .nav-links { display: none; }
-    .nav-cta {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.75rem;
-    }
+
+    /* Hide CTA initially, show on scrolled navbar */
+    .nav-cta { display: none; }
     .navbar.scrolled .nav-cta {
-        padding: 0.5rem 1rem;
-        font-size: 0.7rem;
+        display: inline-block;
+        padding: 0.45rem 0.9rem;
+        font-size: 0.65rem;
+    }
+
+    /* Show hamburger on mobile */
+    .hamburger {
+        display: flex;
+        opacity: 1;
+    }
+
+    .navbar.scrolled .hamburger {
+        width: 36px;
+        height: 36px;
+        padding: 6px;
+    }
+
+    .navbar.scrolled .hamburger-line {
+        width: 20px;
     }
 
     /* Hero - Mobile */

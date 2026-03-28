@@ -16,7 +16,7 @@
     <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
 
 </head>
-<body>
+<body class="desktop-only">
 
     <!-- CUSTOM CURSOR -->
     <div class="cursor"></div>
@@ -39,7 +39,24 @@
             <li><a href="#contact" class="magnetic">Contact</a></li>
         </ul>
         <a href="#book" class="nav-cta magnetic">Book a Call</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
     </nav>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#testimonials">Results</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#book" class="mobile-cta">Book a Call</a>
+    </div>
 
     <!-- HERO -->
     <section class="hero">
@@ -205,57 +222,17 @@
             <a href="/services/life-insurance.html" class="expert-card">
                 <div class="inner-card">
                     <div class="card-info">
-                        <span class="card-icon">💜</span>
-                        <h3>Life Insurance</h3>
-                        <p>Connect with families actively searching for peace of mind. High-intent, ready-to-buy leads.</p>
-                        <div class="card-stat"><span>12k+</span> Leads/Year</div>
-                    </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
-                    </div>
-                </div>
-            </a>
-            <a href="/services/income-protection.html" class="expert-card">
-                <div class="inner-card">
-                    <div class="card-info">
-                        <span class="card-icon">💼</span>
-                        <h3>Income Protection</h3>
-                        <p>Reach professionals who value their lifestyle. Pre-qualified leads who understand the need.</p>
-                        <div class="card-stat"><span>8k+</span> Leads/Year</div>
-                    </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
-                    </div>
-                </div>
-            </a>
-            <a href="/services/health-insurance.html" class="expert-card">
-                <div class="inner-card">
-                    <div class="card-info">
-                        <span class="card-icon">❤️‍🩹</span>
-                        <h3>Health Insurance</h3>
-                        <p>Tap into the wave of health-conscious Kiwis ready to enroll. Quote-ready prospects delivered daily.</p>
-                        <div class="card-stat"><span>20k+</span> Leads/Year</div>
-                    </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
-                    </div>
-                </div>
-            </a>
-            <a href="/services/solar.html" class="expert-card">
-                <div class="inner-card">
-                    <div class="card-info">
-                        <span class="card-icon">☀️</span>
-                        <h3>Solar</h3>
-                        <p>Homeowners actively researching solar. Warm leads ready to book site inspections today.</p>
+                        <span class="card-icon">🛡️</span>
+                        <h3>Insurance</h3>
+                        <p>Life, health & income protection leads. Connect with families and professionals actively searching for coverage.</p>
                         <div class="card-stat"><span>40k+</span> Leads/Year</div>
                     </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
-                    </div>
+                    <button class="card-btn-animated">
+                        <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                        <span class="text">Get Started</span>
+                        <span class="circle"></span>
+                        <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                    </button>
                 </div>
             </a>
             <a href="/services/real-estate.html" class="expert-card">
@@ -266,38 +243,12 @@
                         <p>Serious buyers and motivated sellers in your area. Close more deals, grow your portfolio.</p>
                         <div class="card-stat"><span>156+</span> Deals Closed</div>
                     </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
-                    </div>
-                </div>
-            </a>
-            <a href="/services/mortgage-loans.html" class="expert-card">
-                <div class="inner-card">
-                    <div class="card-info">
-                        <span class="card-icon">💰</span>
-                        <h3>Mortgage & Loans</h3>
-                        <p>First-home buyers and refinancers searching now. Convert browsers into signed applications.</p>
-                        <div class="card-stat"><span>8-15%</span> Conversion</div>
-                    </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
-                    </div>
-                </div>
-            </a>
-            <a href="/services/tradies.html" class="expert-card">
-                <div class="inner-card">
-                    <div class="card-info">
-                        <span class="card-icon">🔧</span>
-                        <h3>Tradies</h3>
-                        <p>Locals searching for plumbers, sparkies & more. Fill your calendar with quality jobs.</p>
-                        <div class="card-stat"><span>5k+</span> Jobs Booked</div>
-                    </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
-                    </div>
+                    <button class="card-btn-animated">
+                        <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                        <span class="text">Get Started</span>
+                        <span class="circle"></span>
+                        <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                    </button>
                 </div>
             </a>
             <a href="/services/builders.html" class="expert-card">
@@ -308,10 +259,28 @@
                         <p>Land owners and developers ready to build. Secure high-value projects on autopilot.</p>
                         <div class="card-stat"><span>$2.5M</span> Project Value</div>
                     </div>
-                    <div class="card-button">
-                        <h4>Get Started</h4>
-                        <div class="dot-slot"><div class="dot"></div></div>
+                    <button class="card-btn-animated">
+                        <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                        <span class="text">Get Started</span>
+                        <span class="circle"></span>
+                        <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                    </button>
+                </div>
+            </a>
+            <a href="/services/tradies.html" class="expert-card">
+                <div class="inner-card">
+                    <div class="card-info">
+                        <span class="card-icon">🔧</span>
+                        <h3>Tradies & Solar</h3>
+                        <p>Plumbers, sparkies, solar installers & more. Fill your calendar with quality jobs and installations.</p>
+                        <div class="card-stat"><span>45k+</span> Jobs Booked</div>
                     </div>
+                    <button class="card-btn-animated">
+                        <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                        <span class="text">Get Started</span>
+                        <span class="circle"></span>
+                        <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                    </button>
                 </div>
             </a>
         </div>
@@ -859,7 +828,7 @@
             </div>
             <!-- Right: Calendly Embed -->
             <div class="book-call-calendar">
-                <div class="calendly-inline-widget" data-url="https://calendly.com/jordan-burkett/my-reno-quotes-get-more-jobs-clone-clone?hide_gdpr_banner=1&background_color=111111&text_color=ffffff&primary_color=c9f31d" style="min-width:320px;height:750px;"></div>
+                <div class="calendly-inline-widget" data-url="https://calendly.com/jordan-burkett/my-reno-quotes-get-more-jobs-clone-clone?hide_gdpr_banner=1&background_color=c9f31d&text_color=0a0a0a&primary_color=0a0a0a" style="min-width:320px;height:750px;"></div>
             </div>
         </div>
     </section>

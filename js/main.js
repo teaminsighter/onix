@@ -8,7 +8,7 @@ import '../styles/main.css';
 
 // Import modules
 import { initCursor } from './cursor.js';
-import { initMagnetic, initNavbar } from './utils.js';
+import { initMagnetic, initNavbar, initMobileMenu } from './utils.js';
 import { initDashboard } from './dashboard.js';
 import { initAnimations } from './animations.js';
 // Logo rain moved to: components/logo-rain/ (import if needed)
@@ -18,6 +18,7 @@ function init() {
     initCursor();
     initMagnetic();
     initNavbar();
+    initMobileMenu();
     initDashboard();
     initAnimations();
 }

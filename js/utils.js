@@ -1,7 +1,43 @@
 /**
  * ONIX - Utility Functions
- * Magnetic buttons and smart navbar
+ * Magnetic buttons, smart navbar, and mobile menu
  */
+
+// Mobile menu toggle
+export function initMobileMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-nav-links a, .mobile-cta');
+
+    if (!hamburger || !mobileMenu) return;
+
+    function toggleMenu() {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        document.body.classList.toggle('menu-open');
+    }
+
+    function closeMenu() {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.classList.remove('menu-open');
+    }
+
+    // Toggle menu on hamburger click
+    hamburger.addEventListener('click', toggleMenu);
+
+    // Close menu when clicking a link
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+}
 
 // Magnetic button effect
 export function initMagnetic() {
