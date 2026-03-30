@@ -1454,11 +1454,74 @@ function initMarketsPinnedSlideshow() {
         }
     });
 
+    // ---- Split titles into characters for animation ----
+    const titles = document.querySelectorAll('.panel-title');
+    titles.forEach(title => {
+        const text = title.textContent;
+        title.innerHTML = '';
+        text.split('').forEach((char, i) => {
+            const span = document.createElement('span');
+            span.className = 'char';
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            title.appendChild(span);
+        });
+    });
+
+    let currentSlideIndex = 0;
+
+    // ---- Animate title chars with GSAP ----
+    function animateTitleChars(slide, immediate = false) {
+        if (!slide) return;
+
+        const title = slide.querySelector('.panel-title');
+        if (!title) return;
+
+        const chars = title.querySelectorAll('.char');
+        if (chars.length === 0) return;
+
+        // Kill any existing animations on these chars
+        gsap.killTweensOf(chars);
+
+        // Set initial hidden state
+        gsap.set(chars, {
+            opacity: 0,
+            y: '120%',
+            rotateX: -90,
+            scale: 0.8,
+            filter: 'blur(4px)'
+        });
+
+        // Animate chars in with stagger
+        gsap.to(chars, {
+            opacity: 1,
+            y: '0%',
+            rotateX: 0,
+            scale: 1,
+            filter: 'blur(0px)',
+            duration: 0.8,
+            ease: 'back.out(1.7)',
+            stagger: 0.04,
+            delay: immediate ? 0 : 0.15
+        });
+    }
+
     // ---- UI Update Function ----
     function updateMarketsUI(index, progress) {
         // Update counter
         if (counterCurrent) {
             counterCurrent.textContent = String(index + 1).padStart(2, '0');
+        }
+
+        // Update active slide class and trigger animations
+        if (index !== currentSlideIndex) {
+            // Remove active from previous slide
+            slides[currentSlideIndex]?.classList.remove('active');
+
+            // Add active to new slide and animate
+            slides[index]?.classList.add('active');
+            animateTitleChars(slides[index]);
+
+            currentSlideIndex = index;
         }
 
         // Update tabs
@@ -1482,7 +1545,39 @@ function initMarketsPinnedSlideshow() {
         });
     }
 
-    // Initial UI state
+    // Set initial hidden state for all slide titles (GSAP will animate them)
+    slides.forEach(slide => {
+        const chars = slide.querySelectorAll('.panel-title .char');
+        gsap.set(chars, {
+            opacity: 0,
+            y: '120%',
+            rotateX: -90,
+            scale: 0.8,
+            filter: 'blur(4px)'
+        });
+    });
+
+    // Track if first slide animation has played
+    let firstSlideAnimated = false;
+
+    // Animate first slide title when section comes into view
+    ScrollTrigger.create({
+        trigger: '.markets-section',
+        start: 'top 85%',
+        onEnter: () => {
+            if (!firstSlideAnimated) {
+                firstSlideAnimated = true;
+                // Add active class and animate
+                slides[0]?.classList.add('active');
+                setTimeout(() => {
+                    animateTitleChars(slides[0], true);
+                }, 100);
+            }
+        },
+        once: true
+    });
+
+    // Initial UI state (no active class yet - will be added when section enters view)
     updateMarketsUI(0, 0);
 
     // Tab click - scroll to that slide
@@ -1500,6 +1595,37 @@ function initMarketsPinnedSlideshow() {
             }
         });
     });
+}
+
+// ============ CTA STARS BACKGROUND ============
+function initCtaStars() {
+    const ctaSection = document.querySelector('.cta-section');
+    if (!ctaSection) return;
+
+    // Create stars container
+    const starsContainer = document.createElement('div');
+    starsContainer.className = 'cta-stars';
+
+    // Generate random stars
+    const numStars = 80;
+    for (let i = 0; i < numStars; i++) {
+        const star = document.createElement('div');
+        star.className = 'cta-star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.animationDelay = Math.random() * 3 + 's';
+        star.style.animationDuration = (2 + Math.random() * 2) + 's';
+
+        // Vary star sizes
+        const size = 1 + Math.random() * 2;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+
+        starsContainer.appendChild(star);
+    }
+
+    // Insert at beginning of section
+    ctaSection.insertBefore(starsContainer, ctaSection.firstChild);
 }
 
 // ============ FORM HANDLING ============
@@ -1826,7 +1952,7 @@ function initGlobe() {
     // Interaction variables
     let isDragging = false, prev = { x: 0, y: 0 };
     let rotX = 0, rotY = 0, velX = 0, velY = 0;
-    let autoSpin = true, zoom = 2.8;
+    let autoSpin = true, zoom = 3.6;
 
     // Mouse/touch events
     canvas.addEventListener('mousedown', e => {
@@ -1857,10 +1983,6 @@ function initGlobe() {
         rotX += velX;
         rotX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, rotX));
         prev = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }, { passive: false });
-    canvas.addEventListener('wheel', e => {
-        zoom = Math.max(1.6, Math.min(5, zoom + e.deltaY * 0.003));
-        e.preventDefault();
     }, { passive: false });
 
     let t = 0;
@@ -1964,6 +2086,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFormHandling();
     initSmoothScroll();
     initParallax();
+    initCtaStars();
 
     console.log('ONIX Insurance page initialized');
 });
