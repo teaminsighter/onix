@@ -3074,6 +3074,7 @@ body.menu-open {
     height: 100%;
     overflow: hidden;
     will-change: transform;
+    border-radius: 20px;
 }
 
 .market-slide .slide-bg {
@@ -4067,8 +4068,8 @@ body.menu-open {
 /* Globe Container */
 .cta-globe-wrapper {
     position: relative;
-    width: 700px;
-    height: 700px;
+    width: 500px;
+    height: 500px;
     flex-shrink: 0;
 }
 
@@ -4257,8 +4258,8 @@ body.menu-open {
     }
 
     .cta-globe-wrapper {
-        width: 500px;
-        height: 500px;
+        width: 380px;
+        height: 380px;
     }
 
     .globe-glow {
