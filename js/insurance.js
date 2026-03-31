@@ -665,8 +665,25 @@ function initCounterAnimations() {
 function initStoryAnimations() {
     const storyTitle = document.getElementById('storyTitle');
     const storyQuote = document.getElementById('storyQuote');
+    const storyParagraphs = document.querySelectorAll('.story-content > p');
 
     if (!storyTitle) return;
+
+    // Line sweep animation for story paragraphs
+    if (storyParagraphs.length) {
+        ScrollTrigger.create({
+            trigger: '.story-content',
+            start: 'top 70%',
+            onEnter: () => {
+                storyParagraphs.forEach((p, index) => {
+                    setTimeout(() => {
+                        p.classList.add('sweep-reveal');
+                    }, index * 300);
+                });
+            },
+            once: true
+        });
+    }
 
     // Split title words into characters
     const words = storyTitle.querySelectorAll('.word');
@@ -729,6 +746,122 @@ function initStoryAnimations() {
             once: true
         });
     }
+}
+
+// ============ PERFORMANCE SUBTITLE ANIMATION ============
+function initPerfSubtitleAnimation() {
+    const perfSubtitle = document.getElementById('perfSubtitle');
+    if (!perfSubtitle) return;
+
+    const subtitleText = perfSubtitle.getAttribute('data-text') || '';
+    perfSubtitle.innerHTML = '<span class="perf-text"></span><span class="typewriter-cursor"></span>';
+    const textEl = perfSubtitle.querySelector('.perf-text');
+    const cursorEl = perfSubtitle.querySelector('.typewriter-cursor');
+    cursorEl.style.opacity = '0';
+
+    ScrollTrigger.create({
+        trigger: '#performance',
+        start: 'top 70%',
+        onEnter: () => {
+            cursorEl.style.opacity = '1';
+            // Typewriter effect
+            let i = 0;
+            function type() {
+                if (i < subtitleText.length) {
+                    textEl.innerHTML += subtitleText.charAt(i);
+                    i++;
+                    setTimeout(type, 20);
+                } else {
+                    // Hide cursor after typing completes
+                    setTimeout(() => {
+                        gsap.to(cursorEl, { opacity: 0, duration: 0.3 });
+                    }, 1000);
+                }
+            }
+            type();
+        },
+        once: true
+    });
+}
+
+// ============ LEADS SUBTITLE ANIMATION ============
+function initLeadsSubtitleAnimation() {
+    const leadsSubtitle = document.getElementById('leadsSubtitle');
+    if (!leadsSubtitle) return;
+
+    const subtitleText = leadsSubtitle.getAttribute('data-text') || '';
+    leadsSubtitle.innerHTML = '<span class="leads-text"></span><span class="typewriter-cursor"></span>';
+    const textEl = leadsSubtitle.querySelector('.leads-text');
+    const cursorEl = leadsSubtitle.querySelector('.typewriter-cursor');
+    cursorEl.style.opacity = '0';
+
+    ScrollTrigger.create({
+        trigger: '#leads',
+        start: 'top 70%',
+        onEnter: () => {
+            cursorEl.style.opacity = '1';
+            // Typewriter effect
+            let i = 0;
+            function type() {
+                if (i < subtitleText.length) {
+                    textEl.innerHTML += subtitleText.charAt(i);
+                    i++;
+                    setTimeout(type, 20);
+                } else {
+                    // Hide cursor after typing completes
+                    setTimeout(() => {
+                        gsap.to(cursorEl, { opacity: 0, duration: 0.3 });
+                    }, 1000);
+                }
+            }
+            type();
+        },
+        once: true
+    });
+}
+
+// ============ CONSISTENCY SUBTITLE ANIMATION ============
+function initConsistencySubtitleAnimation() {
+    const consistencySubtitle = document.getElementById('consistencySubtitle');
+    if (!consistencySubtitle) return;
+
+    const subtitleText = consistencySubtitle.getAttribute('data-text') || '';
+    const highlightPhrase = "We don't.";
+    consistencySubtitle.innerHTML = '<span class="consistency-text"></span><span class="typewriter-cursor"></span>';
+    const textEl = consistencySubtitle.querySelector('.consistency-text');
+    const cursorEl = consistencySubtitle.querySelector('.typewriter-cursor');
+    cursorEl.style.opacity = '0';
+
+    ScrollTrigger.create({
+        trigger: '#consistency',
+        start: 'top 70%',
+        onEnter: () => {
+            cursorEl.style.opacity = '1';
+            // Typewriter effect with highlight
+            let i = 0;
+            function type() {
+                if (i < subtitleText.length) {
+                    // Check if we're at the highlight phrase
+                    if (subtitleText.substring(i, i + highlightPhrase.length) === highlightPhrase) {
+                        textEl.innerHTML += '<strong class="consistency-highlight">' + highlightPhrase + '</strong>';
+                        i += highlightPhrase.length;
+                        setTimeout(type, 20);
+                    } else {
+                        textEl.innerHTML += subtitleText.charAt(i);
+                        i++;
+                        setTimeout(type, 20);
+                    }
+                } else {
+                    // Hide cursor after typing completes
+                    setTimeout(() => {
+                        gsap.to(cursorEl, { opacity: 0, duration: 0.3 });
+                    }, 1000);
+                }
+            }
+            type();
+        },
+        once: true
+    });
 }
 
 // Typewriter with highlight for specific words
@@ -2074,6 +2207,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuthorityAnimations();
     initCounterAnimations();
     initStoryAnimations();
+    initPerfSubtitleAnimation();
+    initLeadsSubtitleAnimation();
+    initConsistencySubtitleAnimation();
     initTimelineAnimations();
     initBentoTilt();
     initRankingsAnimation();
