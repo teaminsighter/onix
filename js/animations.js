@@ -483,6 +483,8 @@ function initScrollAnimations() {
 
     // Experts In Section Animation
     const expertsTitle = document.querySelector('.experts-title');
+    const expertsSubtitle = document.getElementById('expertsSubtitle');
+
     if (expertsTitle) {
         // Split title into characters
         const titleText = expertsTitle.textContent;
@@ -491,30 +493,63 @@ function initScrollAnimations() {
         ).join('');
         expertsTitle.classList.add('ready'); // Show after processing
 
-        // Animate title characters
-        ScrollTrigger.create({
-            trigger: '.experts-header',
-            start: 'top 80%',
-            onEnter: () => {
-                gsap.to('.experts-title .char', {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    stagger: 0.04,
-                    ease: "power3.out"
-                });
+        // Setup subtitle for typewriter
+        if (expertsSubtitle) {
+            const subtitleText = expertsSubtitle.getAttribute('data-text') || '';
+            expertsSubtitle.innerHTML = '<span class="experts-text"></span><span class="typewriter-cursor"></span>';
+            const textEl = expertsSubtitle.querySelector('.experts-text');
+            const cursorEl = expertsSubtitle.querySelector('.typewriter-cursor');
+            cursorEl.style.opacity = '0';
 
-                // Animate subtitle after title
-                gsap.to('.experts-sub', {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    delay: 0.4,
-                    ease: "power2.out"
-                });
-            },
-            once: true
-        });
+            // Animate title characters
+            ScrollTrigger.create({
+                trigger: '.experts-header',
+                start: 'top 80%',
+                onEnter: () => {
+                    gsap.to('.experts-title .char', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        stagger: 0.04,
+                        ease: "power3.out",
+                        onComplete: () => {
+                            // Start typewriter after title animation
+                            cursorEl.style.opacity = '1';
+                            let i = 0;
+                            function type() {
+                                if (i < subtitleText.length) {
+                                    textEl.innerHTML += subtitleText.charAt(i);
+                                    i++;
+                                    setTimeout(type, 25);
+                                } else {
+                                    setTimeout(() => {
+                                        gsap.to(cursorEl, { opacity: 0, duration: 0.3 });
+                                    }, 1000);
+                                }
+                            }
+                            type();
+                        }
+                    });
+                },
+                once: true
+            });
+        } else {
+            // Fallback if no subtitle
+            ScrollTrigger.create({
+                trigger: '.experts-header',
+                start: 'top 80%',
+                onEnter: () => {
+                    gsap.to('.experts-title .char', {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        stagger: 0.04,
+                        ease: "power3.out"
+                    });
+                },
+                once: true
+            });
+        }
 
         // Animate expert cards with stagger
         const expertCards = document.querySelectorAll('.expert-card');
@@ -819,6 +854,44 @@ function initScrollAnimations() {
             },
             once: true
         });
+    }
+
+    // Calendly Preload - Load early when user reaches Team section
+    const calendlyWidget = document.querySelector('.calendly-inline-widget');
+    const bookCalendar = document.querySelector('.book-call-calendar');
+    let calendlyPreloaded = false;
+
+    if (calendlyWidget) {
+        // Preload Calendly when user reaches Team section (before Book section)
+        ScrollTrigger.create({
+            trigger: '#team',
+            start: 'top 80%',
+            onEnter: () => {
+                if (!calendlyPreloaded && window.Calendly) {
+                    // Force Calendly to initialize the widget
+                    window.Calendly.initInlineWidget({
+                        url: calendlyWidget.dataset.url,
+                        parentElement: calendlyWidget,
+                        prefill: {},
+                        utm: {}
+                    });
+                    calendlyPreloaded = true;
+                }
+            },
+            once: true
+        });
+
+        // Animate calendar container when it comes into view
+        if (bookCalendar) {
+            ScrollTrigger.create({
+                trigger: '#book',
+                start: 'top 70%',
+                onEnter: () => {
+                    bookCalendar.classList.add('visible');
+                },
+                once: true
+            });
+        }
     }
 
     // Contact Section Animations
