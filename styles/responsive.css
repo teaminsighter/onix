@@ -186,16 +186,16 @@
         width: 20px;
     }
 
-    /* Hero - Mobile */
+    /* Hero - Mobile (compact to show bottom tabs) */
     .hero {
-        padding: 4rem 1.5rem 1rem;
+        padding: 3.5rem 1.5rem 0.5rem;
         overflow: hidden;
         min-height: auto;
     }
 
     .hero-inner {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 0.8rem;
     }
 
     /* Ensure title stays visible during intro animation */
@@ -204,34 +204,38 @@
     }
 
     .hero-right {
-        margin-top: 0.5rem;
+        margin-top: 0.3rem;
     }
 
-    /* Hero badge - smaller on mobile */
+    /* Hero badge - minimal on mobile */
     .hero-badge {
-        padding: 0.35rem 0.8rem;
-        font-size: 0.6rem;
-        margin-bottom: 1rem;
+        padding: 0.2rem 0.5rem;
+        font-size: 0.5rem;
+        margin-bottom: 0.4rem;
     }
 
     .hero h1 {
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.5rem;
     }
 
+    /* Hero subtitle - compact on mobile */
     .hero-sub {
-        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
     }
 
-    /* Hero buttons - side by side and smaller on mobile */
+    /* Hero buttons - compact on mobile */
     .hero-buttons {
         flex-direction: row;
-        gap: 0.6rem;
+        gap: 0.5rem;
+        margin-bottom: 0.8rem;
     }
 
     .hero-buttons .btn-primary,
     .hero-buttons .btn-secondary {
-        padding: 0.8rem 1.2rem;
-        font-size: 0.8rem;
+        padding: 0.7rem 1rem;
+        font-size: 0.75rem;
     }
 
     /* Dashboard - Mobile app-like layout with bottom tabs */
@@ -241,18 +245,18 @@
         flex-direction: column;
     }
 
-    /* Glass Tab Bar */
+    /* Glass Tab Bar - compact */
     .ind-tabs {
         order: 2;
         flex-direction: row;
         min-width: 100%;
         border-right: none;
-        padding: 0.35rem;
+        padding: 0.3rem;
         gap: 0;
         justify-content: space-around;
         position: relative;
         background: rgba(255, 255, 255, 0.06);
-        border-radius: 1rem;
+        border-radius: 0.9rem;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         box-shadow:
@@ -269,7 +273,7 @@
 
     .ind-tab {
         flex: 1;
-        padding: 0.6rem 0.2rem;
+        padding: 0.5rem 0.2rem;
         border-radius: 0.8rem;
         position: relative;
         z-index: 2;
@@ -278,12 +282,12 @@
     }
 
     .ind-tab .tab-icon {
-        font-size: 1.1rem;
+        font-size: 1rem;
         transition: transform 0.3s ease, filter 0.3s ease;
     }
 
     .ind-tab .tab-name {
-        font-size: 0.5rem;
+        font-size: 0.45rem;
         color: rgba(255,255,255,0.5);
         transition: all 0.3s ease;
         font-weight: 500;
@@ -312,10 +316,10 @@
     .glass-glider {
         display: block;
         position: absolute;
-        top: 0.35rem;
-        bottom: 0.35rem;
-        width: calc(100% / 5 - 0.14rem);
-        border-radius: 0.8rem;
+        top: 0.3rem;
+        bottom: 0.3rem;
+        width: calc(100% / 5 - 0.12rem);
+        border-radius: 0.7rem;
         z-index: 1;
         background: linear-gradient(135deg, rgba(201, 243, 29, 0.7), rgba(180, 220, 25, 0.95));
         box-shadow:
@@ -325,7 +329,7 @@
             transform 0.5s cubic-bezier(0.37, 1.95, 0.66, 0.56),
             background 0.4s ease-in-out,
             box-shadow 0.4s ease-in-out;
-        left: 0.35rem;
+        left: 0.3rem;
     }
 
     /* Glider position based on active tab */
@@ -342,61 +346,101 @@
 
     .ind-content {
         order: 1; /* Content above tabs */
-        padding: 1rem;
-    }
-
-    .ind-header {
-        margin-bottom: 0.6rem;
-    }
-
-    .ind-title {
-        font-size: 0.95rem;
-    }
-
-    /* Bento grid - smaller on mobile */
-    .bento-grid {
-        height: 140px;
-        gap: 0.4rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .bento-box {
-        padding: 0.6rem;
-    }
-
-    .bento-val {
-        font-size: 1.1rem;
-    }
-
-    .bento-lbl {
-        font-size: 0.55rem;
-    }
-
-    .bento-change {
-        font-size: 0.5rem;
-    }
-
-    /* Chart - smaller on mobile */
-    .chart-container {
-        height: 140px;
         padding: 0.8rem;
     }
 
+    .ind-header {
+        margin-bottom: 0.4rem;
+    }
+
+    .ind-title {
+        font-size: 0.9rem;
+    }
+
+    /* Bento grid - compact on mobile */
+    .bento-grid {
+        height: 100px;
+        gap: 0.3rem;
+        margin-bottom: 0.4rem;
+    }
+
+    /* Bento box - horizontal layout on mobile */
+    .bento-box {
+        padding: 0.4rem 0.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .bento-lbl {
+        font-size: 0.5rem;
+        order: 1;
+        margin-top: 0;
+        flex: 1;
+    }
+
+    .bento-val {
+        font-size: 0.95rem;
+        order: 2;
+        text-align: right;
+    }
+
+    .bento-change {
+        font-size: 0.4rem;
+        padding: 0.1rem 0.25rem;
+        order: 3;
+        width: 100%;
+        text-align: left;
+        margin-top: 0.15rem;
+    }
+
+    /* Chart - compact on mobile */
+    .chart-container {
+        height: 100px;
+        padding: 0.5rem;
+    }
+
     .chart-area {
-        height: 80px;
+        height: 55px;
     }
 
     .chart-title {
-        font-size: 0.65rem;
+        font-size: 0.55rem;
     }
 
     .chart-badge {
-        font-size: 0.5rem;
-        padding: 0.15rem 0.4rem;
+        font-size: 0.4rem;
+        padding: 0.1rem 0.3rem;
     }
 
     .chart-labels {
-        font-size: 0.45rem;
+        font-size: 0.4rem;
+    }
+
+    /* Pie chart - compact on mobile */
+    .chart-pie {
+        gap: 0.6rem;
+        height: 55px;
+    }
+
+    .chart-pie svg {
+        width: 55px;
+        height: 55px;
+    }
+
+    .pie-legend {
+        gap: 0.2rem;
+    }
+
+    .pie-legend-item {
+        font-size: 0.5rem;
+        gap: 0.25rem;
+    }
+
+    .pie-legend-dot {
+        width: 6px;
+        height: 6px;
     }
 
     /* Stats - Mobile */
