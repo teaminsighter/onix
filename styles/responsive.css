@@ -405,6 +405,11 @@
         height: 55px;
     }
 
+    /* Bar chart - match chart-area height */
+    .chart-bars {
+        height: 45px;
+    }
+
     .chart-title {
         font-size: 0.55rem;
     }
@@ -416,6 +421,7 @@
 
     .chart-labels {
         font-size: 0.4rem;
+        margin-top: 0.2rem;
     }
 
     /* Pie chart - compact on mobile */
