@@ -1,0 +1,271 @@
+<%- include('partials/sidebar', { user, active: 'team' }) %>
+
+<main class="main">
+    <div class="page-header">
+        <h1 class="page-title">Team Management</h1>
+        <button class="btn btn-primary" onclick="openUserModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Add Team Member
+        </button>
+    </div>
+
+    <!-- Team Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Total Members</span>
+            </div>
+            <div class="stat-value"><%= teamMembers.length %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Active</span>
+            </div>
+            <div class="stat-value" style="color: var(--success);"><%= teamMembers.filter(m => m.is_active).length %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Total Leads Contacted</span>
+            </div>
+            <div class="stat-value accent"><%= teamMembers.reduce((sum, m) => sum + m.stats.leads_contacted, 0) %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Total Conversions</span>
+            </div>
+            <div class="stat-value" style="color: var(--success);"><%= teamMembers.reduce((sum, m) => sum + m.stats.conversions, 0) %></div>
+        </div>
+    </div>
+
+    <!-- Team Grid and Activity -->
+    <div class="team-layout">
+        <!-- Team Members Grid -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Team Members</h3>
+                <div class="filters" style="display: flex; gap: 0.75rem;">
+                    <select class="form-select" style="width: auto; padding: 0.4rem 0.75rem;" id="roleFilter">
+                        <option value="">All Roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="sales">Sales</option>
+                    </select>
+                    <select class="form-select" style="width: auto; padding: 0.4rem 0.75rem;" id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="team-grid">
+                <% teamMembers.forEach(member => { %>
+                    <div class="team-card <%= !member.is_active ? 'inactive' : '' %>" data-role="<%= member.role %>" data-active="<%= member.is_active %>">
+                        <div class="team-card-header">
+                            <div class="team-avatar">
+                                <%= member.full_name.split(' ').map(n => n[0]).join('') %>
+                            </div>
+                            <div class="team-info">
+                                <a href="/team/<%= member.id %>" class="team-name"><%= member.full_name %></a>
+                                <span class="team-email"><%= member.email %></span>
+                            </div>
+                            <span class="badge badge-<%= member.role %>"><%= member.role %></span>
+                        </div>
+
+                        <div class="team-stats">
+                            <div class="team-stat">
+                                <span class="team-stat-value"><%= member.stats.leads_contacted %></span>
+                                <span class="team-stat-label">Contacted</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-value"><%= member.stats.meetings_scheduled %></span>
+                                <span class="team-stat-label">Meetings</span>
+                            </div>
+                            <div class="team-stat">
+                                <span class="team-stat-value"><%= member.stats.conversions %></span>
+                                <span class="team-stat-label">Conversions</span>
+                            </div>
+                        </div>
+
+                        <div class="team-card-footer">
+                            <span class="team-last-login">
+                                <% if (member.is_active) { %>
+                                    Last active: <%= new Date(member.last_login).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) %>
+                                <% } else { %>
+                                    <span style="color: var(--danger);">Inactive</span>
+                                <% } %>
+                            </span>
+                            <div class="team-actions">
+                                <a href="/team/<%= member.id %>" class="btn btn-sm btn-secondary">View</a>
+                                <button class="btn btn-sm btn-secondary" onclick="editUser(<%= member.id %>)">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Team Activity</h3>
+                <button class="btn btn-secondary btn-sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+            <div class="activity-feed">
+                <% activityFeed.forEach(activity => { %>
+                    <div class="activity-item">
+                        <div class="activity-avatar <%= activity.user === 'System' ? 'system' : '' %>">
+                            <%= activity.user_avatar %>
+                        </div>
+                        <div class="activity-content">
+                            <span class="activity-text">
+                                <strong><%= activity.user %></strong>
+                                <%= activity.action %>
+                                <a href="#" class="activity-link"><%= activity.entity %></a>
+                            </span>
+                            <span class="activity-time"><%= activity.time %></span>
+                        </div>
+                        <div class="activity-icon">
+                            <% if (activity.icon === 'check') { %>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            <% } else if (activity.icon === 'calendar') { %>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                            <% } else if (activity.icon === 'user-plus') { %>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+                                </svg>
+                            <% } else if (activity.icon === 'edit') { %>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                            <% } else if (activity.icon === 'phone') { %>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            <% } else if (activity.icon === 'dollar') { %>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                            <% } else if (activity.icon === 'check-circle') { %>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <div style="padding: 1rem; text-align: center; border-top: 1px solid var(--border);">
+                <button class="btn btn-secondary btn-sm">View All Activity</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Leaderboard -->
+    <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+            <h3 class="card-title">Performance Leaderboard</h3>
+            <select class="form-select" style="width: auto; padding: 0.4rem 0.75rem;">
+                <option>This Month</option>
+                <option>Last Month</option>
+                <option>This Quarter</option>
+            </select>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team Member</th>
+                        <th>Leads Contacted</th>
+                        <th>Meetings Scheduled</th>
+                        <th>Conversions</th>
+                        <th>Conversion Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        const rankedMembers = [...teamMembers]
+                            .filter(m => m.is_active)
+                            .sort((a, b) => b.stats.conversions - a.stats.conversions);
+                    %>
+                    <% rankedMembers.forEach((member, index) => { %>
+                        <tr>
+                            <td>
+                                <% if (index === 0) { %>
+                                    <span style="font-size: 1.2rem;">&#127942;</span>
+                                <% } else if (index === 1) { %>
+                                    <span style="font-size: 1.1rem;">&#129352;</span>
+                                <% } else if (index === 2) { %>
+                                    <span style="font-size: 1.1rem;">&#129353;</span>
+                                <% } else { %>
+                                    <%= index + 1 %>
+                                <% } %>
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div class="team-avatar" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                        <%= member.full_name.split(' ').map(n => n[0]).join('') %>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 500;"><%= member.full_name %></div>
+                                        <div style="font-size: 0.8rem; color: var(--gray);"><%= member.role %></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><%= member.stats.leads_contacted %></td>
+                            <td><%= member.stats.meetings_scheduled %></td>
+                            <td style="font-weight: 600; color: var(--success);"><%= member.stats.conversions %></td>
+                            <td>
+                                <% const rate = member.stats.leads_contacted > 0 ? ((member.stats.conversions / member.stats.leads_contacted) * 100).toFixed(1) : 0; %>
+                                <span style="color: <%= rate >= 25 ? 'var(--success)' : rate >= 20 ? 'var(--accent)' : 'var(--warning)' %>; font-weight: 600;">
+                                    <%= rate %>%
+                                </span>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/modals') %>
+
+<script>
+// Filter functionality
+document.getElementById('roleFilter').addEventListener('change', filterTeam);
+document.getElementById('statusFilter').addEventListener('change', filterTeam);
+
+function filterTeam() {
+    const roleFilter = document.getElementById('roleFilter').value;
+    const statusFilter = document.getElementById('statusFilter').value;
+
+    document.querySelectorAll('.team-card').forEach(card => {
+        const role = card.dataset.role;
+        const isActive = card.dataset.active === 'true';
+
+        const roleMatch = !roleFilter || role === roleFilter;
+        const statusMatch = !statusFilter ||
+            (statusFilter === 'active' && isActive) ||
+            (statusFilter === 'inactive' && !isActive);
+
+        card.style.display = (roleMatch && statusMatch) ? '' : 'none';
+    });
+}
+
+function editUser(id) {
+    console.log('Edit user:', id);
+    openUserModal();
+}
+</script>

@@ -1,0 +1,113 @@
+<%- include('partials/sidebar', { user, active: 'leads' }) %>
+
+<main class="main">
+    <div class="page-header">
+        <h1 class="page-title">Leads</h1>
+        <span style="color: var(--gray);"><%= leads.length %> total</span>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+        <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+                type="text"
+                class="form-input"
+                placeholder="Search leads..."
+                value="<%= filters.search || '' %>"
+                onchange="window.location.href='/leads?search=' + this.value"
+            >
+        </div>
+
+        <select class="form-select" style="width: auto; min-width: 150px;"
+                onchange="window.location.href='/leads?status=' + this.value">
+            <option value="all" <%= !filters.status || filters.status === 'all' ? 'selected' : '' %>>All Status</option>
+            <option value="new" <%= filters.status === 'new' ? 'selected' : '' %>>New</option>
+            <option value="contacted" <%= filters.status === 'contacted' ? 'selected' : '' %>>Contacted</option>
+            <option value="scheduled" <%= filters.status === 'scheduled' ? 'selected' : '' %>>Scheduled</option>
+            <option value="converted" <%= filters.status === 'converted' ? 'selected' : '' %>>Converted</option>
+            <option value="lost" <%= filters.status === 'lost' ? 'selected' : '' %>>Lost</option>
+        </select>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="card">
+        <% if (leads.length === 0) { %>
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <p>No leads found matching your criteria.</p>
+                <a href="/leads" class="btn btn-secondary" style="margin-top: 1rem;">Clear Filters</a>
+            </div>
+        <% } else { %>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% leads.forEach(lead => { %>
+                            <tr>
+                                <td>
+                                    <a href="/leads/<%= lead.id %>" style="color: var(--white); font-weight: 500;">
+                                        <%= lead.name %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="mailto:<%= lead.email %>" style="color: var(--accent);">
+                                        <%= lead.email %>
+                                    </a>
+                                </td>
+                                <td style="color: var(--gray);">
+                                    <%= lead.phone || '-' %>
+                                </td>
+                                <td style="color: var(--gray); text-transform: capitalize;">
+                                    <%= lead.source %>
+                                </td>
+                                <td>
+                                    <span class="badge badge-<%= lead.status %>">
+                                        <%= lead.status %>
+                                    </span>
+                                </td>
+                                <td style="color: var(--gray);">
+                                    <%= new Date(lead.created_at).toLocaleDateString() %>
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="/leads/<%= lead.id %>" class="btn btn-secondary btn-sm">
+                                            View
+                                        </a>
+                                        <select class="form-select" style="width: auto; padding: 0.4rem 0.5rem; font-size: 0.8rem;"
+                                                onchange="updateStatus(<%= lead.id %>, this.value)">
+                                            <option value="">Update...</option>
+                                            <option value="new">New</option>
+                                            <option value="contacted">Contacted</option>
+                                            <option value="scheduled">Scheduled</option>
+                                            <option value="converted">Converted</option>
+                                            <option value="lost">Lost</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+</main>

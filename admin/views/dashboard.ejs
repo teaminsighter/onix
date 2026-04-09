@@ -1,0 +1,254 @@
+<%- include('partials/sidebar', { user, active: 'dashboard' }) %>
+
+<main class="main">
+    <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <span style="color: var(--gray);">Welcome back, <%= user.username %></span>
+    </div>
+
+    <!-- Overview Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Total Leads</span>
+                <span class="stat-trend positive"><%= stats.leads.change %></span>
+            </div>
+            <div class="stat-value accent"><%= stats.leads.total %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Conversion Rate</span>
+                <span class="stat-trend positive"><%= stats.conversion.change %></span>
+            </div>
+            <div class="stat-value"><%= stats.conversion.rate %>%</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Revenue</span>
+                <span class="stat-trend positive"><%= stats.revenue.change %></span>
+            </div>
+            <div class="stat-value" style="color: var(--success);">$<%= stats.revenue.total.toLocaleString() %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-header">
+                <span class="stat-label">Scheduled Meetings</span>
+            </div>
+            <div class="stat-value"><%= stats.meetings.scheduled %></div>
+            <div style="font-size: 0.85rem; color: var(--gray); margin-top: 0.25rem;"><%= stats.meetings.thisWeek %> this week</div>
+        </div>
+    </div>
+
+    <!-- Status Overview -->
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <div class="stat-label">New</div>
+            <div class="stat-value" style="color: var(--info);"><%= statusCounts.new || 0 %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Contacted</div>
+            <div class="stat-value" style="color: var(--warning);"><%= statusCounts.contacted || 0 %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Scheduled</div>
+            <div class="stat-value" style="color: var(--accent);"><%= statusCounts.scheduled || 0 %></div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Converted</div>
+            <div class="stat-value" style="color: var(--success);"><%= statusCounts.converted || 0 %></div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-grid">
+        <!-- Leads Over Time -->
+        <div class="card chart-card">
+            <div class="card-header">
+                <h3 class="card-title">Leads Over Time</h3>
+                <select class="form-select" style="width: auto; padding: 0.4rem 0.75rem; font-size: 0.85rem;">
+                    <option>Last 6 months</option>
+                    <option>Last 3 months</option>
+                    <option>Last year</option>
+                </select>
+            </div>
+            <div class="chart-container" id="leadsChart"></div>
+        </div>
+
+        <!-- Lead Sources -->
+        <div class="card chart-card">
+            <div class="card-header">
+                <h3 class="card-title">Lead Sources</h3>
+            </div>
+            <div class="chart-container" id="sourcesChart"></div>
+        </div>
+    </div>
+
+    <!-- Conversion Funnel -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header">
+            <h3 class="card-title">Conversion Funnel</h3>
+            <span style="color: var(--gray); font-size: 0.85rem;">Overall pipeline performance</span>
+        </div>
+        <div id="funnelChart"></div>
+    </div>
+
+    <!-- Widgets Row -->
+    <div class="widgets-grid">
+        <!-- Upcoming Meetings -->
+        <div class="card widget-card">
+            <div class="card-header">
+                <h3 class="card-title">Upcoming Meetings</h3>
+                <a href="/calendar" class="btn btn-secondary btn-sm">View All</a>
+            </div>
+            <% if (upcomingMeetings.length === 0) { %>
+                <div class="empty-state" style="padding: 2rem;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <p>No upcoming meetings</p>
+                </div>
+            <% } else { %>
+                <div class="meetings-list" style="padding: 0;">
+                    <% upcomingMeetings.slice(0, 4).forEach(meeting => { %>
+                        <div class="meeting-item" style="margin: 0; border-radius: 0; border-left: none; border-right: none; border-top: none;">
+                            <div class="meeting-time">
+                                <div class="meeting-time-value"><%= new Date(meeting.start_time).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }) %></div>
+                                <div class="meeting-time-date"><%= new Date(meeting.start_time).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) %></div>
+                            </div>
+                            <div class="meeting-info">
+                                <div class="meeting-title"><%= meeting.title %></div>
+                                <div class="meeting-lead"><%= meeting.lead_name %></div>
+                            </div>
+                            <span class="meeting-type-badge badge badge-<%= meeting.meeting_type %>"><%= meeting.meeting_type %></span>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Cost Summary -->
+        <div class="card widget-card">
+            <div class="card-header">
+                <h3 class="card-title">Cost Summary</h3>
+                <span class="badge">This Month</span>
+            </div>
+            <div style="padding: 0.5rem 0;">
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--gray);">Total Spend</span>
+                    <span style="font-weight: 600;">$<%= stats.costs.total.toLocaleString() %></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--gray);">Cost Per Lead</span>
+                    <span style="font-weight: 600; color: var(--accent);">$<%= stats.costs.cpl %></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+                    <span style="color: var(--gray);">Revenue</span>
+                    <span style="font-weight: 600; color: var(--success);">$<%= stats.revenue.total.toLocaleString() %></span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
+                    <span style="color: var(--gray);">ROI</span>
+                    <span style="font-weight: 600; color: var(--success);"><%= Math.round(((stats.revenue.total - stats.costs.total) / stats.costs.total) * 100) %>%</span>
+                </div>
+            </div>
+            <a href="/costs" class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem; justify-content: center;">View Details</a>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+            <h3 class="card-title">Recent Activity</h3>
+        </div>
+        <div class="activity-feed">
+            <% activityFeed.slice(0, 6).forEach(activity => { %>
+                <div class="activity-item">
+                    <div class="activity-avatar <%= activity.user === 'System' ? 'system' : '' %>">
+                        <%= activity.user_avatar %>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-text">
+                            <strong><%= activity.user %></strong> <%= activity.action %> <span class="entity"><%= activity.entity %></span>
+                        </div>
+                        <div class="activity-time"><%= activity.time %></div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <!-- Recent Leads -->
+    <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+            <h3 class="card-title">Recent Leads</h3>
+            <a href="/leads" class="btn btn-secondary btn-sm">View All</a>
+        </div>
+
+        <% if (recentLeads.length === 0) { %>
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 48px; height: 48px;">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <p>No leads yet. They'll appear here when visitors submit the contact form.</p>
+            </div>
+        <% } else { %>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% recentLeads.forEach(lead => { %>
+                            <tr>
+                                <td><strong><%= lead.name %></strong></td>
+                                <td><a href="mailto:<%= lead.email %>"><%= lead.email %></a></td>
+                                <td style="color: var(--gray); text-transform: capitalize;"><%= lead.source %></td>
+                                <td>
+                                    <span class="badge badge-<%= lead.status %>">
+                                        <%= lead.status %>
+                                    </span>
+                                </td>
+                                <td style="color: var(--gray);">
+                                    <%= new Date(lead.created_at).toLocaleDateString() %>
+                                </td>
+                                <td>
+                                    <a href="/leads/<%= lead.id %>" class="btn btn-secondary btn-sm">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
+    </div>
+</main>
+
+<%- include('partials/charts') %>
+<%- include('partials/modals') %>
+
+<script>
+// Initialize charts with data passed from server
+document.addEventListener('DOMContentLoaded', function() {
+    // Leads Over Time Chart
+    renderLineChart('leadsChart', <%= JSON.stringify(chartData.leadsOverTime) %>, { height: 220 });
+
+    // Lead Sources Pie Chart
+    renderPieChart('sourcesChart', <%= JSON.stringify(chartData.leadSources) %>, { size: 140, donut: true });
+
+    // Conversion Funnel
+    renderHorizontalBarChart('funnelChart', <%= JSON.stringify(chartData.conversionFunnel) %>);
+});
+</script>

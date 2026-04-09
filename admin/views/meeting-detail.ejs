@@ -1,0 +1,244 @@
+<%- include('partials/sidebar', { user, active: 'calendar' }) %>
+
+<main class="main">
+    <div class="page-header">
+        <div>
+            <a href="/calendar" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Calendar
+            </a>
+            <h1 class="page-title"><%= meeting.title %></h1>
+        </div>
+        <span class="badge badge-<%= meeting.status %>" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+            <%= meeting.status %>
+        </span>
+    </div>
+
+    <div class="detail-grid">
+        <!-- Main Info -->
+        <div class="detail-main">
+            <!-- Meeting Info Card -->
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1.25rem;">Meeting Details</h3>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Date</span>
+                        <span class="info-value"><%= new Date(meeting.start_time).toLocaleDateString('en-AU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Time</span>
+                        <span class="info-value">
+                            <%= new Date(meeting.start_time).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }) %>
+                            -
+                            <%= new Date(meeting.end_time).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }) %>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Type</span>
+                        <span class="badge badge-<%= meeting.meeting_type %>"><%= meeting.meeting_type.replace('_', ' ') %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Location</span>
+                        <span class="info-value"><%= meeting.location || 'Not specified' %></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lead Info Card -->
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1.25rem;">Lead Information</h3>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Name</span>
+                        <a href="/leads/<%= meeting.lead_id %>" class="info-value" style="color: var(--accent);"><%= meeting.lead_name %></a>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email</span>
+                        <a href="mailto:<%= meeting.lead_email %>" class="info-value"><%= meeting.lead_email %></a>
+                    </div>
+                </div>
+
+                <% if (meeting.description) { %>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                        <span class="info-label">Description</span>
+                        <p style="margin-top: 0.5rem; color: var(--gray-light);"><%= meeting.description %></p>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Notes Card -->
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1rem;">Meeting Notes</h3>
+
+                <textarea class="form-textarea" rows="5" placeholder="Add meeting notes, discussion points, action items..." id="meetingNotes"><%= meeting.notes || '' %></textarea>
+                <button class="btn btn-secondary" style="margin-top: 1rem;" onclick="saveNotes()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Save Notes
+                </button>
+            </div>
+
+            <!-- Outcome Card -->
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1rem;">Outcome</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Meeting Result</label>
+                    <select class="form-select" id="meetingOutcome">
+                        <option value="">Select outcome...</option>
+                        <option value="positive" <%= meeting.outcome === 'positive' ? 'selected' : '' %>>Positive - Moving forward</option>
+                        <option value="neutral" <%= meeting.outcome === 'neutral' ? 'selected' : '' %>>Neutral - Follow up needed</option>
+                        <option value="negative" <%= meeting.outcome === 'negative' ? 'selected' : '' %>>Negative - Not interested</option>
+                        <option value="no_show" <%= meeting.outcome === 'no_show' ? 'selected' : '' %>>No Show</option>
+                        <option value="rescheduled" <%= meeting.outcome === 'rescheduled' ? 'selected' : '' %>>Rescheduled</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Next Steps</label>
+                    <textarea class="form-textarea" rows="3" placeholder="What happens next?" id="nextSteps"></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveOutcome()">
+                    Save Outcome
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar Actions -->
+        <div class="detail-sidebar">
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1rem;">Quick Actions</h3>
+
+                <div class="action-buttons">
+                    <% if (meeting.meeting_type === 'video') { %>
+                        <button class="btn btn-primary btn-block">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="23 7 16 12 23 17 23 7"/>
+                                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                            </svg>
+                            Join Video Call
+                        </button>
+                    <% } else if (meeting.meeting_type === 'call') { %>
+                        <button class="btn btn-primary btn-block">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            Start Call
+                        </button>
+                    <% } %>
+
+                    <a href="mailto:<%= meeting.lead_email %>" class="btn btn-secondary btn-block">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        Send Email
+                    </a>
+
+                    <button class="btn btn-secondary btn-block" onclick="openRescheduleModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        Reschedule
+                    </button>
+
+                    <% if (meeting.status === 'scheduled') { %>
+                        <button class="btn btn-secondary btn-block" style="color: var(--success);" onclick="markComplete()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Mark Completed
+                        </button>
+
+                        <button class="btn btn-secondary btn-block" style="color: var(--danger);" onclick="cancelMeeting()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                            Cancel Meeting
+                        </button>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Meeting Info -->
+            <div class="card">
+                <h3 class="card-title" style="margin-bottom: 1rem;">Info</h3>
+
+                <div style="font-size: 0.9rem;">
+                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                        <span style="color: var(--gray);">Created</span>
+                        <span><%= new Date().toLocaleDateString('en-AU') %></span>
+                    </div>
+                    <% if (meeting.calendly_event_id) { %>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                            <span style="color: var(--gray);">Source</span>
+                            <span class="badge">Calendly</span>
+                        </div>
+                    <% } %>
+                    <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+                        <span style="color: var(--gray);">Duration</span>
+                        <span><%= Math.round((new Date(meeting.end_time) - new Date(meeting.start_time)) / 60000) %> min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/modals') %>
+
+<script>
+function saveNotes() {
+    const notes = document.getElementById('meetingNotes').value;
+    console.log('Save notes:', notes);
+    alert('Notes saved! (UI Demo)');
+}
+
+function saveOutcome() {
+    const outcome = document.getElementById('meetingOutcome').value;
+    const nextSteps = document.getElementById('nextSteps').value;
+    console.log('Save outcome:', { outcome, nextSteps });
+    alert('Outcome saved! (UI Demo)');
+}
+
+function markComplete() {
+    openConfirmModal(
+        'Mark as Completed',
+        'Are you sure you want to mark this meeting as completed?',
+        () => {
+            console.log('Mark complete');
+            alert('Meeting marked as completed! (UI Demo)');
+        }
+    );
+}
+
+function cancelMeeting() {
+    openConfirmModal(
+        'Cancel Meeting',
+        'Are you sure you want to cancel this meeting? The lead will be notified.',
+        () => {
+            console.log('Cancel meeting');
+            alert('Meeting cancelled! (UI Demo)');
+        }
+    );
+}
+
+function openRescheduleModal() {
+    openModal('Reschedule Meeting', 'scheduleMeetingModal');
+    // Pre-fill with current meeting data
+}
+</script>

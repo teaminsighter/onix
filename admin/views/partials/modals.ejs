@@ -1,0 +1,396 @@
+<!-- Generic Modal Container -->
+<div class="modal-overlay" id="modalOverlay" style="display: none;">
+    <div class="modal" id="modalContent">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modalTitle">Modal Title</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Dynamic content -->
+        </div>
+    </div>
+</div>
+
+<!-- Schedule Meeting Modal Template -->
+<template id="scheduleMeetingModal">
+    <form id="scheduleMeetingForm" onsubmit="handleScheduleMeeting(event)">
+        <div class="form-group">
+            <label class="form-label">Lead</label>
+            <select class="form-select" name="lead_id" required>
+                <option value="">Select a lead...</option>
+                <option value="1">John Smith - john@example.com</option>
+                <option value="2">Sarah Johnson - sarah@example.com</option>
+                <option value="3">Mike Brown - mike@example.com</option>
+                <option value="4">Emily Davis - emily@example.com</option>
+                <option value="5">Chris Wilson - chris@example.com</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Meeting Title</label>
+            <input type="text" class="form-input" name="title" placeholder="e.g., Initial Consultation" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Date</label>
+                <input type="date" class="form-input" name="date" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Time</label>
+                <input type="time" class="form-input" name="time" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Duration</label>
+                <select class="form-select" name="duration">
+                    <option value="15">15 minutes</option>
+                    <option value="30" selected>30 minutes</option>
+                    <option value="45">45 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="90">1.5 hours</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Meeting Type</label>
+                <select class="form-select" name="type">
+                    <option value="call">Phone Call</option>
+                    <option value="video">Video Call</option>
+                    <option value="in_person">In Person</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Location / Link</label>
+            <input type="text" class="form-input" name="location" placeholder="e.g., Zoom, Google Meet, Office">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-textarea" name="notes" rows="3" placeholder="Meeting agenda or notes..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Schedule Meeting</button>
+        </div>
+    </form>
+</template>
+
+<!-- Add Cost Entry Modal Template -->
+<template id="addCostModal">
+    <form id="addCostForm" onsubmit="handleAddCost(event)">
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Source</label>
+                <select class="form-select" name="source" required>
+                    <option value="">Select source...</option>
+                    <option value="facebook">Facebook Ads</option>
+                    <option value="google">Google Ads</option>
+                    <option value="linkedin">LinkedIn Ads</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Month</label>
+                <input type="month" class="form-input" name="month" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Amount ($)</label>
+            <input type="number" class="form-input" name="amount" step="0.01" min="0" placeholder="0.00" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Campaign Name</label>
+            <input type="text" class="form-input" name="campaign" placeholder="e.g., Q2 Lead Gen Campaign">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-textarea" name="notes" rows="2" placeholder="Additional notes..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Entry</button>
+        </div>
+    </form>
+</template>
+
+<!-- Add Deal Modal Template -->
+<template id="addDealModal">
+    <form id="addDealForm" onsubmit="handleAddDeal(event)">
+        <div class="form-group">
+            <label class="form-label">Lead</label>
+            <select class="form-select" name="lead_id" required>
+                <option value="">Select a lead...</option>
+                <option value="6">Lisa Anderson - lisa@example.com</option>
+                <option value="5">Chris Wilson - chris@example.com</option>
+                <option value="4">Emily Davis - emily@example.com</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Deal Title</label>
+            <input type="text" class="form-input" name="title" placeholder="e.g., Premium Package" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Amount ($)</label>
+                <input type="number" class="form-input" name="amount" step="0.01" min="0" placeholder="0.00" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Status</label>
+                <select class="form-select" name="status">
+                    <option value="pending">Pending</option>
+                    <option value="won">Won</option>
+                    <option value="lost">Lost</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea class="form-textarea" name="notes" rows="2" placeholder="Deal notes..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Deal</button>
+        </div>
+    </form>
+</template>
+
+<!-- Add User Modal Template -->
+<template id="addUserModal">
+    <form id="addUserForm" onsubmit="handleAddUser(event)">
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" name="full_name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" name="username" placeholder="johndoe" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" name="email" placeholder="john@onix.com" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Role</label>
+            <select class="form-select" name="role" required>
+                <option value="sales">Sales</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Temporary Password</label>
+            <input type="password" class="form-input" name="password" placeholder="Min 8 characters" minlength="8" required>
+            <span class="form-hint">User will be prompted to change on first login</span>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create User</button>
+        </div>
+    </form>
+</template>
+
+<!-- Edit Lead Modal Template -->
+<template id="editLeadModal">
+    <form id="editLeadForm" onsubmit="handleEditLead(event)">
+        <input type="hidden" name="lead_id" id="editLeadId">
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-input" name="name" id="editLeadName" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" name="email" id="editLeadEmail" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-input" name="phone" id="editLeadPhone">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Priority</label>
+                <select class="form-select" name="priority" id="editLeadPriority">
+                    <option value="low">Low</option>
+                    <option value="normal">Normal</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-select" name="status" id="editLeadStatus">
+                <option value="new">New</option>
+                <option value="contacted">Contacted</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="converted">Converted</option>
+                <option value="lost">Lost</option>
+            </select>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</template>
+
+<!-- Configure Integration Modal Template -->
+<template id="configureIntegrationModal">
+    <form id="configureIntegrationForm" onsubmit="handleConfigureIntegration(event)">
+        <input type="hidden" name="integration_name" id="integrationName">
+        <div id="integrationFields">
+            <!-- Dynamic fields based on integration -->
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Configuration</button>
+        </div>
+    </form>
+</template>
+
+<!-- Confirmation Modal Template -->
+<template id="confirmModal">
+    <div class="confirm-content">
+        <p id="confirmMessage" style="margin-bottom: 1.5rem; color: var(--gray-light); line-height: 1.6;"></p>
+        <div class="modal-actions" style="margin-top: 0; padding-top: 0; border-top: none;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmButton" onclick="handleConfirm()">Confirm</button>
+        </div>
+    </div>
+</template>
+
+<script>
+// Modal Functions
+function openModal(title, templateId) {
+    const overlay = document.getElementById('modalOverlay');
+    const titleEl = document.getElementById('modalTitle');
+    const bodyEl = document.getElementById('modalBody');
+    const template = document.getElementById(templateId);
+
+    if (!template) {
+        console.error('Template not found:', templateId);
+        return;
+    }
+
+    titleEl.textContent = title;
+    bodyEl.innerHTML = template.innerHTML;
+    overlay.style.display = 'flex';
+
+    // Focus first input
+    setTimeout(() => {
+        const firstInput = bodyEl.querySelector('input, select, textarea');
+        if (firstInput) firstInput.focus();
+    }, 100);
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+}
+
+// Specific modal openers
+function openScheduleModal() {
+    openModal('Schedule Meeting', 'scheduleMeetingModal');
+    // Set default date to today
+    const dateInput = document.querySelector('#scheduleMeetingForm input[name="date"]');
+    if (dateInput) {
+        dateInput.value = new Date().toISOString().split('T')[0];
+    }
+}
+
+function openCostModal() {
+    openModal('Add Cost Entry', 'addCostModal');
+    // Set default month to current
+    const monthInput = document.querySelector('#addCostForm input[name="month"]');
+    if (monthInput) {
+        monthInput.value = new Date().toISOString().slice(0, 7);
+    }
+}
+
+function openDealModal() {
+    openModal('Add Deal', 'addDealModal');
+}
+
+function openUserModal() {
+    openModal('Add Team Member', 'addUserModal');
+}
+
+function openEditLeadModal(lead) {
+    openModal('Edit Lead', 'editLeadModal');
+    // Populate form with lead data
+    document.getElementById('editLeadId').value = lead.id;
+    document.getElementById('editLeadName').value = lead.name;
+    document.getElementById('editLeadEmail').value = lead.email;
+    document.getElementById('editLeadPhone').value = lead.phone || '';
+    document.getElementById('editLeadPriority').value = lead.priority;
+    document.getElementById('editLeadStatus').value = lead.status;
+}
+
+function openConfirmModal(title, message, onConfirm) {
+    openModal(title, 'confirmModal');
+    document.getElementById('confirmMessage').textContent = message;
+    window.pendingConfirmAction = onConfirm;
+}
+
+function handleConfirm() {
+    if (window.pendingConfirmAction) {
+        window.pendingConfirmAction();
+        window.pendingConfirmAction = null;
+    }
+    closeModal();
+}
+
+// Form handlers (placeholder - UI only for now)
+function handleScheduleMeeting(e) {
+    e.preventDefault();
+    console.log('Schedule meeting:', new FormData(e.target));
+    closeModal();
+    // Show success message
+    alert('Meeting scheduled successfully! (UI Demo)');
+}
+
+function handleAddCost(e) {
+    e.preventDefault();
+    console.log('Add cost:', new FormData(e.target));
+    closeModal();
+    alert('Cost entry added! (UI Demo)');
+}
+
+function handleAddDeal(e) {
+    e.preventDefault();
+    console.log('Add deal:', new FormData(e.target));
+    closeModal();
+    alert('Deal added! (UI Demo)');
+}
+
+function handleAddUser(e) {
+    e.preventDefault();
+    console.log('Add user:', new FormData(e.target));
+    closeModal();
+    alert('User created! (UI Demo)');
+}
+
+function handleEditLead(e) {
+    e.preventDefault();
+    console.log('Edit lead:', new FormData(e.target));
+    closeModal();
+    alert('Lead updated! (UI Demo)');
+}
+
+function handleConfigureIntegration(e) {
+    e.preventDefault();
+    console.log('Configure integration:', new FormData(e.target));
+    closeModal();
+    alert('Integration configured! (UI Demo)');
+}
+
+// Close modal on overlay click
+document.getElementById('modalOverlay')?.addEventListener('click', (e) => {
+    if (e.target.id === 'modalOverlay') closeModal();
+});
+
+// Close modal on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+});
+</script>

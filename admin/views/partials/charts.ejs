@@ -1,0 +1,381 @@
+<!-- Chart Rendering Scripts -->
+<script>
+/**
+ * ONIX Admin - Simple SVG Charts
+ * Lightweight chart rendering without external libraries
+ */
+
+const ChartColors = {
+    accent: '#c9f31d',
+    info: '#3b82f6',
+    warning: '#f59e0b',
+    success: '#22c55e',
+    danger: '#ef4444',
+    purple: '#8b5cf6',
+    gray: '#888888'
+};
+
+const DefaultColors = [
+    ChartColors.accent,
+    ChartColors.info,
+    ChartColors.warning,
+    ChartColors.success,
+    ChartColors.purple
+];
+
+/**
+ * Render a line chart
+ */
+function renderLineChart(containerId, data, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const width = options.width || container.clientWidth || 400;
+    const height = options.height || 200;
+    const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+
+    const maxVal = Math.max(...data.data) * 1.1;
+    const minVal = Math.min(...data.data) * 0.9;
+    const range = maxVal - minVal || 1;
+
+    const xStep = chartWidth / (data.labels.length - 1 || 1);
+    const yScale = chartHeight / range;
+
+    // Generate path
+    let path = '';
+    let areaPath = '';
+    const points = data.data.map((val, i) => {
+        const x = padding.left + i * xStep;
+        const y = padding.top + chartHeight - ((val - minVal) * yScale);
+        return { x, y, val };
+    });
+
+    points.forEach((p, i) => {
+        path += (i === 0 ? 'M' : 'L') + `${p.x},${p.y}`;
+    });
+
+    // Area fill path
+    areaPath = path + `L${points[points.length - 1].x},${height - padding.bottom}L${padding.left},${height - padding.bottom}Z`;
+
+    const color = data.colors?.[0] || ChartColors.accent;
+
+    container.innerHTML = `
+        <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
+            <defs>
+                <linearGradient id="lineGradient_${containerId}" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:${color};stop-opacity:0.3"/>
+                    <stop offset="100%" style="stop-color:${color};stop-opacity:0"/>
+                </linearGradient>
+            </defs>
+
+            <!-- Grid lines -->
+            ${[0, 0.25, 0.5, 0.75, 1].map(pct => {
+                const y = padding.top + chartHeight * (1 - pct);
+                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4"/>`;
+            }).join('')}
+
+            <!-- Area fill -->
+            <path d="${areaPath}" fill="url(#lineGradient_${containerId})"/>
+
+            <!-- Line -->
+            <path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- Points -->
+            ${points.map(p => `
+                <circle cx="${p.x}" cy="${p.y}" r="4" fill="${color}" stroke="var(--bg2)" stroke-width="2"/>
+            `).join('')}
+
+            <!-- X-axis labels -->
+            ${data.labels.map((label, i) => `
+                <text x="${padding.left + i * xStep}" y="${height - 10}" text-anchor="middle" fill="var(--gray)" font-size="11">${label}</text>
+            `).join('')}
+
+            <!-- Y-axis labels -->
+            ${[0, 0.5, 1].map(pct => {
+                const val = minVal + range * pct;
+                const y = padding.top + chartHeight * (1 - pct);
+                return `<text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" fill="var(--gray)" font-size="11">${Math.round(val)}</text>`;
+            }).join('')}
+        </svg>
+    `;
+}
+
+/**
+ * Render a bar chart
+ */
+function renderBarChart(containerId, data, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const width = options.width || container.clientWidth || 400;
+    const height = options.height || 200;
+    const padding = { top: 20, right: 20, bottom: 50, left: 50 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+
+    const maxVal = Math.max(...data.data) * 1.1;
+    const barCount = data.data.length;
+    const barWidth = (chartWidth / barCount) * 0.6;
+    const barGap = (chartWidth / barCount) * 0.4;
+
+    const colors = data.colors || DefaultColors;
+
+    container.innerHTML = `
+        <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
+            <!-- Grid lines -->
+            ${[0, 0.25, 0.5, 0.75, 1].map(pct => {
+                const y = padding.top + chartHeight * (1 - pct);
+                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4"/>`;
+            }).join('')}
+
+            <!-- Bars -->
+            ${data.data.map((val, i) => {
+                const barHeight = (val / maxVal) * chartHeight;
+                const x = padding.left + i * (barWidth + barGap) + barGap / 2;
+                const y = padding.top + chartHeight - barHeight;
+                const color = colors[i % colors.length];
+                return `
+                    <rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" fill="${color}" rx="4" ry="4">
+                        <title>${data.labels[i]}: ${val}</title>
+                    </rect>
+                    <text x="${x + barWidth / 2}" y="${y - 5}" text-anchor="middle" fill="var(--white)" font-size="11" font-weight="600">${val}</text>
+                `;
+            }).join('')}
+
+            <!-- X-axis labels -->
+            ${data.labels.map((label, i) => {
+                const x = padding.left + i * (barWidth + barGap) + barGap / 2 + barWidth / 2;
+                return `<text x="${x}" y="${height - 10}" text-anchor="middle" fill="var(--gray)" font-size="10">${label}</text>`;
+            }).join('')}
+
+            <!-- Y-axis labels -->
+            ${[0, 0.5, 1].map(pct => {
+                const val = maxVal * pct;
+                const y = padding.top + chartHeight * (1 - pct);
+                return `<text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" fill="var(--gray)" font-size="11">${Math.round(val)}</text>`;
+            }).join('')}
+        </svg>
+    `;
+}
+
+/**
+ * Render a horizontal bar chart (for funnel)
+ */
+function renderHorizontalBarChart(containerId, data, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const maxVal = Math.max(...data.data);
+    const colors = data.colors || [ChartColors.accent];
+
+    container.innerHTML = `
+        <div class="funnel-chart">
+            ${data.data.map((val, i) => {
+                const pct = (val / maxVal * 100).toFixed(0);
+                const displayPct = data.percentages ? data.percentages[i] : `${pct}%`;
+                return `
+                    <div class="funnel-step" style="--width: ${pct}%">
+                        <span class="funnel-label">${data.labels[i]}</span>
+                        <span class="funnel-value">${val}<span class="funnel-percentage">${displayPct}</span></span>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+/**
+ * Render a pie/donut chart
+ */
+function renderPieChart(containerId, data, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const size = options.size || 150;
+    const donut = options.donut !== false;
+    const strokeWidth = donut ? 30 : size / 2;
+    const radius = (size - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+
+    const total = data.data.reduce((a, b) => a + b, 0);
+    const colors = data.colors || DefaultColors;
+
+    let currentOffset = 0;
+    const segments = data.data.map((val, i) => {
+        const pct = val / total;
+        const dashArray = `${circumference * pct} ${circumference * (1 - pct)}`;
+        const dashOffset = -currentOffset;
+        currentOffset += circumference * pct;
+        return { pct, dashArray, dashOffset, color: colors[i % colors.length], val, label: data.labels[i] };
+    });
+
+    container.innerHTML = `
+        <div class="pie-chart-container">
+            <div class="pie-visual">
+                <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                    ${segments.map(seg => `
+                        <circle
+                            cx="${size / 2}"
+                            cy="${size / 2}"
+                            r="${radius}"
+                            fill="none"
+                            stroke="${seg.color}"
+                            stroke-width="${strokeWidth}"
+                            stroke-dasharray="${seg.dashArray}"
+                            stroke-dashoffset="${seg.dashOffset}"
+                            transform="rotate(-90 ${size / 2} ${size / 2})"
+                        >
+                            <title>${seg.label}: ${seg.val} (${(seg.pct * 100).toFixed(1)}%)</title>
+                        </circle>
+                    `).join('')}
+                    ${donut ? `
+                        <text x="${size / 2}" y="${size / 2}" text-anchor="middle" dominant-baseline="middle" fill="var(--white)" font-size="24" font-weight="700">${total}</text>
+                        <text x="${size / 2}" y="${size / 2 + 18}" text-anchor="middle" fill="var(--gray)" font-size="11">Total</text>
+                    ` : ''}
+                </svg>
+            </div>
+            <div class="pie-legend">
+                ${segments.map(seg => `
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: ${seg.color}"></span>
+                        <span class="legend-label">${seg.label}</span>
+                        <span class="legend-value">${(seg.pct * 100).toFixed(1)}%</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Render a mini sparkline
+ */
+function renderSparkline(containerId, data, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const width = options.width || 100;
+    const height = options.height || 30;
+    const padding = 2;
+
+    const maxVal = Math.max(...data);
+    const minVal = Math.min(...data);
+    const range = maxVal - minVal || 1;
+
+    const xStep = (width - padding * 2) / (data.length - 1 || 1);
+    const yScale = (height - padding * 2) / range;
+
+    let path = '';
+    data.forEach((val, i) => {
+        const x = padding + i * xStep;
+        const y = padding + (height - padding * 2) - ((val - minVal) * yScale);
+        path += (i === 0 ? 'M' : 'L') + `${x},${y}`;
+    });
+
+    const color = options.color || ChartColors.accent;
+
+    container.innerHTML = `
+        <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+            <path d="${path}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    `;
+}
+
+/**
+ * Render a dual-axis line chart (cost vs revenue)
+ */
+function renderDualAxisChart(containerId, data, options = {}) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const width = options.width || container.clientWidth || 400;
+    const height = options.height || 200;
+    const padding = { top: 20, right: 60, bottom: 40, left: 60 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+
+    const maxCost = Math.max(...data.costs) * 1.2;
+    const maxRevenue = Math.max(...data.revenue) * 1.2;
+
+    const xStep = chartWidth / (data.labels.length - 1 || 1);
+
+    // Cost line (left axis)
+    let costPath = '';
+    data.costs.forEach((val, i) => {
+        const x = padding.left + i * xStep;
+        const y = padding.top + chartHeight - ((val / maxCost) * chartHeight);
+        costPath += (i === 0 ? 'M' : 'L') + `${x},${y}`;
+    });
+
+    // Revenue line (right axis)
+    let revenuePath = '';
+    data.revenue.forEach((val, i) => {
+        const x = padding.left + i * xStep;
+        const y = padding.top + chartHeight - ((val / maxRevenue) * chartHeight);
+        revenuePath += (i === 0 ? 'M' : 'L') + `${x},${y}`;
+    });
+
+    container.innerHTML = `
+        <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
+            <!-- Grid lines -->
+            ${[0, 0.5, 1].map(pct => {
+                const y = padding.top + chartHeight * (1 - pct);
+                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4"/>`;
+            }).join('')}
+
+            <!-- Cost line -->
+            <path d="${costPath}" fill="none" stroke="${ChartColors.danger}" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- Revenue line -->
+            <path d="${revenuePath}" fill="none" stroke="${ChartColors.success}" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- X-axis labels -->
+            ${data.labels.map((label, i) => `
+                <text x="${padding.left + i * xStep}" y="${height - 10}" text-anchor="middle" fill="var(--gray)" font-size="11">${label}</text>
+            `).join('')}
+
+            <!-- Left Y-axis (Cost) -->
+            <text x="${15}" y="${padding.top - 5}" fill="${ChartColors.danger}" font-size="10">Cost</text>
+            ${[0, 0.5, 1].map(pct => {
+                const val = maxCost * pct;
+                const y = padding.top + chartHeight * (1 - pct);
+                return `<text x="${padding.left - 10}" y="${y + 4}" text-anchor="end" fill="${ChartColors.danger}" font-size="10">$${(val / 1000).toFixed(0)}k</text>`;
+            }).join('')}
+
+            <!-- Right Y-axis (Revenue) -->
+            <text x="${width - 15}" y="${padding.top - 5}" fill="${ChartColors.success}" font-size="10" text-anchor="end">Revenue</text>
+            ${[0, 0.5, 1].map(pct => {
+                const val = maxRevenue * pct;
+                const y = padding.top + chartHeight * (1 - pct);
+                return `<text x="${width - padding.right + 10}" y="${y + 4}" text-anchor="start" fill="${ChartColors.success}" font-size="10">$${(val / 1000).toFixed(0)}k</text>`;
+            }).join('')}
+
+            <!-- Legend -->
+            <circle cx="${width / 2 - 50}" cy="${height - 5}" r="4" fill="${ChartColors.danger}"/>
+            <text x="${width / 2 - 42}" y="${height - 2}" fill="var(--gray)" font-size="10">Cost</text>
+            <circle cx="${width / 2 + 20}" cy="${height - 5}" r="4" fill="${ChartColors.success}"/>
+            <text x="${width / 2 + 28}" y="${height - 2}" fill="var(--gray)" font-size="10">Revenue</text>
+        </svg>
+    `;
+}
+
+// Initialize charts when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-render any charts with data attributes
+    document.querySelectorAll('[data-chart]').forEach(el => {
+        const type = el.dataset.chart;
+        const data = JSON.parse(el.dataset.chartData || '{}');
+        const options = JSON.parse(el.dataset.chartOptions || '{}');
+
+        switch(type) {
+            case 'line': renderLineChart(el.id, data, options); break;
+            case 'bar': renderBarChart(el.id, data, options); break;
+            case 'pie': renderPieChart(el.id, data, options); break;
+            case 'funnel': renderHorizontalBarChart(el.id, data, options); break;
+            case 'dual': renderDualAxisChart(el.id, data, options); break;
+        }
+    });
+});
+</script>

@@ -1,0 +1,272 @@
+<%- include('partials/sidebar', { user, active: 'calendar' }) %>
+
+<main class="main">
+    <div class="page-header">
+        <h1 class="page-title">Calendar</h1>
+        <div class="header-actions">
+            <div class="view-toggle">
+                <button class="btn btn-secondary btn-sm active" data-view="month">Month</button>
+                <button class="btn btn-secondary btn-sm" data-view="week">Week</button>
+                <button class="btn btn-secondary btn-sm" data-view="list">List</button>
+            </div>
+            <button class="btn btn-primary" onclick="openScheduleModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Schedule Meeting
+            </button>
+        </div>
+    </div>
+
+    <!-- Calendar Navigation -->
+    <div class="calendar-nav">
+        <button class="btn btn-secondary btn-sm" id="prevBtn">&larr; Prev</button>
+        <h2 class="calendar-title" id="calendarTitle">April 2026</h2>
+        <button class="btn btn-secondary btn-sm" id="nextBtn">Next &rarr;</button>
+        <button class="btn btn-secondary btn-sm" id="todayBtn">Today</button>
+    </div>
+
+    <!-- Month View -->
+    <div class="calendar-view" id="monthView">
+        <div class="calendar-grid">
+            <div class="calendar-header-row">
+                <div class="calendar-day-header">Sun</div>
+                <div class="calendar-day-header">Mon</div>
+                <div class="calendar-day-header">Tue</div>
+                <div class="calendar-day-header">Wed</div>
+                <div class="calendar-day-header">Thu</div>
+                <div class="calendar-day-header">Fri</div>
+                <div class="calendar-day-header">Sat</div>
+            </div>
+            <div class="calendar-body" id="calendarBody">
+                <!-- Days rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Week View -->
+    <div class="calendar-view" id="weekView" style="display: none;">
+        <div class="card" style="overflow-x: auto;">
+            <div class="week-grid" id="weekGrid">
+                <!-- Week grid rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- List View -->
+    <div class="calendar-view" id="listView" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Upcoming Meetings</h3>
+                <span style="color: var(--gray);"><%= meetings.filter(m => m.status === 'scheduled').length %> scheduled</span>
+            </div>
+            <div class="meetings-list">
+                <% meetings.filter(m => m.status === 'scheduled').sort((a, b) => new Date(a.start_time) - new Date(b.start_time)).forEach(meeting => { %>
+                    <a href="/meetings/<%= meeting.id %>" class="meeting-item">
+                        <div class="meeting-time">
+                            <div class="meeting-time-value"><%= new Date(meeting.start_time).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }) %></div>
+                            <div class="meeting-time-date"><%= new Date(meeting.start_time).toLocaleDateString('en-AU', { weekday: 'short', month: 'short', day: 'numeric' }) %></div>
+                        </div>
+                        <div class="meeting-info">
+                            <div class="meeting-title"><%= meeting.title %></div>
+                            <div class="meeting-lead"><%= meeting.lead_name %> &bull; <%= meeting.lead_email %></div>
+                        </div>
+                        <span class="badge badge-<%= meeting.meeting_type %>"><%= meeting.meeting_type %></span>
+                        <span class="badge badge-<%= meeting.status %>"><%= meeting.status %></span>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 1.5rem;">
+            <div class="card-header">
+                <h3 class="card-title">Past Meetings</h3>
+            </div>
+            <div class="meetings-list">
+                <% meetings.filter(m => m.status !== 'scheduled').forEach(meeting => { %>
+                    <a href="/meetings/<%= meeting.id %>" class="meeting-item">
+                        <div class="meeting-time">
+                            <div class="meeting-time-value"><%= new Date(meeting.start_time).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' }) %></div>
+                            <div class="meeting-time-date"><%= new Date(meeting.start_time).toLocaleDateString('en-AU', { weekday: 'short', month: 'short', day: 'numeric' }) %></div>
+                        </div>
+                        <div class="meeting-info">
+                            <div class="meeting-title"><%= meeting.title %></div>
+                            <div class="meeting-lead"><%= meeting.lead_name %></div>
+                        </div>
+                        <span class="badge badge-<%= meeting.meeting_type %>"><%= meeting.meeting_type %></span>
+                        <span class="badge badge-<%= meeting.status %>"><%= meeting.status %></span>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/modals') %>
+
+<script>
+// Calendar state
+const meetings = <%= JSON.stringify(meetings) %>;
+let currentDate = new Date();
+let currentView = 'month';
+
+// View toggle
+document.querySelectorAll('.view-toggle .btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.view-toggle .btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        currentView = btn.dataset.view;
+
+        document.getElementById('monthView').style.display = currentView === 'month' ? '' : 'none';
+        document.getElementById('weekView').style.display = currentView === 'week' ? '' : 'none';
+        document.getElementById('listView').style.display = currentView === 'list' ? '' : 'none';
+
+        if (currentView === 'month') renderMonth();
+        if (currentView === 'week') renderWeek();
+    });
+});
+
+// Navigation
+document.getElementById('prevBtn').addEventListener('click', () => {
+    if (currentView === 'month') {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderMonth();
+    } else if (currentView === 'week') {
+        currentDate.setDate(currentDate.getDate() - 7);
+        renderWeek();
+    }
+});
+
+document.getElementById('nextBtn').addEventListener('click', () => {
+    if (currentView === 'month') {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderMonth();
+    } else if (currentView === 'week') {
+        currentDate.setDate(currentDate.getDate() + 7);
+        renderWeek();
+    }
+});
+
+document.getElementById('todayBtn').addEventListener('click', () => {
+    currentDate = new Date();
+    if (currentView === 'month') renderMonth();
+    if (currentView === 'week') renderWeek();
+});
+
+// Get meetings for a specific date
+function getMeetingsForDate(date) {
+    return meetings.filter(m => {
+        const meetingDate = new Date(m.start_time);
+        return meetingDate.toDateString() === date.toDateString();
+    });
+}
+
+// Render month view
+function renderMonth() {
+    const title = currentDate.toLocaleDateString('en-AU', { month: 'long', year: 'numeric' });
+    document.getElementById('calendarTitle').textContent = title;
+
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+    const today = new Date();
+    let html = '';
+
+    for (let i = 0; i < 42; i++) {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
+
+        const isOtherMonth = date.getMonth() !== currentDate.getMonth();
+        const isToday = date.toDateString() === today.toDateString();
+        const dayMeetings = getMeetingsForDate(date);
+
+        let classes = 'calendar-day';
+        if (isOtherMonth) classes += ' other-month';
+        if (isToday) classes += ' today';
+
+        html += `
+            <div class="${classes}" data-date="${date.toISOString()}">
+                <div class="day-number">${date.getDate()}</div>
+                <div class="day-meetings">
+                    ${dayMeetings.slice(0, 3).map(m =>
+                        `<span class="meeting-dot ${m.status}" title="${m.title}"></span>`
+                    ).join('')}
+                    ${dayMeetings.length > 3 ? `<span style="font-size: 0.7rem; color: var(--gray);">+${dayMeetings.length - 3}</span>` : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    document.getElementById('calendarBody').innerHTML = html;
+
+    // Add click handlers
+    document.querySelectorAll('.calendar-day').forEach(day => {
+        day.addEventListener('click', () => {
+            const date = new Date(day.dataset.date);
+            openScheduleModalWithDate(date);
+        });
+    });
+}
+
+// Render week view
+function renderWeek() {
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6);
+
+    const title = `${startOfWeek.toLocaleDateString('en-AU', { month: 'short', day: 'numeric' })} - ${endOfWeek.toLocaleDateString('en-AU', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+    document.getElementById('calendarTitle').textContent = title;
+
+    const today = new Date();
+    const hours = Array.from({ length: 12 }, (_, i) => i + 8); // 8am to 7pm
+
+    let headerHtml = '<div class="week-header" style="grid-column: 1;"></div>';
+    for (let d = 0; d < 7; d++) {
+        const date = new Date(startOfWeek);
+        date.setDate(date.getDate() + d);
+        const isToday = date.toDateString() === today.toDateString();
+        headerHtml += `<div class="week-header" style="${isToday ? 'color: var(--accent);' : ''}">${date.toLocaleDateString('en-AU', { weekday: 'short', day: 'numeric' })}</div>`;
+    }
+
+    let bodyHtml = '';
+    hours.forEach(hour => {
+        bodyHtml += `<div class="time-slot time-label">${hour}:00</div>`;
+        for (let d = 0; d < 7; d++) {
+            const date = new Date(startOfWeek);
+            date.setDate(date.getDate() + d);
+            date.setHours(hour, 0, 0, 0);
+
+            const dayMeetings = meetings.filter(m => {
+                const mDate = new Date(m.start_time);
+                return mDate.toDateString() === date.toDateString() && mDate.getHours() === hour;
+            });
+
+            bodyHtml += `<div class="time-slot">
+                ${dayMeetings.map(m => `
+                    <a href="/meetings/${m.id}" style="display: block; padding: 0.25rem; background: var(--accent); color: var(--bg); border-radius: 4px; font-size: 0.75rem; margin-bottom: 2px;">
+                        ${m.title}
+                    </a>
+                `).join('')}
+            </div>`;
+        }
+    });
+
+    document.getElementById('weekGrid').innerHTML = headerHtml + bodyHtml;
+}
+
+function openScheduleModalWithDate(date) {
+    openModal('Schedule Meeting', 'scheduleMeetingModal');
+    const dateInput = document.querySelector('#scheduleMeetingForm input[name="date"]');
+    if (dateInput) {
+        dateInput.value = date.toISOString().split('T')[0];
+    }
+}
+
+// Initial render
+renderMonth();
+</script>

@@ -1,0 +1,429 @@
+<%- include('partials/sidebar', { user, active: 'settings' }) %>
+
+<main class="main">
+    <div class="page-header">
+        <h1 class="page-title">Settings</h1>
+    </div>
+
+    <div class="settings-layout">
+        <!-- Settings Tabs -->
+        <div class="settings-tabs">
+            <button class="settings-tab active" data-tab="company">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Company Profile
+            </button>
+            <button class="settings-tab" data-tab="integrations">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Integrations
+            </button>
+            <button class="settings-tab" data-tab="notifications">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                Notifications
+            </button>
+            <button class="settings-tab" data-tab="data">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                </svg>
+                Data & Export
+            </button>
+        </div>
+
+        <!-- Settings Content -->
+        <div class="settings-content">
+            <!-- Company Profile Tab -->
+            <div class="settings-panel active" id="companyPanel">
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 1.5rem;">Company Information</h3>
+
+                    <form id="companyForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" class="form-input" name="company_name" value="<%= companyProfile.name %>">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" name="email" value="<%= companyProfile.email %>">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <input type="tel" class="form-input" name="phone" value="<%= companyProfile.phone %>">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Timezone</label>
+                                <select class="form-select" name="timezone">
+                                    <option value="Australia/Sydney" <%= companyProfile.timezone === 'Australia/Sydney' ? 'selected' : '' %>>Australia/Sydney (AEST)</option>
+                                    <option value="Australia/Melbourne" <%= companyProfile.timezone === 'Australia/Melbourne' ? 'selected' : '' %>>Australia/Melbourne (AEST)</option>
+                                    <option value="Australia/Brisbane" <%= companyProfile.timezone === 'Australia/Brisbane' ? 'selected' : '' %>>Australia/Brisbane (AEST)</option>
+                                    <option value="Australia/Perth" <%= companyProfile.timezone === 'Australia/Perth' ? 'selected' : '' %>>Australia/Perth (AWST)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-input" name="address" value="<%= companyProfile.address %>">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Company Logo</label>
+                            <div class="logo-upload">
+                                <div class="logo-preview">
+                                    <% if (companyProfile.logo_url) { %>
+                                        <img src="<%= companyProfile.logo_url %>" alt="Company Logo">
+                                    <% } else { %>
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                                        </svg>
+                                    <% } %>
+                                </div>
+                                <div class="logo-actions">
+                                    <button type="button" class="btn btn-secondary btn-sm">Upload Logo</button>
+                                    <span style="color: var(--gray); font-size: 0.8rem;">PNG or JPG, max 2MB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="saveCompanyProfile()">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Integrations Tab -->
+            <div class="settings-panel" id="integrationsPanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Connected Services</h3>
+                        <span style="color: var(--gray); font-size: 0.9rem;"><%= integrations.filter(i => i.enabled).length %> of <%= integrations.length %> connected</span>
+                    </div>
+
+                    <div class="integrations-list">
+                        <% integrations.forEach(integration => { %>
+                            <div class="integration-item">
+                                <div class="integration-info">
+                                    <div class="integration-icon">
+                                        <% if (integration.icon === 'bar-chart') { %>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>
+                                            </svg>
+                                        <% } else if (integration.icon === 'calendar') { %>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                        <% } else if (integration.icon === 'inbox') { %>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
+                                            </svg>
+                                        <% } else if (integration.icon === 'message-square') { %>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                            </svg>
+                                        <% } else if (integration.icon === 'mail') { %>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                                            </svg>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <h4 class="integration-name"><%= integration.label %></h4>
+                                        <p class="integration-description"><%= integration.description %></p>
+                                    </div>
+                                </div>
+                                <div class="integration-actions">
+                                    <% if (integration.enabled) { %>
+                                        <button class="btn btn-secondary btn-sm" onclick="configureIntegration('<%= integration.name %>')">Configure</button>
+                                    <% } %>
+                                    <label class="toggle">
+                                        <input type="checkbox" <%= integration.enabled ? 'checked' : '' %> onchange="toggleIntegration('<%= integration.name %>', this.checked)">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications Tab -->
+            <div class="settings-panel" id="notificationsPanel">
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 1.5rem;">Notification Preferences</h3>
+
+                    <div class="notification-group">
+                        <h4 class="notification-group-title">Lead Notifications</h4>
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <span class="notification-label">Email me when a new lead is received</span>
+                                <span class="notification-description">Get instant email alerts for new form submissions</span>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" <%= notificationPreferences.new_lead_email ? 'checked' : '' %> name="new_lead_email">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <span class="notification-label">Slack notification for new leads</span>
+                                <span class="notification-description">Post to Slack channel when leads come in</span>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" <%= notificationPreferences.new_lead_slack ? 'checked' : '' %> name="new_lead_slack">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="notification-group">
+                        <h4 class="notification-group-title">Meeting Notifications</h4>
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <span class="notification-label">Meeting reminders</span>
+                                <span class="notification-description">Get reminded before scheduled meetings</span>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" <%= notificationPreferences.meeting_reminder ? 'checked' : '' %> name="meeting_reminder">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <span class="notification-label">Reminder timing</span>
+                                <span class="notification-description">How early to send meeting reminders</span>
+                            </div>
+                            <select class="form-select" style="width: auto;" name="meeting_reminder_minutes">
+                                <option value="15" <%= notificationPreferences.meeting_reminder_minutes === 15 ? 'selected' : '' %>>15 minutes before</option>
+                                <option value="30" <%= notificationPreferences.meeting_reminder_minutes === 30 ? 'selected' : '' %>>30 minutes before</option>
+                                <option value="60" <%= notificationPreferences.meeting_reminder_minutes === 60 ? 'selected' : '' %>>1 hour before</option>
+                                <option value="1440" <%= notificationPreferences.meeting_reminder_minutes === 1440 ? 'selected' : '' %>>1 day before</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="notification-group">
+                        <h4 class="notification-group-title">Reports & Summaries</h4>
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <span class="notification-label">Daily digest</span>
+                                <span class="notification-description">Summary of daily activity every morning</span>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" <%= notificationPreferences.daily_digest ? 'checked' : '' %> name="daily_digest">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-info">
+                                <span class="notification-label">Weekly summary</span>
+                                <span class="notification-description">Performance report every Monday</span>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" <%= notificationPreferences.weekly_summary ? 'checked' : '' %> name="weekly_summary">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary" onclick="saveNotificationPrefs()">Save Preferences</button>
+                </div>
+            </div>
+
+            <!-- Data & Export Tab -->
+            <div class="settings-panel" id="dataPanel">
+                <div class="card">
+                    <h3 class="card-title" style="margin-bottom: 1.5rem;">Export Data</h3>
+
+                    <div class="export-options">
+                        <div class="export-item">
+                            <div class="export-info">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/>
+                                </svg>
+                                <div>
+                                    <h4>Export Leads</h4>
+                                    <p>Download all leads as CSV file</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="exportLeads()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Export CSV
+                            </button>
+                        </div>
+
+                        <div class="export-item">
+                            <div class="export-info">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                <div>
+                                    <h4>Export Meetings</h4>
+                                    <p>Download meeting history as CSV</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="exportMeetings()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Export CSV
+                            </button>
+                        </div>
+
+                        <div class="export-item">
+                            <div class="export-info">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                </svg>
+                                <div>
+                                    <h4>Export Financial Data</h4>
+                                    <p>Download costs and revenue data</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="exportFinancials()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Export CSV
+                            </button>
+                        </div>
+
+                        <div class="export-item">
+                            <div class="export-info">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+                                    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                                </svg>
+                                <div>
+                                    <h4>Export Analytics Report</h4>
+                                    <p>Download comprehensive analytics PDF</p>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="exportAnalytics()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Export PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 1.5rem;">
+                    <h3 class="card-title" style="margin-bottom: 1rem; color: var(--danger);">Danger Zone</h3>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">These actions are destructive and cannot be undone.</p>
+
+                    <div class="danger-actions">
+                        <div class="danger-item">
+                            <div>
+                                <h4>Clear All Leads</h4>
+                                <p style="color: var(--gray); font-size: 0.9rem;">Permanently delete all lead data</p>
+                            </div>
+                            <button class="btn btn-secondary" style="color: var(--danger); border-color: var(--danger);" onclick="clearAllLeads()">
+                                Clear Leads
+                            </button>
+                        </div>
+                        <div class="danger-item">
+                            <div>
+                                <h4>Reset All Data</h4>
+                                <p style="color: var(--gray); font-size: 0.9rem;">Delete everything and start fresh</p>
+                            </div>
+                            <button class="btn btn-secondary" style="color: var(--danger); border-color: var(--danger);" onclick="resetAllData()">
+                                Reset Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/modals') %>
+
+<script>
+// Tab switching
+document.querySelectorAll('.settings-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab + 'Panel').classList.add('active');
+    });
+});
+
+function saveCompanyProfile() {
+    const formData = new FormData(document.getElementById('companyForm'));
+    console.log('Save company:', Object.fromEntries(formData));
+    alert('Company profile saved! (UI Demo)');
+}
+
+function toggleIntegration(name, enabled) {
+    console.log('Toggle integration:', name, enabled);
+    if (enabled) {
+        openConfigureIntegrationModal(name);
+    }
+}
+
+function configureIntegration(name) {
+    openConfigureIntegrationModal(name);
+}
+
+function saveNotificationPrefs() {
+    console.log('Save notification preferences');
+    alert('Notification preferences saved! (UI Demo)');
+}
+
+function exportLeads() {
+    console.log('Export leads');
+    alert('Leads exported! Check your downloads folder. (UI Demo)');
+}
+
+function exportMeetings() {
+    console.log('Export meetings');
+    alert('Meetings exported! Check your downloads folder. (UI Demo)');
+}
+
+function exportFinancials() {
+    console.log('Export financials');
+    alert('Financial data exported! Check your downloads folder. (UI Demo)');
+}
+
+function exportAnalytics() {
+    console.log('Export analytics');
+    alert('Analytics report exported! Check your downloads folder. (UI Demo)');
+}
+
+function clearAllLeads() {
+    openConfirmModal(
+        'Clear All Leads',
+        'This will permanently delete ALL lead data. This action cannot be undone. Are you absolutely sure?',
+        () => {
+            console.log('Clear all leads');
+            alert('All leads cleared! (UI Demo)');
+        }
+    );
+}
+
+function resetAllData() {
+    openConfirmModal(
+        'Reset All Data',
+        'This will permanently delete ALL data including leads, meetings, costs, and settings. This action CANNOT be undone. Type "RESET" to confirm.',
+        () => {
+            const confirm = prompt('Type RESET to confirm:');
+            if (confirm === 'RESET') {
+                console.log('Reset all data');
+                alert('All data has been reset! (UI Demo)');
+            }
+        }
+    );
+}
+</script>

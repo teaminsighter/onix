@@ -1,0 +1,279 @@
+<%- include('partials/sidebar', { user, active: 'pipeline' }) %>
+
+<main class="main">
+    <div class="page-header">
+        <h1 class="page-title">Pipeline</h1>
+        <div class="header-actions">
+            <div class="filters" style="display: flex; gap: 0.75rem; align-items: center;">
+                <input type="date" class="form-input" id="dateFrom" style="width: auto; padding: 0.5rem 0.75rem;">
+                <span style="color: var(--gray);">to</span>
+                <input type="date" class="form-input" id="dateTo" style="width: auto; padding: 0.5rem 0.75rem;">
+                <select class="form-select" id="sourceFilter" style="width: auto; padding: 0.5rem 0.75rem;">
+                    <option value="">All Sources</option>
+                    <option value="website">Website</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="google">Google</option>
+                    <option value="linkedin">LinkedIn</option>
+                    <option value="referral">Referral</option>
+                </select>
+            </div>
+            <a href="/leads" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+                    <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+                List View
+            </a>
+        </div>
+    </div>
+
+    <div class="kanban-board">
+        <!-- New Column -->
+        <div class="kanban-column" data-status="new">
+            <div class="column-header">
+                <span class="column-title">New</span>
+                <span class="column-count badge badge-new"><%= leads.new.length %></span>
+            </div>
+            <div class="column-cards" data-status="new">
+                <% leads.new.forEach(lead => { %>
+                    <div class="lead-card" draggable="true" data-id="<%= lead.id %>">
+                        <div class="lead-card-header">
+                            <span class="lead-name"><%= lead.name %></span>
+                            <span class="lead-priority <%= lead.priority %>"></span>
+                        </div>
+                        <div class="lead-email"><%= lead.email %></div>
+                        <div class="lead-meta">
+                            <span class="lead-source"><%= lead.source %></span>
+                            <span class="lead-date"><%= new Date(lead.created_at).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) %></span>
+                        </div>
+                        <div class="lead-actions">
+                            <a href="/leads/<%= lead.id %>" class="btn btn-sm btn-secondary">View</a>
+                            <a href="mailto:<%= lead.email %>" class="btn btn-sm btn-secondary">Email</a>
+                            <button class="btn btn-sm btn-secondary" onclick="openScheduleModalForLead(<%= lead.id %>, '<%= lead.name %>')">Schedule</button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Contacted Column -->
+        <div class="kanban-column" data-status="contacted">
+            <div class="column-header">
+                <span class="column-title">Contacted</span>
+                <span class="column-count badge badge-contacted"><%= leads.contacted.length %></span>
+            </div>
+            <div class="column-cards" data-status="contacted">
+                <% leads.contacted.forEach(lead => { %>
+                    <div class="lead-card" draggable="true" data-id="<%= lead.id %>">
+                        <div class="lead-card-header">
+                            <span class="lead-name"><%= lead.name %></span>
+                            <span class="lead-priority <%= lead.priority %>"></span>
+                        </div>
+                        <div class="lead-email"><%= lead.email %></div>
+                        <div class="lead-meta">
+                            <span class="lead-source"><%= lead.source %></span>
+                            <span class="lead-date"><%= new Date(lead.created_at).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) %></span>
+                        </div>
+                        <div class="lead-actions">
+                            <a href="/leads/<%= lead.id %>" class="btn btn-sm btn-secondary">View</a>
+                            <a href="mailto:<%= lead.email %>" class="btn btn-sm btn-secondary">Email</a>
+                            <button class="btn btn-sm btn-secondary" onclick="openScheduleModalForLead(<%= lead.id %>, '<%= lead.name %>')">Schedule</button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Scheduled Column -->
+        <div class="kanban-column" data-status="scheduled">
+            <div class="column-header">
+                <span class="column-title">Scheduled</span>
+                <span class="column-count badge badge-scheduled"><%= leads.scheduled.length %></span>
+            </div>
+            <div class="column-cards" data-status="scheduled">
+                <% leads.scheduled.forEach(lead => { %>
+                    <div class="lead-card" draggable="true" data-id="<%= lead.id %>">
+                        <div class="lead-card-header">
+                            <span class="lead-name"><%= lead.name %></span>
+                            <span class="lead-priority <%= lead.priority %>"></span>
+                        </div>
+                        <div class="lead-email"><%= lead.email %></div>
+                        <div class="lead-meta">
+                            <span class="lead-source"><%= lead.source %></span>
+                            <span class="lead-date"><%= new Date(lead.created_at).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) %></span>
+                        </div>
+                        <div class="lead-actions">
+                            <a href="/leads/<%= lead.id %>" class="btn btn-sm btn-secondary">View</a>
+                            <a href="/calendar" class="btn btn-sm btn-secondary">Calendar</a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Converted Column -->
+        <div class="kanban-column" data-status="converted">
+            <div class="column-header">
+                <span class="column-title">Converted</span>
+                <span class="column-count badge badge-converted"><%= leads.converted.length %></span>
+            </div>
+            <div class="column-cards" data-status="converted">
+                <% leads.converted.forEach(lead => { %>
+                    <div class="lead-card" draggable="true" data-id="<%= lead.id %>">
+                        <div class="lead-card-header">
+                            <span class="lead-name"><%= lead.name %></span>
+                            <span class="lead-priority <%= lead.priority %>"></span>
+                        </div>
+                        <div class="lead-email"><%= lead.email %></div>
+                        <div class="lead-meta">
+                            <span class="lead-source"><%= lead.source %></span>
+                            <span class="lead-date"><%= new Date(lead.created_at).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) %></span>
+                        </div>
+                        <div class="lead-actions">
+                            <a href="/leads/<%= lead.id %>" class="btn btn-sm btn-secondary">View</a>
+                            <button class="btn btn-sm btn-secondary" onclick="openDealModalForLead(<%= lead.id %>, '<%= lead.name %>')">Add Deal</button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+
+        <!-- Lost Column -->
+        <div class="kanban-column" data-status="lost">
+            <div class="column-header">
+                <span class="column-title">Lost</span>
+                <span class="column-count badge badge-lost"><%= leads.lost.length %></span>
+            </div>
+            <div class="column-cards" data-status="lost">
+                <% leads.lost.forEach(lead => { %>
+                    <div class="lead-card" draggable="true" data-id="<%= lead.id %>">
+                        <div class="lead-card-header">
+                            <span class="lead-name"><%= lead.name %></span>
+                            <span class="lead-priority <%= lead.priority %>"></span>
+                        </div>
+                        <div class="lead-email"><%= lead.email %></div>
+                        <div class="lead-meta">
+                            <span class="lead-source"><%= lead.source %></span>
+                            <span class="lead-date"><%= new Date(lead.created_at).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' }) %></span>
+                        </div>
+                        <div class="lead-actions">
+                            <a href="/leads/<%= lead.id %>" class="btn btn-sm btn-secondary">View</a>
+                            <button class="btn btn-sm btn-secondary" onclick="reactivateLead(<%= lead.id %>)">Reactivate</button>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('partials/modals') %>
+
+<script>
+// Drag and drop functionality
+let draggedCard = null;
+
+document.querySelectorAll('.lead-card').forEach(card => {
+    card.addEventListener('dragstart', (e) => {
+        draggedCard = card;
+        card.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    card.addEventListener('dragend', () => {
+        card.classList.remove('dragging');
+        document.querySelectorAll('.column-cards').forEach(col => {
+            col.classList.remove('drag-over');
+        });
+        draggedCard = null;
+    });
+});
+
+document.querySelectorAll('.column-cards').forEach(column => {
+    column.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        column.classList.add('drag-over');
+    });
+
+    column.addEventListener('dragleave', () => {
+        column.classList.remove('drag-over');
+    });
+
+    column.addEventListener('drop', (e) => {
+        e.preventDefault();
+        column.classList.remove('drag-over');
+
+        if (draggedCard) {
+            const newStatus = column.dataset.status;
+            const leadId = draggedCard.dataset.id;
+
+            // Move card visually
+            column.appendChild(draggedCard);
+
+            // Update counts
+            updateColumnCounts();
+
+            // Show notification (UI demo)
+            console.log(`Lead ${leadId} moved to ${newStatus}`);
+
+            // In real implementation, would call API:
+            // updateLeadStatus(leadId, newStatus);
+        }
+    });
+});
+
+function updateColumnCounts() {
+    document.querySelectorAll('.kanban-column').forEach(column => {
+        const status = column.dataset.status;
+        const count = column.querySelectorAll('.lead-card').length;
+        column.querySelector('.column-count').textContent = count;
+    });
+}
+
+function openScheduleModalForLead(leadId, leadName) {
+    openModal('Schedule Meeting', 'scheduleMeetingModal');
+    // Pre-select the lead
+    const leadSelect = document.querySelector('#scheduleMeetingForm select[name="lead_id"]');
+    if (leadSelect) {
+        // In real implementation, would set the correct option
+        console.log('Schedule meeting for lead:', leadId, leadName);
+    }
+    // Set default date
+    const dateInput = document.querySelector('#scheduleMeetingForm input[name="date"]');
+    if (dateInput) {
+        dateInput.value = new Date().toISOString().split('T')[0];
+    }
+}
+
+function openDealModalForLead(leadId, leadName) {
+    openModal('Add Deal', 'addDealModal');
+    // Pre-select the lead
+    console.log('Add deal for lead:', leadId, leadName);
+}
+
+function reactivateLead(leadId) {
+    openConfirmModal(
+        'Reactivate Lead',
+        'Are you sure you want to move this lead back to "New" status?',
+        () => {
+            console.log('Reactivate lead:', leadId);
+            alert('Lead reactivated! (UI Demo)');
+            window.location.reload();
+        }
+    );
+}
+
+// Filter functionality
+document.getElementById('sourceFilter').addEventListener('change', function() {
+    const source = this.value.toLowerCase();
+    document.querySelectorAll('.lead-card').forEach(card => {
+        const cardSource = card.querySelector('.lead-source').textContent.toLowerCase();
+        if (!source || cardSource === source) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    updateColumnCounts();
+});
+</script>

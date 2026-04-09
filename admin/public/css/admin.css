@@ -1,0 +1,1188 @@
+/**
+ * ONIX Admin Panel - Extended Styles
+ * Additional components for enhanced admin features
+ */
+
+/* ============================================
+   Navigation Divider
+   ============================================ */
+.nav-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1rem 0;
+}
+
+/* ============================================
+   Stats with Trends
+   ============================================ */
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.stat-trend {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.stat-trend.positive {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success);
+}
+
+.stat-trend.negative {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+/* ============================================
+   Charts Grid & Containers
+   ============================================ */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.chart-card {
+    min-height: 300px;
+}
+
+.chart-container {
+    position: relative;
+    min-height: 200px;
+    padding: 1rem 0;
+}
+
+.chart-container svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ============================================
+   Widgets Grid
+   ============================================ */
+.widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.widget-card {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* ============================================
+   Activity Feed
+   ============================================ */
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-avatar {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    background: var(--bg3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray);
+}
+
+.activity-avatar.system {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+.activity-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--gray-light);
+}
+
+.activity-text strong {
+    color: var(--white);
+}
+
+.activity-text .entity {
+    color: var(--accent);
+}
+
+.activity-time {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-top: 0.25rem;
+}
+
+/* ============================================
+   Kanban Board
+   ============================================ */
+.kanban-board {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    min-height: calc(100vh - 200px);
+}
+
+.kanban-column {
+    flex: 0 0 280px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 220px);
+}
+
+.column-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.column-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.column-count {
+    font-size: 0.75rem;
+}
+
+.column-cards {
+    padding: 0.75rem;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.column-cards.drag-over {
+    background: rgba(201, 243, 29, 0.05);
+}
+
+/* Lead Cards in Kanban */
+.lead-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: grab;
+    transition: all 0.2s;
+}
+
+.lead-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.lead-card.dragging {
+    opacity: 0.5;
+    cursor: grabbing;
+}
+
+.lead-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.lead-name {
+    font-weight: 600;
+    color: var(--white);
+    font-size: 0.95rem;
+}
+
+.lead-priority {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.lead-priority.high { background: var(--danger); }
+.lead-priority.normal { background: var(--warning); }
+.lead-priority.low { background: var(--gray); }
+
+.lead-email {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.lead-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-bottom: 0.75rem;
+}
+
+.lead-source {
+    text-transform: capitalize;
+}
+
+.lead-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.lead-actions .btn {
+    flex: 1;
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
+    justify-content: center;
+}
+
+/* ============================================
+   Calendar Styles
+   ============================================ */
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.calendar-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    min-width: 180px;
+}
+
+.calendar-grid {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.calendar-header-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--bg3);
+}
+
+.calendar-day-header {
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gray);
+}
+
+.calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar-day {
+    min-height: 100px;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-width: 0 1px 1px 0;
+    transition: background 0.2s;
+}
+
+.calendar-day:nth-child(7n) {
+    border-right: none;
+}
+
+.calendar-day:hover {
+    background: var(--bg3);
+}
+
+.calendar-day.other-month {
+    background: var(--bg);
+}
+
+.calendar-day.other-month .day-number {
+    color: var(--gray);
+}
+
+.calendar-day.today {
+    background: rgba(201, 243, 29, 0.1);
+}
+
+.calendar-day.today .day-number {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.day-number {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.day-meetings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+}
+
+.meeting-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+}
+
+.meeting-dot.completed {
+    background: var(--success);
+}
+
+.meeting-dot.cancelled {
+    background: var(--danger);
+}
+
+/* Week View */
+.week-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.week-header {
+    background: var(--bg3);
+    padding: 1rem 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.time-slot {
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    min-height: 60px;
+    padding: 0.25rem;
+}
+
+.time-label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    padding: 0.25rem;
+}
+
+/* Meeting List View */
+.meetings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.meeting-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.meeting-item:hover {
+    border-color: var(--accent);
+}
+
+.meeting-time {
+    min-width: 80px;
+    text-align: center;
+}
+
+.meeting-time-value {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--white);
+}
+
+.meeting-time-date {
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+.meeting-info {
+    flex: 1;
+}
+
+.meeting-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.meeting-lead {
+    font-size: 0.9rem;
+    color: var(--accent);
+}
+
+.meeting-type-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: capitalize;
+    background: var(--bg3);
+    color: var(--gray-light);
+}
+
+/* ============================================
+   Team Grid & Cards
+   ============================================ */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.team-card {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.team-card-header {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.team-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--bg);
+    margin: 0 auto;
+    background: var(--accent);
+}
+
+.team-avatar.inactive {
+    background: var(--gray);
+}
+
+.team-status {
+    position: absolute;
+    bottom: 0;
+    right: calc(50% - 40px);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--bg2);
+}
+
+.team-status.active {
+    background: var(--success);
+}
+
+.team-status.inactive {
+    background: var(--gray);
+}
+
+.team-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.team-role {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.team-email {
+    color: var(--accent);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.team-login {
+    color: var(--gray);
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.team-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* User Stats */
+.user-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--bg3);
+    border-radius: 8px;
+}
+
+.user-stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.user-stat-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+/* ============================================
+   Settings Styles
+   ============================================ */
+.settings-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.settings-section {
+    padding: 1.5rem;
+}
+
+.settings-section h3 {
+    margin-bottom: 1.25rem;
+}
+
+/* Integrations List */
+.integrations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.integration-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg3);
+    border-radius: 8px;
+    gap: 1rem;
+}
+
+.integration-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.integration-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--bg);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.integration-icon svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--accent);
+}
+
+.integration-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.integration-desc {
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.integration-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Toggle Switch */
+.toggle {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+}
+
+.toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    transition: 0.3s;
+    border-radius: 26px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background: var(--gray);
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle input:checked + .toggle-slider {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.toggle input:checked + .toggle-slider:before {
+    transform: translateX(22px);
+    background: var(--bg);
+}
+
+/* Notification Options */
+.notification-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg3);
+    border-radius: 8px;
+}
+
+.notification-item h4 {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.notification-item p {
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+/* Export Buttons */
+.export-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* ============================================
+   Detail Page Layouts
+   ============================================ */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+}
+
+.detail-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.detail-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.info-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.info-value {
+    font-weight: 500;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Back Link */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: var(--white);
+}
+
+.back-link svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+}
+
+/* ============================================
+   Funnel Chart
+   ============================================ */
+.funnel-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+.funnel-step {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.funnel-step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--width, 100%);
+    background: rgba(201, 243, 29, 0.15);
+    border-radius: 6px;
+}
+
+.funnel-label {
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+}
+
+.funnel-value {
+    position: relative;
+    z-index: 1;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+}
+
+.funnel-percentage {
+    position: relative;
+    z-index: 1;
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-left: 0.5rem;
+}
+
+/* ============================================
+   Pie Chart Legend
+   ============================================ */
+.pie-chart-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.pie-visual {
+    flex-shrink: 0;
+}
+
+.pie-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.legend-label {
+    flex: 1;
+    color: var(--gray-light);
+    font-size: 0.9rem;
+}
+
+.legend-value {
+    font-weight: 600;
+    color: var(--white);
+}
+
+/* ============================================
+   View Toggle
+   ============================================ */
+.view-toggle {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--bg3);
+    padding: 0.25rem;
+    border-radius: 8px;
+}
+
+.view-toggle .btn {
+    padding: 0.4rem 0.75rem;
+}
+
+.view-toggle .btn.active {
+    background: var(--accent);
+    color: var(--bg);
+}
+
+/* ============================================
+   Header Actions
+   ============================================ */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   Form Row
+   ============================================ */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+/* ============================================
+   Modal Styles
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--gray);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--white);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+/* ============================================
+   Costs Page Specific
+   ============================================ */
+.costs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   Badge Variants
+   ============================================ */
+.badge-admin {
+    background: rgba(139, 92, 246, 0.2);
+    color: #a78bfa;
+}
+
+.badge-manager {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--info);
+}
+
+.badge-sales {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success);
+}
+
+.badge-pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning);
+}
+
+.badge-won {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success);
+}
+
+.badge-lost {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+.badge-call {
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--info);
+}
+
+.badge-video {
+    background: rgba(201, 243, 29, 0.2);
+    color: var(--accent);
+}
+
+.badge-in_person {
+    background: rgba(139, 92, 246, 0.2);
+    color: #a78bfa;
+}
+
+.badge-completed {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success);
+}
+
+.badge-cancelled {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger);
+}
+
+/* ============================================
+   Text Utilities
+   ============================================ */
+.text-gray {
+    color: var(--gray);
+}
+
+.text-accent {
+    color: var(--accent);
+}
+
+.text-success {
+    color: var(--success);
+}
+
+.text-danger {
+    color: var(--danger);
+}
+
+.text-warning {
+    color: var(--warning);
+}
+
+/* ============================================
+   Responsive Adjustments
+   ============================================ */
+@media (max-width: 1200px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .costs-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .kanban-board {
+        flex-direction: column;
+    }
+
+    .kanban-column {
+        flex: none;
+        width: 100%;
+        max-height: 400px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar-nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pie-chart-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .integration-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .integration-toggle {
+        margin-top: 1rem;
+    }
+
+    .widgets-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
