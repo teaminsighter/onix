@@ -169,7 +169,7 @@
         if (response.ok) {
             window.location.reload();
         } else {
-            alert('Failed to add note');
+            showToast('Failed to add note', 'error');
         }
     });
 
@@ -184,7 +184,7 @@
         if (response.ok) {
             window.location.href = '/leads';
         } else {
-            alert('Failed to delete lead');
+            showToast('Failed to delete lead', 'error');
         }
     }
 </script>

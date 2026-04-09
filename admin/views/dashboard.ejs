@@ -149,7 +149,7 @@
                 </div>
                 <div style="display: flex; justify-content: space-between; padding: 0.75rem 0;">
                     <span style="color: var(--gray);">ROI</span>
-                    <span style="font-weight: 600; color: var(--success);"><%= Math.round(((stats.revenue.total - stats.costs.total) / stats.costs.total) * 100) %>%</span>
+                    <span style="font-weight: 600; color: var(--success);"><%= stats.costs.total > 0 ? Math.round(((stats.revenue.total - stats.costs.total) / stats.costs.total) * 100) : 0 %>%</span>
                 </div>
             </div>
             <a href="/costs" class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem; justify-content: center;">View Details</a>

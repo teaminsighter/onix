@@ -7,11 +7,15 @@ import { Analytics } from './analytics.js';
 
 // ============ CONFIGURATION ============
 const FORM_CONFIG = {
-    // Formspree endpoint - REPLACE with your actual form ID
-    FORMSPREE_ENDPOINT: 'https://formspree.io/f/your-form-id', // TODO: Replace with real ID
+    // ONIX Admin webhook — sends leads directly to your admin panel database
+    // Change this to your production admin URL when deployed (e.g., https://admin.onixmrkt.com/api/webhook/lead)
+    LEAD_WEBHOOK: '/api/webhook/lead',
 
-    // Webhook URL for real-time notifications (optional)
-    WEBHOOK_URL: '', // Add Slack/Discord webhook URL if needed
+    // Formspree endpoint (optional fallback — set your form ID if using Formspree)
+    FORMSPREE_ENDPOINT: '',
+
+    // Webhook URL for real-time notifications (optional — Slack/Discord)
+    WEBHOOK_URL: '',
 
     // Success/Error messages
     MESSAGES: {
@@ -109,16 +113,33 @@ async function submitForm(form) {
     };
 
     try {
-        // Submit to Formspree
-        const response = await fetch(FORM_CONFIG.FORMSPREE_ENDPOINT, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
+        let response;
 
-        if (response.ok) {
+        // Primary: submit to ONIX Admin webhook (creates lead in database)
+        if (FORM_CONFIG.LEAD_WEBHOOK) {
+            response = await fetch(FORM_CONFIG.LEAD_WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: data.name || '',
+                    email: data.email || '',
+                    phone: data.phone || '',
+                    message: data.message || '',
+                    source: 'website',
+                    page_url: window.location.href
+                })
+            });
+        }
+        // Fallback: submit to Formspree if configured
+        else if (FORM_CONFIG.FORMSPREE_ENDPOINT) {
+            response = await fetch(FORM_CONFIG.FORMSPREE_ENDPOINT, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
+        }
+
+        if (response && response.ok) {
             // Track successful submission
             Analytics.trackFormSubmit(form.id || 'contact-form', {
                 form_name: data.name,
@@ -132,7 +153,7 @@ async function submitForm(form) {
 
             return { success: true };
         } else {
-            const errorData = await response.json();
+            const errorData = response ? await response.json().catch(() => ({})) : {};
             return { success: false, error: errorData };
         }
     } catch (error) {

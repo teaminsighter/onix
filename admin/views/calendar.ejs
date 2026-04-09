@@ -260,11 +260,11 @@ function renderWeek() {
 }
 
 function openScheduleModalWithDate(date) {
-    openModal('Schedule Meeting', 'scheduleMeetingModal');
-    const dateInput = document.querySelector('#scheduleMeetingForm input[name="date"]');
-    if (dateInput) {
-        dateInput.value = date.toISOString().split('T')[0];
-    }
+    openOldModal('Schedule Meeting', 'scheduleMeetingModal');
+    setTimeout(function() {
+        var dateInput = document.querySelector('#modalBody input[name="date"]');
+        if (dateInput) dateInput.value = date.toISOString().split('T')[0];
+    }, 50);
 }
 
 // Initial render

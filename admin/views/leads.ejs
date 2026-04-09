@@ -18,7 +18,7 @@
                 class="form-input"
                 placeholder="Search leads..."
                 value="<%= filters.search || '' %>"
-                onchange="window.location.href='/leads?search=' + this.value"
+                onchange="window.location.href='/leads?search=' + encodeURIComponent(this.value)"
             >
         </div>
 
@@ -93,7 +93,7 @@
                                             View
                                         </a>
                                         <select class="form-select" style="width: auto; padding: 0.4rem 0.5rem; font-size: 0.8rem;"
-                                                onchange="updateStatus(<%= lead.id %>, this.value)">
+                                                onchange="if(this.value) updateStatus(<%= lead.id %>, this.value)">
                                             <option value="">Update...</option>
                                             <option value="new">New</option>
                                             <option value="contacted">Contacted</option>

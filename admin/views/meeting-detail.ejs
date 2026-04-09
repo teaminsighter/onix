@@ -181,7 +181,7 @@
                 <div style="font-size: 0.9rem;">
                     <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
                         <span style="color: var(--gray);">Created</span>
-                        <span><%= new Date().toLocaleDateString('en-AU') %></span>
+                        <span><%= new Date(meeting.created_at).toLocaleDateString('en-AU') %></span>
                     </div>
                     <% if (meeting.calendly_event_id) { %>
                         <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
@@ -202,43 +202,58 @@
 <%- include('partials/modals') %>
 
 <script>
+var meetingId = <%= meeting.id %>;
+
 function saveNotes() {
-    const notes = document.getElementById('meetingNotes').value;
-    console.log('Save notes:', notes);
-    alert('Notes saved! (UI Demo)');
+    var notes = document.getElementById('meetingNotes').value;
+    fetch('/api/meetings/' + meetingId, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes: notes })
+    }).then(function(r) {
+        if (r.ok) showToast('Notes saved', 'success');
+        else showToast('Failed to save notes', 'error');
+    });
 }
 
 function saveOutcome() {
-    const outcome = document.getElementById('meetingOutcome').value;
-    const nextSteps = document.getElementById('nextSteps').value;
-    console.log('Save outcome:', { outcome, nextSteps });
-    alert('Outcome saved! (UI Demo)');
+    var outcome = document.getElementById('meetingOutcome').value;
+    var nextSteps = document.getElementById('nextSteps')?.value || '';
+    fetch('/api/meetings/' + meetingId + '/outcome', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ outcome: outcome, notes: nextSteps })
+    }).then(function(r) {
+        if (r.ok) showToast('Outcome saved', 'success');
+        else showToast('Failed to save outcome', 'error');
+    });
 }
 
 function markComplete() {
-    openConfirmModal(
-        'Mark as Completed',
-        'Are you sure you want to mark this meeting as completed?',
-        () => {
-            console.log('Mark complete');
-            alert('Meeting marked as completed! (UI Demo)');
-        }
-    );
+    if (!confirm('Mark this meeting as completed?')) return;
+    fetch('/api/meetings/' + meetingId + '/status', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'completed' })
+    }).then(function(r) {
+        if (r.ok) { showToast('Meeting completed', 'success'); window.location.reload(); }
+        else showToast('Failed to update', 'error');
+    });
 }
 
 function cancelMeeting() {
-    openConfirmModal(
-        'Cancel Meeting',
-        'Are you sure you want to cancel this meeting? The lead will be notified.',
-        () => {
-            console.log('Cancel meeting');
-            alert('Meeting cancelled! (UI Demo)');
-        }
-    );
+    if (!confirm('Cancel this meeting?')) return;
+    fetch('/api/meetings/' + meetingId + '/status', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'cancelled' })
+    }).then(function(r) {
+        if (r.ok) { showToast('Meeting cancelled', 'success'); window.location.reload(); }
+        else showToast('Failed to cancel', 'error');
+    });
 }
 
 function openRescheduleModal() {
-    openModal('Reschedule Meeting', 'scheduleMeetingModal');
-    // Pre-fill with current meeting data
+    openModal('Reschedule Meeting', '<p style="color:var(--gray);">Use the calendar page to reschedule this meeting.</p><a href="/calendar" class="btn btn-primary" style="margin-top:1rem;">Go to Calendar</a>');
 }
 </script>

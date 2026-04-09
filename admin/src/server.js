@@ -10,12 +10,17 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const expressLayouts = require('express-ejs-layouts');
 
 const authRoutes = require('./routes/auth');
 const leadRoutes = require('./routes/leads');
+const meetingRoutes = require('./routes/meetings');
+const costRoutes = require('./routes/costs');
+const settingRoutes = require('./routes/settings');
 const webhookRoutes = require('./routes/webhook');
 const dashboardRoutes = require('./routes/dashboard');
 const { authenticateToken, authenticateView } = require('./middleware/auth');
+const { leads } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -28,6 +33,7 @@ app.use(helmet({
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             scriptSrc: ["'self'", "'unsafe-inline'"],
+            scriptSrcAttr: ["'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:"],
         },
     },
@@ -56,13 +62,27 @@ app.use(cookieParser());
 // View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
+app.use(expressLayouts);
+app.set('layout', 'layout');
 
 // Static files
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Attach allLeads to all authenticated views (for modal dropdowns)
+app.use((req, res, next) => {
+    res.locals.allLeads = [];
+    if (req.cookies?.auth_token) {
+        try { res.locals.allLeads = leads.getAll.all(); } catch (e) { /* ignore */ }
+    }
+    next();
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/leads', authenticateToken, leadRoutes);
+app.use('/api/meetings', authenticateToken, meetingRoutes);
+app.use('/api/costs', authenticateToken, costRoutes);
+app.use('/api/settings', authenticateToken, settingRoutes);
 app.use('/api/webhook', webhookRoutes); // No auth for webhooks (they use secret)
 app.use('/', dashboardRoutes);
 

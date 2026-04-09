@@ -209,15 +209,24 @@ document.querySelectorAll('.column-cards').forEach(column => {
 
             // Move card visually
             column.appendChild(draggedCard);
-
-            // Update counts
             updateColumnCounts();
 
-            // Show notification (UI demo)
-            console.log(`Lead ${leadId} moved to ${newStatus}`);
-
-            // In real implementation, would call API:
-            // updateLeadStatus(leadId, newStatus);
+            // Persist to database
+            fetch('/api/leads/' + leadId + '/status', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            }).then(function(resp) {
+                if (resp.ok) {
+                    showToast('Lead moved to ' + newStatus, 'success');
+                } else {
+                    showToast('Failed to update status', 'error');
+                    window.location.reload();
+                }
+            }).catch(function() {
+                showToast('Failed to update status', 'error');
+                window.location.reload();
+            });
         }
     });
 });
@@ -231,36 +240,35 @@ function updateColumnCounts() {
 }
 
 function openScheduleModalForLead(leadId, leadName) {
-    openModal('Schedule Meeting', 'scheduleMeetingModal');
-    // Pre-select the lead
-    const leadSelect = document.querySelector('#scheduleMeetingForm select[name="lead_id"]');
-    if (leadSelect) {
-        // In real implementation, would set the correct option
-        console.log('Schedule meeting for lead:', leadId, leadName);
-    }
-    // Set default date
-    const dateInput = document.querySelector('#scheduleMeetingForm input[name="date"]');
-    if (dateInput) {
-        dateInput.value = new Date().toISOString().split('T')[0];
-    }
+    openOldModal('Schedule Meeting', 'scheduleMeetingModal');
+    // Pre-select the lead and set default date after modal renders
+    setTimeout(function() {
+        var leadSelect = document.querySelector('#modalBody select[name="lead_id"]');
+        if (leadSelect) leadSelect.value = String(leadId);
+        var dateInput = document.querySelector('#modalBody input[name="date"]');
+        if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+    }, 50);
 }
 
 function openDealModalForLead(leadId, leadName) {
-    openModal('Add Deal', 'addDealModal');
-    // Pre-select the lead
-    console.log('Add deal for lead:', leadId, leadName);
+    openOldModal('Add Deal', 'addDealModal');
+    // Pre-select the lead after modal renders
+    setTimeout(function() {
+        var leadSelect = document.querySelector('#modalBody select[name="lead_id"]');
+        if (leadSelect) leadSelect.value = String(leadId);
+    }, 50);
 }
 
 function reactivateLead(leadId) {
-    openConfirmModal(
-        'Reactivate Lead',
-        'Are you sure you want to move this lead back to "New" status?',
-        () => {
-            console.log('Reactivate lead:', leadId);
-            alert('Lead reactivated! (UI Demo)');
-            window.location.reload();
-        }
-    );
+    if (!confirm('Move this lead back to "New" status?')) return;
+    fetch('/api/leads/' + leadId + '/status', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'new' })
+    }).then(function(resp) {
+        if (resp.ok) { showToast('Lead reactivated', 'success'); window.location.reload(); }
+        else showToast('Failed to reactivate', 'error');
+    });
 }
 
 // Filter functionality

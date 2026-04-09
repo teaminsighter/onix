@@ -3,8 +3,15 @@
  */
 
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-change-me';
+// Generate a random secret if not set — persists for the process lifetime
+// In production, always set JWT_SECRET in .env
+if (!process.env.JWT_SECRET) {
+    process.env.JWT_SECRET = crypto.randomBytes(32).toString('hex');
+    console.log('⚠️  No JWT_SECRET in .env — generated random secret (sessions won\'t survive restart)');
+}
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Verify JWT token for API routes
 function authenticateToken(req, res, next) {

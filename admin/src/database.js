@@ -225,8 +225,38 @@ function initializeDatabase() {
         CREATE INDEX IF NOT EXISTS idx_user_activity_created ON user_activity_log(created_at);
     `);
 
+    // Seed default integrations
+    const existingIntegrations = db.prepare('SELECT COUNT(*) as count FROM integrations').get();
+    if (existingIntegrations.count === 0) {
+        const seedIntegration = db.prepare('INSERT OR IGNORE INTO integrations (name, label, icon, enabled, description, config) VALUES (?, ?, ?, ?, ?, ?)');
+        seedIntegration.run('calendly', 'Calendly', 'calendar', 0, 'Sync meetings from Calendly bookings', '{}');
+        seedIntegration.run('formspree', 'Formspree', 'mail', 0, 'Receive form submissions via Formspree', '{}');
+        seedIntegration.run('slack', 'Slack', 'message-square', 0, 'Send lead notifications to Slack', '{}');
+    }
+    // Always ensure GA4/GTM exist (added later)
+    {
+        const seedIfMissing = db.prepare('INSERT OR IGNORE INTO integrations (name, label, icon, enabled, description, config) VALUES (?, ?, ?, ?, ?, ?)');
+        seedIfMissing.run('ga4', 'Google Analytics 4', 'bar-chart', 0, 'Website visitor tracking', '{}');
+        seedIfMissing.run('gtm', 'Google Tag Manager', 'bar-chart', 0, 'Tag management for website', '{}');
+    }
+
+    // Seed default company profile
+    const existingProfile = db.prepare('SELECT COUNT(*) as count FROM company_profile').get();
+    if (existingProfile.count === 0) {
+        db.prepare('INSERT INTO company_profile (id, name, email, phone, address, timezone) VALUES (1, ?, ?, ?, ?, ?)').run('ONIX', 'hello@onixmrkt.com', '+61 400 000 000', 'Sydney, Australia', 'Australia/Sydney');
+    }
+
+    // Seed default notification preferences
+    const existingNotifs = db.prepare('SELECT COUNT(*) as count FROM notification_preferences').get();
+    if (existingNotifs.count === 0) {
+        db.prepare('INSERT INTO notification_preferences (id) VALUES (1)').run();
+    }
+
     console.log('✅ Database initialized with all schemas');
 }
+
+// Initialize database before preparing statements
+initializeDatabase();
 
 // Lead CRUD operations
 const leadQueries = {
@@ -329,11 +359,232 @@ const userQueries = {
     `)
 };
 
+// Meeting operations
+const meetingQueries = {
+    create: db.prepare(`
+        INSERT INTO meetings (lead_id, title, description, meeting_type, start_time, end_time, location, status, notes, calendly_event_id, created_by)
+        VALUES (@lead_id, @title, @description, @meeting_type, @start_time, @end_time, @location, @status, @notes, @calendly_event_id, @created_by)
+    `),
+    getAll: db.prepare(`
+        SELECT m.*, l.name as lead_name, l.email as lead_email
+        FROM meetings m LEFT JOIN leads l ON m.lead_id = l.id
+        ORDER BY m.start_time DESC
+    `),
+    getById: db.prepare(`
+        SELECT m.*, l.name as lead_name, l.email as lead_email
+        FROM meetings m LEFT JOIN leads l ON m.lead_id = l.id
+        WHERE m.id = ?
+    `),
+    getUpcoming: db.prepare(`
+        SELECT m.*, l.name as lead_name, l.email as lead_email
+        FROM meetings m LEFT JOIN leads l ON m.lead_id = l.id
+        WHERE m.status = 'scheduled' AND m.start_time >= datetime('now')
+        ORDER BY m.start_time ASC LIMIT ?
+    `),
+    getByDateRange: db.prepare(`
+        SELECT m.*, l.name as lead_name, l.email as lead_email
+        FROM meetings m LEFT JOIN leads l ON m.lead_id = l.id
+        WHERE m.start_time BETWEEN ? AND ?
+        ORDER BY m.start_time ASC
+    `),
+    getByLead: db.prepare(`
+        SELECT * FROM meetings WHERE lead_id = ? ORDER BY start_time DESC
+    `),
+    getByCalendlyId: db.prepare(`
+        SELECT * FROM meetings WHERE calendly_event_id = ?
+    `),
+    update: db.prepare(`
+        UPDATE meetings SET
+            title = COALESCE(@title, title),
+            description = COALESCE(@description, description),
+            meeting_type = COALESCE(@meeting_type, meeting_type),
+            start_time = COALESCE(@start_time, start_time),
+            end_time = COALESCE(@end_time, end_time),
+            location = COALESCE(@location, location),
+            notes = COALESCE(@notes, notes),
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = @id
+    `),
+    updateStatus: db.prepare(`
+        UPDATE meetings SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+    `),
+    updateOutcome: db.prepare(`
+        UPDATE meetings SET outcome = ?, notes = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+    `),
+    delete: db.prepare(`DELETE FROM meetings WHERE id = ?`),
+    countByStatus: db.prepare(`SELECT status, COUNT(*) as count FROM meetings GROUP BY status`),
+    countThisWeek: db.prepare(`SELECT COUNT(*) as count FROM meetings WHERE start_time >= date('now', '-7 days')`)
+};
+
+// Cost operations
+const costQueries = {
+    create: db.prepare(`
+        INSERT INTO costs (source, amount, month, campaign_name, leads_count, notes, created_by)
+        VALUES (@source, @amount, @month, @campaign_name, @leads_count, @notes, @created_by)
+    `),
+    getAll: db.prepare(`SELECT * FROM costs ORDER BY month DESC, source`),
+    getById: db.prepare(`SELECT * FROM costs WHERE id = ?`),
+    getByMonth: db.prepare(`SELECT * FROM costs WHERE month = ? ORDER BY source`),
+    getBySource: db.prepare(`SELECT * FROM costs WHERE source = ? ORDER BY month DESC`),
+    update: db.prepare(`
+        UPDATE costs SET
+            source = COALESCE(@source, source),
+            amount = COALESCE(@amount, amount),
+            month = COALESCE(@month, month),
+            campaign_name = COALESCE(@campaign_name, campaign_name),
+            leads_count = COALESCE(@leads_count, leads_count),
+            notes = COALESCE(@notes, notes),
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = @id
+    `),
+    delete: db.prepare(`DELETE FROM costs WHERE id = ?`),
+    sumByMonth: db.prepare(`SELECT month, SUM(amount) as total, SUM(leads_count) as total_leads FROM costs GROUP BY month ORDER BY month DESC`),
+    sumBySource: db.prepare(`SELECT source, SUM(amount) as total, SUM(leads_count) as total_leads FROM costs GROUP BY source ORDER BY total DESC`),
+    sumTotal: db.prepare(`SELECT SUM(amount) as total FROM costs`)
+};
+
+// Deal operations
+const dealQueries = {
+    create: db.prepare(`
+        INSERT INTO deals (lead_id, title, amount, status, source, notes, created_by)
+        VALUES (@lead_id, @title, @amount, @status, @source, @notes, @created_by)
+    `),
+    getAll: db.prepare(`
+        SELECT d.*, l.name as lead_name FROM deals d
+        LEFT JOIN leads l ON d.lead_id = l.id
+        ORDER BY d.created_at DESC
+    `),
+    getById: db.prepare(`
+        SELECT d.*, l.name as lead_name FROM deals d
+        LEFT JOIN leads l ON d.lead_id = l.id
+        WHERE d.id = ?
+    `),
+    getByStatus: db.prepare(`SELECT d.*, l.name as lead_name FROM deals d LEFT JOIN leads l ON d.lead_id = l.id WHERE d.status = ? ORDER BY d.created_at DESC`),
+    getByLead: db.prepare(`SELECT * FROM deals WHERE lead_id = ? ORDER BY created_at DESC`),
+    update: db.prepare(`
+        UPDATE deals SET
+            title = COALESCE(@title, title),
+            amount = COALESCE(@amount, amount),
+            status = COALESCE(@status, status),
+            source = COALESCE(@source, source),
+            notes = COALESCE(@notes, notes),
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = @id
+    `),
+    updateStatus: db.prepare(`
+        UPDATE deals SET status = ?, closed_at = CASE WHEN ? IN ('won','lost') THEN CURRENT_TIMESTAMP ELSE closed_at END, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+    `),
+    delete: db.prepare(`DELETE FROM deals WHERE id = ?`),
+    sumRevenue: db.prepare(`SELECT COALESCE(SUM(amount), 0) as total FROM deals WHERE status = 'won'`),
+    sumRevenueByMonth: db.prepare(`SELECT strftime('%Y-%m', closed_at) as month, SUM(amount) as total FROM deals WHERE status = 'won' AND closed_at IS NOT NULL GROUP BY month ORDER BY month DESC`),
+    sumBySource: db.prepare(`SELECT source, SUM(amount) as total, COUNT(*) as count FROM deals WHERE status = 'won' GROUP BY source`),
+    countByStatus: db.prepare(`SELECT status, COUNT(*) as count FROM deals GROUP BY status`)
+};
+
+// Settings operations
+const settingsQueries = {
+    get: db.prepare(`SELECT value FROM settings WHERE key = ?`),
+    set: db.prepare(`INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)`),
+    getAll: db.prepare(`SELECT * FROM settings`),
+    delete: db.prepare(`DELETE FROM settings WHERE key = ?`)
+};
+
+// Integration operations
+const integrationQueries = {
+    getAll: db.prepare(`SELECT * FROM integrations ORDER BY name`),
+    getByName: db.prepare(`SELECT * FROM integrations WHERE name = ?`),
+    updateEnabled: db.prepare(`UPDATE integrations SET enabled = ?, updated_at = CURRENT_TIMESTAMP WHERE name = ?`),
+    updateConfig: db.prepare(`UPDATE integrations SET config = ?, updated_at = CURRENT_TIMESTAMP WHERE name = ?`),
+    upsert: db.prepare(`
+        INSERT INTO integrations (name, label, icon, enabled, description, config)
+        VALUES (@name, @label, @icon, @enabled, @description, @config)
+        ON CONFLICT(name) DO UPDATE SET enabled=excluded.enabled, config=excluded.config, updated_at=CURRENT_TIMESTAMP
+    `)
+};
+
+// Company profile operations
+const companyProfileQueries = {
+    get: db.prepare(`SELECT * FROM company_profile WHERE id = 1`),
+    upsert: db.prepare(`
+        INSERT INTO company_profile (id, name, email, phone, address, timezone)
+        VALUES (1, @name, @email, @phone, @address, @timezone)
+        ON CONFLICT(id) DO UPDATE SET name=excluded.name, email=excluded.email, phone=excluded.phone, address=excluded.address, timezone=excluded.timezone, updated_at=CURRENT_TIMESTAMP
+    `)
+};
+
+// Notification preference operations
+const notificationPrefQueries = {
+    get: db.prepare(`SELECT * FROM notification_preferences WHERE id = 1`),
+    upsert: db.prepare(`
+        INSERT INTO notification_preferences (id, new_lead_email, new_lead_slack, meeting_reminder, meeting_reminder_minutes, weekly_summary, daily_digest)
+        VALUES (1, @new_lead_email, @new_lead_slack, @meeting_reminder, @meeting_reminder_minutes, @weekly_summary, @daily_digest)
+        ON CONFLICT(id) DO UPDATE SET
+            new_lead_email=excluded.new_lead_email, new_lead_slack=excluded.new_lead_slack,
+            meeting_reminder=excluded.meeting_reminder, meeting_reminder_minutes=excluded.meeting_reminder_minutes,
+            weekly_summary=excluded.weekly_summary, daily_digest=excluded.daily_digest,
+            updated_at=CURRENT_TIMESTAMP
+    `)
+};
+
+// User activity log operations
+const userActivityLogQueries = {
+    create: db.prepare(`
+        INSERT INTO user_activity_log (user_id, action, entity_type, entity_id, entity_name, metadata, ip_address)
+        VALUES (@user_id, @action, @entity_type, @entity_id, @entity_name, @metadata, @ip_address)
+    `),
+    getRecent: db.prepare(`SELECT * FROM user_activity_log ORDER BY created_at DESC LIMIT ?`),
+    getByUser: db.prepare(`SELECT * FROM user_activity_log WHERE user_id = ? ORDER BY created_at DESC LIMIT ?`)
+};
+
+// Analytics queries (raw SQL for aggregations)
+const analyticsQueries = {
+    leadsOverTimeMonthly: db.prepare(`
+        SELECT strftime('%Y-%m', created_at) as period, COUNT(*) as count
+        FROM leads WHERE created_at >= date('now', '-6 months')
+        GROUP BY period ORDER BY period
+    `),
+    leadsOverTimeWeekly: db.prepare(`
+        SELECT strftime('%Y-W%W', created_at) as period, COUNT(*) as count
+        FROM leads WHERE created_at >= date('now', '-84 days')
+        GROUP BY period ORDER BY period
+    `),
+    leadsOverTimeDaily: db.prepare(`
+        SELECT DATE(created_at) as period, COUNT(*) as count
+        FROM leads WHERE created_at >= date('now', '-30 days')
+        GROUP BY period ORDER BY period
+    `),
+    sourcePerformance: db.prepare(`
+        SELECT source,
+            COUNT(*) as leads,
+            SUM(CASE WHEN status IN ('contacted','scheduled','converted') THEN 1 ELSE 0 END) as contacted,
+            SUM(CASE WHEN status IN ('scheduled','converted') THEN 1 ELSE 0 END) as scheduled,
+            SUM(CASE WHEN status = 'converted' THEN 1 ELSE 0 END) as converted,
+            ROUND(SUM(CASE WHEN status = 'converted' THEN 1.0 ELSE 0 END) / MAX(COUNT(*), 1) * 100, 1) as conversion_rate
+        FROM leads GROUP BY source ORDER BY leads DESC
+    `),
+    avgResponseTime: db.prepare(`
+        SELECT ROUND(AVG(julianday(contacted_at) - julianday(created_at)) * 24, 1) as avg_hours
+        FROM leads WHERE contacted_at IS NOT NULL
+    `),
+    avgDealSize: db.prepare(`
+        SELECT ROUND(AVG(amount), 2) as avg_amount FROM deals WHERE status = 'won'
+    `)
+};
+
 // Export
 module.exports = {
     db,
     initializeDatabase,
     leads: leadQueries,
     activities: activityQueries,
-    users: userQueries
+    users: userQueries,
+    meetings: meetingQueries,
+    costs: costQueries,
+    deals: dealQueries,
+    settings: settingsQueries,
+    integrations: integrationQueries,
+    companyProfile: companyProfileQueries,
+    notificationPrefs: notificationPrefQueries,
+    userActivityLog: userActivityLogQueries,
+    analytics: analyticsQueries
 };

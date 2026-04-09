@@ -9,11 +9,25 @@ Lead generation automation platform marketing website. Dark theme with lime gree
 ## Development
 
 ```bash
-npm install          # Install dependencies (first time)
-npm run dev          # Start dev server with hot reload (port 5173)
-npm run build        # Build for production (outputs to dist/)
-npm run preview      # Preview production build
-npm run start        # Serve dist/ folder on port 3000 (production)
+npm install              # Install dependencies (first time)
+npm run dev              # Start dev server with hot reload (port 5173)
+npm run build            # Build for production (outputs to dist/)
+npm run build:optimized  # Optimize images (sharp) then build
+npm run preview          # Preview production build
+npm run start            # Serve dist/ folder on port 3000 (production)
+```
+
+### Admin Dashboard (separate app in `admin/`)
+
+Express + EJS + SQLite backend for lead management. Separate `npm install` required.
+
+```bash
+cd admin
+npm install
+cp .env.example .env     # Configure JWT_SECRET, etc.
+npm run init-db           # Initialize SQLite database
+npm run dev               # Start with nodemon (port 3001)
+npm start                 # Production start
 ```
 
 ## Project Structure
@@ -47,6 +61,8 @@ npm run start        # Serve dist/ folder on port 3000 (production)
 **Dashboard**: `js/dashboard.js` exports `industries` object with stats/charts per industry. Auto-rotates every 8s (pauses on hover). Exports `animateDataIn()` and `animateChartIn()` for animation triggers.
 
 **Desktop-Only Mode**: The `<body>` has `desktop-only` class forcing desktop layout. Remove from `index.html` to enable mobile responsive.
+
+**Admin Dashboard** (`admin/`): Express server (port 3001) with EJS templates, SQLite via better-sqlite3, JWT auth. Routes: `auth` (login/JWT), `leads` (CRUD), `webhook` (inbound lead capture), `dashboard` (analytics views). Views use a shared `layout.ejs` with `partials/sidebar.ejs`. Mock data in `src/mockData.js` for development.
 
 ## Dashboard Industries
 

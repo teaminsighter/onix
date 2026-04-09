@@ -91,7 +91,7 @@ router.get('/me', (req, res) => {
 
     try {
         const jwt = require('jsonwebtoken');
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-change-me');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         res.json({
             authenticated: true,
             user: {

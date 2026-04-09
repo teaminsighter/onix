@@ -73,7 +73,7 @@ function renderLineChart(containerId, data, options = {}) {
             <!-- Grid lines -->
             ${[0, 0.25, 0.5, 0.75, 1].map(pct => {
                 const y = padding.top + chartHeight * (1 - pct);
-                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4"/>`;
+                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="var(--grid-line, rgba(255,255,255,0.1))" stroke-dasharray="4"/>`;
             }).join('')}
 
             <!-- Area fill -->
@@ -127,7 +127,7 @@ function renderBarChart(containerId, data, options = {}) {
             <!-- Grid lines -->
             ${[0, 0.25, 0.5, 0.75, 1].map(pct => {
                 const y = padding.top + chartHeight * (1 - pct);
-                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4"/>`;
+                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="var(--grid-line, rgba(255,255,255,0.1))" stroke-dasharray="4"/>`;
             }).join('')}
 
             <!-- Bars -->
@@ -322,7 +322,7 @@ function renderDualAxisChart(containerId, data, options = {}) {
             <!-- Grid lines -->
             ${[0, 0.5, 1].map(pct => {
                 const y = padding.top + chartHeight * (1 - pct);
-                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4"/>`;
+                return `<line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="var(--grid-line, rgba(255,255,255,0.1))" stroke-dasharray="4"/>`;
             }).join('')}
 
             <!-- Cost line -->

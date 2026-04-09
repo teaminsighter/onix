@@ -25,7 +25,7 @@
             <div class="stat-header">
                 <span class="stat-label">Total Spend (This Month)</span>
             </div>
-            <div class="stat-value">$<%= stats.totalCosts.toLocaleString() %></div>
+            <div class="stat-value">$<%= (stats.totalSpend || 0).toLocaleString() %></div>
         </div>
         <div class="stat-card">
             <div class="stat-header">
@@ -37,7 +37,7 @@
             <div class="stat-header">
                 <span class="stat-label">Revenue (This Month)</span>
             </div>
-            <div class="stat-value" style="color: var(--success);">$<%= stats.totalRevenue.toLocaleString() %></div>
+            <div class="stat-value" style="color: var(--success);">$<%= (stats.totalRevenue || 0).toLocaleString() %></div>
         </div>
         <div class="stat-card">
             <div class="stat-header">
@@ -78,16 +78,15 @@
             <div class="filters" style="display: flex; gap: 0.75rem;">
                 <select class="form-select" style="width: auto; padding: 0.4rem 0.75rem;" id="costSourceFilter">
                     <option value="">All Sources</option>
-                    <option value="facebook">Facebook</option>
-                    <option value="google">Google</option>
-                    <option value="linkedin">LinkedIn</option>
-                    <option value="other">Other</option>
+                    <% var seenSources = []; costs.forEach(function(c) { if (c.source && seenSources.indexOf(c.source) === -1) seenSources.push(c.source); }); seenSources.sort().forEach(function(s) { %>
+                        <option value="<%= s %>" style="text-transform:capitalize;"><%= s %></option>
+                    <% }); %>
                 </select>
                 <select class="form-select" style="width: auto; padding: 0.4rem 0.75rem;" id="costMonthFilter">
                     <option value="">All Months</option>
-                    <option value="2026-04">April 2026</option>
-                    <option value="2026-03">March 2026</option>
-                    <option value="2026-02">February 2026</option>
+                    <% var seenMonths = []; costs.forEach(function(c) { if (c.month && seenMonths.indexOf(c.month) === -1) seenMonths.push(c.month); }); seenMonths.sort().reverse().forEach(function(m) { %>
+                        <option value="<%= m %>"><%= new Date(m + '-01').toLocaleDateString('en-AU', { month: 'long', year: 'numeric' }) %></option>
+                    <% }); %>
                 </select>
             </div>
         </div>
@@ -218,47 +217,68 @@ function filterCosts() {
 
 // Action functions
 function editCost(id) {
-    console.log('Edit cost:', id);
-    openCostModal();
+    fetch('/api/costs/' + id).then(function(r) { return r.json(); }).then(function(cost) {
+        openModal('Edit Cost Entry', '<form id="editCostForm" onsubmit="submitEditCost(event, ' + id + ')">' +
+            '<div class="form-group"><label class="form-label">Source</label><input class="form-input" name="source" value="' + escapeHtml(cost.source) + '" required></div>' +
+            '<div class="form-group"><label class="form-label">Amount ($)</label><input class="form-input" name="amount" type="number" step="0.01" value="' + cost.amount + '" required></div>' +
+            '<div class="form-group"><label class="form-label">Month</label><input class="form-input" name="month" type="month" value="' + cost.month + '" required></div>' +
+            '<div class="form-group"><label class="form-label">Campaign</label><input class="form-input" name="campaign_name" value="' + escapeHtml(cost.campaign_name || '') + '"></div>' +
+            '<div class="form-group"><label class="form-label">Leads Count</label><input class="form-input" name="leads_count" type="number" value="' + (cost.leads_count || 0) + '"></div>' +
+            '<div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" name="notes">' + escapeHtml(cost.notes || '') + '</textarea></div>' +
+            '<button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;">Save Changes</button></form>');
+    });
+}
+
+function submitEditCost(e, id) {
+    e.preventDefault();
+    var fd = new FormData(e.target);
+    fetch('/api/costs/' + id, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: fd.get('source'), amount: fd.get('amount'), month: fd.get('month'), campaign_name: fd.get('campaign_name'), leads_count: fd.get('leads_count'), notes: fd.get('notes') })
+    }).then(function(r) { if (r.ok) { showToast('Cost updated', 'success'); closeModal(); window.location.reload(); } else showToast('Failed to update', 'error'); });
 }
 
 function deleteCost(id) {
-    openConfirmModal(
-        'Delete Cost Entry',
-        'Are you sure you want to delete this cost entry? This cannot be undone.',
-        () => {
-            console.log('Delete cost:', id);
-            alert('Cost entry deleted! (UI Demo)');
-        }
-    );
+    if (!confirm('Delete this cost entry?')) return;
+    fetch('/api/costs/' + id, { method: 'DELETE' }).then(function(r) {
+        if (r.ok) { showToast('Cost deleted', 'success'); window.location.reload(); }
+        else showToast('Failed to delete', 'error');
+    });
 }
 
 function editDeal(id) {
-    console.log('Edit deal:', id);
-    openDealModal();
+    fetch('/api/costs/deals/' + id).then(function(r) { return r.json(); }).then(function(deal) {
+        openModal('Edit Deal', '<form id="editDealForm" onsubmit="submitEditDeal(event, ' + id + ')">' +
+            '<div class="form-group"><label class="form-label">Title</label><input class="form-input" name="title" value="' + escapeHtml(deal.title) + '" required></div>' +
+            '<div class="form-group"><label class="form-label">Amount ($)</label><input class="form-input" name="amount" type="number" step="0.01" value="' + deal.amount + '" required></div>' +
+            '<div class="form-group"><label class="form-label">Source</label><input class="form-input" name="source" value="' + escapeHtml(deal.source || '') + '"></div>' +
+            '<div class="form-group"><label class="form-label">Notes</label><textarea class="form-textarea" name="notes">' + escapeHtml(deal.notes || '') + '</textarea></div>' +
+            '<button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;">Save Changes</button></form>');
+    });
+}
+
+function submitEditDeal(e, id) {
+    e.preventDefault();
+    var fd = new FormData(e.target);
+    fetch('/api/costs/deals/' + id, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: fd.get('title'), amount: fd.get('amount'), source: fd.get('source'), notes: fd.get('notes') })
+    }).then(function(r) { if (r.ok) { showToast('Deal updated', 'success'); closeModal(); window.location.reload(); } else showToast('Failed to update', 'error'); });
 }
 
 function markDealWon(id) {
-    openConfirmModal(
-        'Mark Deal as Won',
-        'Are you sure you want to mark this deal as won?',
-        () => {
-            console.log('Deal won:', id);
-            alert('Deal marked as won! (UI Demo)');
-            window.location.reload();
-        }
-    );
+    if (!confirm('Mark this deal as won?')) return;
+    fetch('/api/costs/deals/' + id + '/status', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'won' })
+    }).then(function(r) { if (r.ok) { showToast('Deal marked as won', 'success'); window.location.reload(); } else showToast('Failed', 'error'); });
 }
 
 function markDealLost(id) {
-    openConfirmModal(
-        'Mark Deal as Lost',
-        'Are you sure you want to mark this deal as lost?',
-        () => {
-            console.log('Deal lost:', id);
-            alert('Deal marked as lost! (UI Demo)');
-            window.location.reload();
-        }
-    );
+    if (!confirm('Mark this deal as lost?')) return;
+    fetch('/api/costs/deals/' + id + '/status', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'lost' })
+    }).then(function(r) { if (r.ok) { showToast('Deal marked as lost', 'success'); window.location.reload(); } else showToast('Failed', 'error'); });
 }
 </script>

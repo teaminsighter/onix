@@ -4,6 +4,8 @@ node_modules/
 .env
 .env.local
 dist/
+admin/data/
+admin/public/uploads/
 *.png
 *.jpg
 *.jpeg

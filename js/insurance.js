@@ -2224,7 +2224,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initParallax();
     initCtaStars();
 
-    console.log('ONIX Insurance page initialized');
 });
 
 // Refresh ScrollTrigger on resize

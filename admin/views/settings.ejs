@@ -45,7 +45,7 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label class="form-label">Company Name</label>
-                                <input type="text" class="form-input" name="company_name" value="<%= companyProfile.name %>">
+                                <input type="text" class="form-input" name="name" value="<%= companyProfile.name %>">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Email</label>
@@ -74,27 +74,73 @@
                             <input type="text" class="form-input" name="address" value="<%= companyProfile.address %>">
                         </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Company Logo</label>
-                            <div class="logo-upload">
-                                <div class="logo-preview">
-                                    <% if (companyProfile.logo_url) { %>
-                                        <img src="<%= companyProfile.logo_url %>" alt="Company Logo">
-                                    <% } else { %>
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="2">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
-                                        </svg>
-                                    <% } %>
-                                </div>
-                                <div class="logo-actions">
-                                    <button type="button" class="btn btn-secondary btn-sm">Upload Logo</button>
-                                    <span style="color: var(--gray); font-size: 0.8rem;">PNG or JPG, max 2MB</span>
-                                </div>
+                        <button type="button" class="btn btn-primary" onclick="saveCompanyProfile()">Save Changes</button>
+                    </form>
+
+                    <!-- Branding Assets -->
+                    <div style="margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+                        <h3 class="card-title" style="margin-bottom:1rem;">Branding Assets</h3>
+                        <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1.5rem;">Upload your favicon and social media image. These will be used on the main website.</p>
+
+                        <!-- Favicon -->
+                        <div style="display:flex;align-items:center;gap:1.5rem;padding:1rem;background:var(--bg3);border-radius:8px;margin-bottom:1rem;">
+                            <div id="faviconPreview" style="width:48px;height:48px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <% var faviconUrl = typeof brandingAssets !== 'undefined' && brandingAssets.favicon; %>
+                                <% if (faviconUrl) { %>
+                                    <img src="<%= faviconUrl %>" style="width:32px;height:32px;object-fit:contain;">
+                                <% } else { %>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <% } %>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:500;">Favicon</div>
+                                <div style="color:var(--gray);font-size:0.8rem;">Browser tab icon — PNG or ICO, 32x32 or 16x16</div>
+                            </div>
+                            <div>
+                                <input type="file" id="faviconInput" accept=".png,.ico,.svg,.jpg" style="display:none;" onchange="uploadBrandingFile('favicon', this)">
+                                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('faviconInput').click()">Upload</button>
                             </div>
                         </div>
 
-                        <button type="button" class="btn btn-primary" onclick="saveCompanyProfile()">Save Changes</button>
-                    </form>
+                        <!-- OG Image -->
+                        <div style="display:flex;align-items:center;gap:1.5rem;padding:1rem;background:var(--bg3);border-radius:8px;margin-bottom:1rem;">
+                            <div id="ogPreview" style="width:80px;height:48px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+                                <% var ogUrl = typeof brandingAssets !== 'undefined' && brandingAssets.ogImage; %>
+                                <% if (ogUrl) { %>
+                                    <img src="<%= ogUrl %>" style="width:100%;height:100%;object-fit:cover;">
+                                <% } else { %>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <% } %>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:500;">Social Share Image (OG Image)</div>
+                                <div style="color:var(--gray);font-size:0.8rem;">Shown when sharing links on social media — PNG or JPG, 1200x630 recommended</div>
+                            </div>
+                            <div>
+                                <input type="file" id="ogInput" accept=".png,.jpg,.jpeg,.webp" style="display:none;" onchange="uploadBrandingFile('og-image', this)">
+                                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('ogInput').click()">Upload</button>
+                            </div>
+                        </div>
+
+                        <!-- Company Logo -->
+                        <div style="display:flex;align-items:center;gap:1.5rem;padding:1rem;background:var(--bg3);border-radius:8px;">
+                            <div id="logoPreview" style="width:48px;height:48px;background:var(--bg);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+                                <% if (companyProfile.logo_url) { %>
+                                    <img src="<%= companyProfile.logo_url %>" style="width:100%;height:100%;object-fit:contain;">
+                                <% } else { %>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                <% } %>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:500;">Company Logo</div>
+                                <div style="color:var(--gray);font-size:0.8rem;">Used in emails and reports — PNG, JPG, or SVG, max 5MB</div>
+                            </div>
+                            <div>
+                                <input type="file" id="logoInput" accept=".png,.jpg,.jpeg,.svg,.webp" style="display:none;" onchange="uploadBrandingFile('logo', this)">
+                                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('logoInput').click()">Upload</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -103,45 +149,33 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Connected Services</h3>
-                        <span style="color: var(--gray); font-size: 0.9rem;"><%= integrations.filter(i => i.enabled).length %> of <%= integrations.length %> connected</span>
+                        <% var serviceIntegrations = integrations.filter(function(i) { return ['calendly','formspree','slack'].indexOf(i.name) !== -1; }); %>
+                        <span style="color: var(--gray); font-size: 0.9rem;"><%= serviceIntegrations.filter(function(i) { return i.enabled; }).length %> of <%= serviceIntegrations.length %> connected</span>
                     </div>
 
                     <div class="integrations-list">
-                        <% integrations.forEach(integration => { %>
-                            <div class="integration-item">
+                        <% serviceIntegrations.forEach(function(integration) { %>
+                            <div class="integration-item" id="integration-<%= integration.name %>">
                                 <div class="integration-info">
                                     <div class="integration-icon">
-                                        <% if (integration.icon === 'bar-chart') { %>
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>
-                                            </svg>
-                                        <% } else if (integration.icon === 'calendar') { %>
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                                            </svg>
-                                        <% } else if (integration.icon === 'inbox') { %>
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
-                                            </svg>
+                                        <% if (integration.icon === 'calendar') { %>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                                         <% } else if (integration.icon === 'message-square') { %>
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                                            </svg>
-                                        <% } else if (integration.icon === 'mail') { %>
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-                                            </svg>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                        <% } else { %>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                                         <% } %>
                                     </div>
                                     <div>
                                         <h4 class="integration-name"><%= integration.label %></h4>
                                         <p class="integration-description"><%= integration.description %></p>
+                                        <% if (integration.enabled) { %>
+                                            <span class="badge badge-converted" style="margin-top:0.25rem;font-size:0.7rem;">Connected</span>
+                                        <% } %>
                                     </div>
                                 </div>
                                 <div class="integration-actions">
-                                    <% if (integration.enabled) { %>
-                                        <button class="btn btn-secondary btn-sm" onclick="configureIntegration('<%= integration.name %>')">Configure</button>
-                                    <% } %>
+                                    <button class="btn btn-secondary btn-sm" onclick="configureIntegration('<%= integration.name %>')">Configure</button>
                                     <label class="toggle">
                                         <input type="checkbox" <%= integration.enabled ? 'checked' : '' %> onchange="toggleIntegration('<%= integration.name %>', this.checked)">
                                         <span class="toggle-slider"></span>
@@ -149,6 +183,22 @@
                                 </div>
                             </div>
                         <% }) %>
+                    </div>
+
+                    <!-- Add GA4 & GTM (website tracking) -->
+                    <div style="margin-top:1.5rem;">
+                        <h3 class="card-title" style="margin-bottom:1rem;">Website Tracking</h3>
+                        <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1rem;">These IDs are used in the main website's analytics script (<code>js/analytics.js</code>).</p>
+                        <div class="form-group">
+                            <label class="form-label">Google Analytics 4 (Measurement ID)</label>
+                            <input type="text" class="form-input" id="ga4Id" placeholder="G-XXXXXXXXXX" value="<%= (integrations.find(function(i){ return i.name === 'ga4'; }) || {config:{}}).config.measurement_id || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Google Tag Manager (Container ID)</label>
+                            <input type="text" class="form-input" id="gtmId" placeholder="GTM-XXXXXXX" value="<%= (integrations.find(function(i){ return i.name === 'gtm'; }) || {config:{}}).config.container_id || '' %>">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveTrackingIds()">Save Tracking IDs</button>
+                        <p style="color:var(--gray);font-size:0.8rem;margin-top:0.5rem;">After saving, update <code>js/analytics.js</code> with these IDs or use the webhook endpoint to auto-inject.</p>
                     </div>
                 </div>
             </div>
@@ -361,69 +411,182 @@ document.querySelectorAll('.settings-tab').forEach(tab => {
 });
 
 function saveCompanyProfile() {
-    const formData = new FormData(document.getElementById('companyForm'));
-    console.log('Save company:', Object.fromEntries(formData));
-    alert('Company profile saved! (UI Demo)');
+    var fd = new FormData(document.getElementById('companyForm'));
+    fetch('/api/settings/company', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(fd))
+    }).then(function(r) {
+        if (r.ok) showToast('Company profile saved', 'success');
+        else showToast('Failed to save', 'error');
+    });
 }
 
 function toggleIntegration(name, enabled) {
-    console.log('Toggle integration:', name, enabled);
-    if (enabled) {
-        openConfigureIntegrationModal(name);
-    }
+    fetch('/api/settings/integrations/' + name, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: enabled })
+    }).then(function(r) {
+        if (r.ok) {
+            showToast(name + (enabled ? ' enabled' : ' disabled'), 'success');
+            // Auto-open configure modal when enabling
+            if (enabled) {
+                setTimeout(function() { configureIntegration(name); }, 300);
+            }
+            // Reload to update "Connected" badges
+            setTimeout(function() { window.location.reload(); }, 1500);
+        }
+        else showToast('Failed to update', 'error');
+    });
+}
+
+function saveTrackingIds() {
+    var ga4 = document.getElementById('ga4Id').value.trim();
+    var gtm = document.getElementById('gtmId').value.trim();
+
+    var saves = [];
+    if (ga4) saves.push(fetch('/api/settings/integrations/ga4/config', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ measurement_id: ga4 })
+    }));
+    if (gtm) saves.push(fetch('/api/settings/integrations/gtm/config', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ container_id: gtm })
+    }));
+
+    if (saves.length === 0) { showToast('Enter at least one tracking ID', 'error'); return; }
+
+    Promise.all(saves).then(function(results) {
+        if (results.every(function(r) { return r.ok; })) showToast('Tracking IDs saved', 'success');
+        else showToast('Failed to save some IDs', 'error');
+    });
 }
 
 function configureIntegration(name) {
-    openConfigureIntegrationModal(name);
+    var fields = '';
+    if (name === 'calendly') {
+        fields = '<div class="form-group"><label class="form-label">Calendly API Key</label><input type="text" class="form-input" name="api_key" placeholder="Enter your Calendly Personal Access Token"></div>' +
+            '<div class="form-group"><label class="form-label">Webhook URL (for Calendly to call)</label><input type="text" class="form-input" readonly value="' + window.location.origin + '/api/webhook/calendly" onclick="this.select()"></div>' +
+            '<button type="button" class="btn btn-secondary" onclick="syncCalendly()" style="margin-top:0.5rem;width:100%;justify-content:center;">Sync Past Meetings</button>';
+    } else if (name === 'slack') {
+        fields = '<div class="form-group"><label class="form-label">Slack Webhook URL</label><input type="text" class="form-input" name="webhook_url" placeholder="https://hooks.slack.com/services/..."></div>';
+    } else if (name === 'formspree') {
+        fields = '<div class="form-group"><label class="form-label">Formspree Form ID</label><input type="text" class="form-input" name="form_id" placeholder="e.g., xrgvknab"></div>';
+    } else {
+        fields = '<div class="form-group"><label class="form-label">API Key</label><input type="text" class="form-input" name="api_key" placeholder="Enter API key"></div>';
+    }
+
+    var html = '<form onsubmit="submitIntegrationConfig(event, \'' + name + '\')">' +
+        '<input type="hidden" name="integration_name" value="' + name + '">' +
+        fields +
+        '<div style="display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1rem;">' +
+        '<button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>' +
+        '<button type="submit" class="btn btn-primary">Save Configuration</button></div></form>';
+
+    // Directly set modal content and show it
+    document.getElementById('modalTitle').textContent = 'Configure ' + name.charAt(0).toUpperCase() + name.slice(1);
+    document.getElementById('modalBody').innerHTML = html;
+    document.getElementById('modalOverlay').classList.add('active');
+}
+
+function submitIntegrationConfig(e, name) {
+    e.preventDefault();
+    var fd = new FormData(e.target);
+    var config = {};
+    fd.forEach(function(v, k) { if (k !== 'integration_name') config[k] = v; });
+    fetch('/api/settings/integrations/' + name + '/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(config)
+    }).then(function(r) {
+        if (r.ok) { closeModal(); showToast('Configuration saved', 'success'); }
+        else showToast('Failed to save config', 'error');
+    });
+}
+
+function syncCalendly() {
+    showToast('Syncing Calendly events...', 'info');
+    fetch('/api/settings/integrations/calendly/sync', { method: 'POST' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.synced !== undefined) showToast('Synced ' + data.synced + ' meetings from Calendly', 'success');
+            else showToast(data.error || 'Sync failed', 'error');
+        }).catch(function() { showToast('Sync failed', 'error'); });
 }
 
 function saveNotificationPrefs() {
-    console.log('Save notification preferences');
-    alert('Notification preferences saved! (UI Demo)');
+    var data = {
+        new_lead_email: document.querySelector('[name="new_lead_email"]')?.checked || false,
+        new_lead_slack: document.querySelector('[name="new_lead_slack"]')?.checked || false,
+        meeting_reminder: document.querySelector('[name="meeting_reminder"]')?.checked || false,
+        meeting_reminder_minutes: parseInt(document.querySelector('[name="meeting_reminder_minutes"]')?.value) || 30,
+        weekly_summary: document.querySelector('[name="weekly_summary"]')?.checked || false,
+        daily_digest: document.querySelector('[name="daily_digest"]')?.checked || false
+    };
+    fetch('/api/settings/notifications', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    }).then(function(r) {
+        if (r.ok) showToast('Notification preferences saved', 'success');
+        else showToast('Failed to save', 'error');
+    });
 }
 
-function exportLeads() {
-    console.log('Export leads');
-    alert('Leads exported! Check your downloads folder. (UI Demo)');
-}
-
-function exportMeetings() {
-    console.log('Export meetings');
-    alert('Meetings exported! Check your downloads folder. (UI Demo)');
-}
-
-function exportFinancials() {
-    console.log('Export financials');
-    alert('Financial data exported! Check your downloads folder. (UI Demo)');
-}
-
-function exportAnalytics() {
-    console.log('Export analytics');
-    alert('Analytics report exported! Check your downloads folder. (UI Demo)');
-}
+function exportLeads() { window.location.href = '/api/settings/export/leads'; }
+function exportMeetings() { window.location.href = '/api/settings/export/meetings'; }
+function exportFinancials() { window.location.href = '/api/settings/export/costs'; }
+function exportAnalytics() { window.location.href = '/api/settings/export/leads'; showToast('Analytics data exported as leads CSV', 'info'); }
 
 function clearAllLeads() {
-    openConfirmModal(
-        'Clear All Leads',
-        'This will permanently delete ALL lead data. This action cannot be undone. Are you absolutely sure?',
-        () => {
-            console.log('Clear all leads');
-            alert('All leads cleared! (UI Demo)');
-        }
-    );
+    if (!confirm('This will permanently delete ALL leads. Are you sure?')) return;
+    fetch('/api/settings/data/leads', {
+        method: 'DELETE',
+        headers: { 'X-Confirm': 'DELETE_ALL_LEADS' }
+    }).then(function(r) {
+        if (r.ok) { showToast('All leads cleared', 'success'); window.location.reload(); }
+        else showToast('Failed to clear leads', 'error');
+    });
 }
 
 function resetAllData() {
-    openConfirmModal(
-        'Reset All Data',
-        'This will permanently delete ALL data including leads, meetings, costs, and settings. This action CANNOT be undone. Type "RESET" to confirm.',
-        () => {
-            const confirm = prompt('Type RESET to confirm:');
-            if (confirm === 'RESET') {
-                console.log('Reset all data');
-                alert('All data has been reset! (UI Demo)');
+    var confirm_text = prompt('This will delete ALL data. Type RESET to confirm:');
+    if (confirm_text !== 'RESET') return;
+    fetch('/api/settings/data/all', {
+        method: 'DELETE',
+        headers: { 'X-Confirm': 'RESET_ALL_DATA' }
+    }).then(function(r) {
+        if (r.ok) { showToast('All data reset', 'success'); window.location.reload(); }
+        else showToast('Failed to reset data', 'error');
+    });
+}
+
+function uploadBrandingFile(type, input) {
+    if (!input.files || !input.files[0]) return;
+    var file = input.files[0];
+    if (file.size > 5 * 1024 * 1024) { showToast('File too large (max 5MB)', 'error'); return; }
+
+    var fd = new FormData();
+    fd.append('file', file);
+
+    showToast('Uploading ' + type + '...', 'info');
+    fetch('/api/settings/upload/' + type, {
+        method: 'POST',
+        body: fd
+    }).then(function(r) { return r.json(); }).then(function(data) {
+        if (data.url) {
+            showToast(type + ' uploaded successfully', 'success');
+            // Update preview
+            var previewId = type === 'favicon' ? 'faviconPreview' : type === 'og-image' ? 'ogPreview' : 'logoPreview';
+            var previewEl = document.getElementById(previewId);
+            if (previewEl) {
+                previewEl.innerHTML = '<img src="' + data.url + '?' + Date.now() + '" style="width:100%;height:100%;object-fit:contain;">';
             }
+        } else {
+            showToast(data.error || 'Upload failed', 'error');
         }
-    );
+    }).catch(function() { showToast('Upload failed', 'error'); });
+    input.value = '';
 }
 </script>

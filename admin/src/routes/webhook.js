@@ -166,6 +166,23 @@ router.post('/calendly', (req, res) => {
                 'calendly'
             );
 
+            // Also create a meeting record
+            const { meetings } = require('../database');
+            const eventDetails = payload.event || {};
+            meetings.create.run({
+                lead_id: leadId,
+                title: eventType.name || 'Calendly Meeting',
+                description: `Booked by ${invitee.name} (${invitee.email})`,
+                meeting_type: 'video',
+                start_time: eventDetails.start_time || new Date().toISOString(),
+                end_time: eventDetails.end_time || new Date(Date.now() + 1800000).toISOString(),
+                location: eventDetails.location?.join_url || 'Calendly',
+                status: 'scheduled',
+                notes: '',
+                calendly_event_id: eventDetails.uuid || null,
+                created_by: null
+            });
+
             console.log(`📅 Calendly booking: ${invitee.name}`);
 
             sendNotification({
@@ -173,6 +190,19 @@ router.post('/calendly', (req, res) => {
                 lead: { id: leadId, name: invitee.name, email: invitee.email },
                 event: eventType.name
             });
+        }
+
+        // Handle cancellation
+        if (event === 'invitee.canceled') {
+            const { meetings } = require('../database');
+            const eventDetails = payload.event || {};
+            if (eventDetails.uuid) {
+                const existing = meetings.getByCalendlyId.get(eventDetails.uuid);
+                if (existing) {
+                    meetings.updateStatus.run('cancelled', existing.id);
+                    console.log(`❌ Calendly cancellation: ${eventDetails.uuid}`);
+                }
+            }
         }
 
         res.json({ success: true });

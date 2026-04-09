@@ -82,6 +82,15 @@ router.get('/:id', (req, res) => {
 router.put('/:id', (req, res) => {
     try {
         const { name, email, phone, status, priority, notes, assigned_to } = req.body;
+        const validStatuses = ['new', 'contacted', 'scheduled', 'converted', 'lost'];
+        const validPriorities = ['low', 'normal', 'high'];
+
+        if (status && !validStatuses.includes(status)) {
+            return res.status(400).json({ error: 'Invalid status' });
+        }
+        if (priority && !validPriorities.includes(priority)) {
+            return res.status(400).json({ error: 'Invalid priority' });
+        }
 
         const result = leads.update.run({
             id: req.params.id,
@@ -120,9 +129,13 @@ router.put('/:id', (req, res) => {
 router.patch('/:id/status', (req, res) => {
     try {
         const { status } = req.body;
+        const validStatuses = ['new', 'contacted', 'scheduled', 'converted', 'lost'];
 
         if (!status) {
             return res.status(400).json({ error: 'Status is required' });
+        }
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ error: 'Invalid status. Must be: ' + validStatuses.join(', ') });
         }
 
         const result = leads.updateStatus.run(status, req.params.id);
