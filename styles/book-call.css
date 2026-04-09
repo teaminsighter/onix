@@ -110,6 +110,15 @@
     min-height: 750px;
     border-radius: 0 24px 24px 0;
     overflow: visible;
+    /* Initial state for animation */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.book-call-calendar.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Calendly container styling */

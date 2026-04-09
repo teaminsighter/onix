@@ -10,6 +10,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        privacyPolicy: resolve(__dirname, 'privacy-policy.html'),
+        termsOfService: resolve(__dirname, 'terms-of-service.html'),
         insurance: resolve(__dirname, 'services/insurance.html'),
         lifeInsurance: resolve(__dirname, 'services/life-insurance.html'),
         incomeProtection: resolve(__dirname, 'services/income-protection.html'),

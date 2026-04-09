@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Stats Design Showcase | ONIX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #111111;
+            --bg3: #161616;
+            --accent: #c9f31d;
+            --accent2: #a8cc18;
+            --accent-dim: rgba(201, 243, 29, 0.1);
+            --accent-border: rgba(201, 243, 29, 0.25);
+            --white: #f5f5f5;
+            --gray: #888888;
+            --gray2: rgba(255, 255, 255, 0.5);
+            --border: rgba(255, 255, 255, 0.08);
+            --font-body: 'Inter', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: var(--font-body);
+            line-height: 1.6;
+        }
+
+        .header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .header h1 span { color: var(--accent); }
+
+        .header p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .showcase {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .design-section {
+            margin-bottom: 5rem;
+            padding: 3rem;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .design-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .design-number {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .design-info h2 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+
+        .design-info p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .design-preview {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 350px;
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 3rem;
+        }
+
+        /* ========== DESIGN 1: Floating Glass Orbs ========== */
+        .design-1 .orbs-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            max-width: 400px;
+        }
+
+        .design-1 .stat-orb {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            animation: float-orb 6s ease-in-out infinite;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .design-1 .stat-orb:nth-child(1) { animation-delay: 0s; }
+        .design-1 .stat-orb:nth-child(2) { animation-delay: -1.5s; }
+        .design-1 .stat-orb:nth-child(3) { animation-delay: -3s; }
+        .design-1 .stat-orb:nth-child(4) { animation-delay: -4.5s; }
+
+        .design-1 .stat-orb:hover {
+            transform: scale(1.08);
+            box-shadow: 0 20px 40px rgba(201, 243, 29, 0.15);
+        }
+
+        @keyframes float-orb {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .design-1 .orb-value {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .design-1 .orb-value small { font-size: 0.9rem; }
+
+        .design-1 .orb-label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        /* ========== DESIGN 2: Bento Grid Cards ========== */
+        .design-2 .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 180px);
+            gap: 12px;
+        }
+
+        .design-2 .bento-card {
+            background: linear-gradient(145deg, var(--bg3) 0%, var(--bg2) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .design-2 .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .design-2 .bento-card:hover {
+            border-color: var(--accent-border);
+            transform: translateY(-4px);
+        }
+
+        .design-2 .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        .design-2 .bento-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .design-2 .bento-value {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .design-2 .bento-value small { font-size: 0.8rem; }
+
+        .design-2 .bento-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        /* ========== DESIGN 3: Vertical Stack ========== */
+        .design-3 .stack-container {
+            display: flex;
+            gap: 24px;
+        }
+
+        .design-3 .stack-item {
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .design-3 .stack-bar {
+            width: 80px;
+            height: 200px;
+            background: var(--bg3);
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .design-3 .stack-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, var(--accent), var(--accent2));
+            border-radius: 40px;
+            transition: height 1s ease-out;
+        }
+
+        .design-3 .stack-item:nth-child(1) .stack-fill { height: 85%; }
+        .design-3 .stack-item:nth-child(2) .stack-fill { height: 65%; }
+        .design-3 .stack-item:nth-child(3) .stack-fill { height: 95%; }
+        .design-3 .stack-item:nth-child(4) .stack-fill { height: 100%; }
+
+        .design-3 .stack-value {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .design-3 .stack-value small { font-size: 0.7rem; color: var(--accent); }
+
+        .design-3 .stack-label {
+            font-size: 0.65rem;
+            color: var(--gray);
+            text-align: center;
+            margin-top: 0.25rem;
+        }
+
+        /* ========== DESIGN 4: Hexagon Grid ========== */
+        .design-4 .hex-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 380px;
+        }
+
+        .design-4 .hex-row {
+            display: flex;
+            justify-content: center;
+        }
+
+        .design-4 .hex-row:nth-child(2) {
+            margin-top: -25px;
+        }
+
+        .design-4 .hex-item {
+            width: 140px;
+            height: 160px;
+            margin: 0 5px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .design-4 .hex-bg {
+            position: absolute;
+            inset: 0;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: linear-gradient(180deg, var(--bg3) 0%, var(--bg2) 100%);
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .design-4 .hex-item:hover .hex-bg {
+            background: var(--accent-dim);
+            border-color: var(--accent-border);
+        }
+
+        .design-4 .hex-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .design-4 .hex-value {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .design-4 .hex-value small { font-size: 0.8rem; }
+
+        .design-4 .hex-label {
+            font-size: 0.65rem;
+            color: var(--gray);
+            margin-top: 0.15rem;
+        }
+
+        /* ========== DESIGN 5: Radial Gauges ========== */
+        .design-5 .gauge-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .design-5 .gauge-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .design-5 .gauge-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            position: relative;
+            background: conic-gradient(
+                var(--accent) 0deg,
+                var(--accent) var(--progress),
+                var(--bg3) var(--progress),
+                var(--bg3) 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .design-5 .gauge-item:nth-child(1) .gauge-ring { --progress: 306deg; }
+        .design-5 .gauge-item:nth-child(2) .gauge-ring { --progress: 234deg; }
+        .design-5 .gauge-item:nth-child(3) .gauge-ring { --progress: 342deg; }
+        .design-5 .gauge-item:nth-child(4) .gauge-ring { --progress: 360deg; }
+
+        .design-5 .gauge-inner {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .design-5 .gauge-value {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .design-5 .gauge-value small { font-size: 0.65rem; color: var(--accent); }
+
+        .design-5 .gauge-label {
+            font-size: 0.6rem;
+            color: var(--gray);
+            margin-top: 0.15rem;
+            text-align: center;
+        }
+
+        .design-5 .gauge-bottom-label {
+            font-size: 0.7rem;
+            color: var(--gray);
+            margin-top: 0.75rem;
+        }
+
+        /* Footer */
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-nav a {
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: var(--bg);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .footer-nav a:hover {
+            background: var(--accent2);
+            transform: translateY(-2px);
+        }
+
+        .footer-nav a.secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--white);
+        }
+
+        .footer-nav a.secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Hero Stats <span>Design Showcase</span></h1>
+        <p>5 design concepts for the hero stats section. Review each option and choose the one that best fits the ONIX brand.</p>
+    </header>
+
+    <main class="showcase">
+
+        <!-- Design 1: Floating Glass Orbs (Current) -->
+        <section class="design-section design-1">
+            <div class="design-header">
+                <span class="design-number">01</span>
+                <div class="design-info">
+                    <h2>Floating Glass Orbs</h2>
+                    <p>Current design — Glassmorphism circles with floating animation. Modern, clean, 3D depth.</p>
+                </div>
+            </div>
+            <div class="design-preview">
+                <div class="orbs-container">
+                    <div class="stat-orb">
+                        <span class="orb-value">$2.3M</span>
+                        <span class="orb-label">2025 Ad Spend</span>
+                    </div>
+                    <div class="stat-orb">
+                        <span class="orb-value">$32-65</span>
+                        <span class="orb-label">Average CPL</span>
+                    </div>
+                    <div class="stat-orb">
+                        <span class="orb-value">#1-#3</span>
+                        <span class="orb-label">Platform Rank</span>
+                    </div>
+                    <div class="stat-orb">
+                        <span class="orb-value">15<small>yrs</small></span>
+                        <span class="orb-label">NZ Dominance</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design 2: Bento Grid Cards -->
+        <section class="design-section design-2">
+            <div class="design-header">
+                <span class="design-number">02</span>
+                <div class="design-info">
+                    <h2>Bento Grid Cards</h2>
+                    <p>Compact card grid with icons and hover effects. Structured, professional, scannable.</p>
+                </div>
+            </div>
+            <div class="design-preview">
+                <div class="bento-grid">
+                    <div class="bento-card">
+                        <div class="bento-icon">💰</div>
+                        <div class="bento-value">$2.3M</div>
+                        <div class="bento-label">2025 Ad Spend</div>
+                    </div>
+                    <div class="bento-card">
+                        <div class="bento-icon">📊</div>
+                        <div class="bento-value">$32-65</div>
+                        <div class="bento-label">Average CPL</div>
+                    </div>
+                    <div class="bento-card">
+                        <div class="bento-icon">🏆</div>
+                        <div class="bento-value">#1-#3</div>
+                        <div class="bento-label">Platform Rank</div>
+                    </div>
+                    <div class="bento-card">
+                        <div class="bento-icon">⏱️</div>
+                        <div class="bento-value">15<small>yrs</small></div>
+                        <div class="bento-label">NZ Dominance</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design 3: Vertical Stack Bars -->
+        <section class="design-section design-3">
+            <div class="design-header">
+                <span class="design-number">03</span>
+                <div class="design-info">
+                    <h2>Vertical Progress Bars</h2>
+                    <p>Tall bar indicators with gradient fills. Data-driven, visual impact, shows scale.</p>
+                </div>
+            </div>
+            <div class="design-preview">
+                <div class="stack-container">
+                    <div class="stack-item">
+                        <div class="stack-bar">
+                            <div class="stack-fill"></div>
+                        </div>
+                        <div class="stack-value">$2.3M</div>
+                        <div class="stack-label">2025 Ad Spend</div>
+                    </div>
+                    <div class="stack-item">
+                        <div class="stack-bar">
+                            <div class="stack-fill"></div>
+                        </div>
+                        <div class="stack-value">$32-65</div>
+                        <div class="stack-label">Average CPL</div>
+                    </div>
+                    <div class="stack-item">
+                        <div class="stack-bar">
+                            <div class="stack-fill"></div>
+                        </div>
+                        <div class="stack-value">#1-#3</div>
+                        <div class="stack-label">Platform Rank</div>
+                    </div>
+                    <div class="stack-item">
+                        <div class="stack-bar">
+                            <div class="stack-fill"></div>
+                        </div>
+                        <div class="stack-value">15<small>yrs</small></div>
+                        <div class="stack-label">NZ Dominance</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design 4: Hexagon Grid -->
+        <section class="design-section design-4">
+            <div class="design-header">
+                <span class="design-number">04</span>
+                <div class="design-info">
+                    <h2>Hexagon Honeycomb</h2>
+                    <p>Geometric hexagonal pattern. Unique, tech-forward, interconnected feel.</p>
+                </div>
+            </div>
+            <div class="design-preview">
+                <div class="hex-grid">
+                    <div class="hex-row">
+                        <div class="hex-item">
+                            <div class="hex-bg"></div>
+                            <div class="hex-content">
+                                <div class="hex-value">$2.3M</div>
+                                <div class="hex-label">2025 Ad Spend</div>
+                            </div>
+                        </div>
+                        <div class="hex-item">
+                            <div class="hex-bg"></div>
+                            <div class="hex-content">
+                                <div class="hex-value">$32-65</div>
+                                <div class="hex-label">Average CPL</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hex-row">
+                        <div class="hex-item">
+                            <div class="hex-bg"></div>
+                            <div class="hex-content">
+                                <div class="hex-value">#1-#3</div>
+                                <div class="hex-label">Platform Rank</div>
+                            </div>
+                        </div>
+                        <div class="hex-item">
+                            <div class="hex-bg"></div>
+                            <div class="hex-content">
+                                <div class="hex-value">15<small>yrs</small></div>
+                                <div class="hex-label">NZ Dominance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design 5: Radial Gauges -->
+        <section class="design-section design-5">
+            <div class="design-header">
+                <span class="design-number">05</span>
+                <div class="design-info">
+                    <h2>Radial Progress Gauges</h2>
+                    <p>Circular progress indicators with percentage fills. Dashboard-style, performance metrics.</p>
+                </div>
+            </div>
+            <div class="design-preview">
+                <div class="gauge-grid">
+                    <div class="gauge-item">
+                        <div class="gauge-ring">
+                            <div class="gauge-inner">
+                                <span class="gauge-value">$2.3M</span>
+                                <span class="gauge-label">Ad Spend</span>
+                            </div>
+                        </div>
+                        <span class="gauge-bottom-label">2025 Total</span>
+                    </div>
+                    <div class="gauge-item">
+                        <div class="gauge-ring">
+                            <div class="gauge-inner">
+                                <span class="gauge-value">$32-65</span>
+                                <span class="gauge-label">CPL Range</span>
+                            </div>
+                        </div>
+                        <span class="gauge-bottom-label">Average CPL</span>
+                    </div>
+                    <div class="gauge-item">
+                        <div class="gauge-ring">
+                            <div class="gauge-inner">
+                                <span class="gauge-value">#1-#3</span>
+                                <span class="gauge-label">Position</span>
+                            </div>
+                        </div>
+                        <span class="gauge-bottom-label">Platform Rank</span>
+                    </div>
+                    <div class="gauge-item">
+                        <div class="gauge-ring">
+                            <div class="gauge-inner">
+                                <span class="gauge-value">15<small>yrs</small></span>
+                                <span class="gauge-label">Running</span>
+                            </div>
+                        </div>
+                        <span class="gauge-bottom-label">NZ Dominance</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="footer-nav">
+        <a href="insurance.html" class="secondary">← Back to Insurance Page</a>
+        <a href="/">Main ONIX Site</a>
+    </nav>
+</body>
+</html>

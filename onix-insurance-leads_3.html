@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONIX — Insurance Leads · AU · US · UK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black:   #0d0d0d;
+  --card:    #161616;
+  --card2:   #1c1c1c;
+  --border:  #262626;
+  --green:   #a8e63d;
+  --green2:  #c5f060;
+  --green-dim: rgba(168,230,61,0.12);
+  --green-border: rgba(168,230,61,0.25);
+  --white:   #ffffff;
+  --grey:    rgba(255,255,255,0.45);
+  --grey2:   rgba(255,255,255,0.22);
+  --font:    'Manrope', -apple-system, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem;
+  height: 64px;
+  background: rgba(13,13,13,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-size: 1.25rem; font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  text-decoration: none;
+}
+.nav-logo span { color: var(--green); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--grey);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-right { display: flex; align-items: center; gap: 0.75rem; }
+.pill {
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 100px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+}
+.btn-nav {
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.03em;
+  background: var(--green);
+  color: var(--black);
+  padding: 0.55rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-nav:hover { background: var(--green2); transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 9rem 3rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,230,61,0.07) 0%, transparent 70%);
+  top: 10%; right: -100px;
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,230,61,0.04) 0%, transparent 70%);
+  bottom: 5%; left: -60px;
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+  width: fit-content;
+  animation: fadeUp 0.7s ease both;
+}
+.hero-tag::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: blink 2s ease infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.hero h1 {
+  font-size: clamp(3.2rem, 7vw, 7rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin-bottom: 2rem;
+  max-width: 900px;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+.hero h1 .g { color: var(--green); }
+.hero-sub {
+  font-size: 1.1rem; font-weight: 400;
+  color: var(--grey);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+.hero-sub strong { color: var(--white); font-weight: 600; }
+.hero-actions {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  animation: fadeUp 0.7s 0.3s ease both;
+}
+.btn-primary {
+  font-size: 0.9rem; font-weight: 700;
+  background: var(--green); color: var(--black);
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+  background: var(--green2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(168,230,61,0.25);
+}
+.btn-ghost {
+  font-size: 0.9rem; font-weight: 600;
+  color: var(--grey);
+  text-decoration: none;
+  padding: 0.9rem 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); }
+
+/* Stats ticker */
+.hero-stats {
+  display: flex; gap: 0; margin-top: 4rem;
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  animation: fadeUp 0.7s 0.45s ease both;
+}
+.hstat {
+  flex: 1; padding: 1.5rem 2rem;
+  border-right: 1px solid var(--border);
+  background: var(--card);
+}
+.hstat:last-child { border-right: none; }
+.hstat-num {
+  font-size: 2rem; font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.hstat-label {
+  font-size: 0.75rem; font-weight: 500;
+  color: var(--grey);
+  line-height: 1.35;
+}
+.hstat-label strong { display: block; color: var(--white); font-weight: 600; margin-bottom: 0.15rem; font-size: 0.8rem; }
+
+/* ── SECTIONS ── */
+section { padding: 6rem 3rem; }
+
+.sec-tag {
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1rem;
+}
+.sec-h {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  margin-bottom: 1rem;
+}
+.sec-h .g { color: var(--green); }
+.sec-sub {
+  font-size: 1rem; font-weight: 400;
+  color: var(--grey);
+  max-width: 540px;
+  line-height: 1.7;
+}
+
+/* ── WHY NOW / AUTHORITY ── */
+.authority-bar {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 3rem;
+  display: flex; align-items: center; gap: 0;
+}
+.auth-statement {
+  flex: 1;
+  font-size: 1.2rem; font-weight: 700;
+  line-height: 1.4;
+  padding-right: 3rem;
+  border-right: 1px solid var(--border);
+}
+.auth-statement .g { color: var(--green); }
+.auth-facts {
+  display: flex; gap: 0; flex: 1;
+}
+.auth-fact {
+  flex: 1; padding: 0 2.5rem;
+  border-right: 1px solid var(--border);
+}
+.auth-fact:last-child { border-right: none; }
+.auth-num {
+  font-size: 2.2rem; font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.auth-num .g { color: var(--green); }
+.auth-label { font-size: 0.78rem; font-weight: 400; color: var(--grey); line-height: 1.4; }
+
+/* ── STORY ── */
+.story-section { background: var(--black); }
+.story-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+  align-items: start; margin-top: 4rem;
+}
+.story-left p {
+  font-size: 0.95rem; font-weight: 400; color: var(--grey);
+  line-height: 1.75; margin-bottom: 1.25rem;
+}
+.story-left p strong { color: var(--white); font-weight: 600; }
+.callout {
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  border-radius: 10px; padding: 1.5rem 1.75rem; margin-top: 1.5rem;
+}
+.callout p {
+  font-size: 1.0rem; font-weight: 600;
+  color: var(--white); line-height: 1.55; margin: 0 !important;
+}
+.callout p .g { color: var(--green); }
+
+/* Timeline */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item {
+  display: grid; grid-template-columns: 70px 1fr;
+  gap: 1.5rem; padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: start;
+}
+.tl-item:first-child { border-top: 1px solid var(--border); }
+.tl-year {
+  font-size: 0.82rem; font-weight: 700;
+  color: var(--green); padding-top: 0.15rem;
+  letter-spacing: 0.02em;
+}
+.tl-content h4 {
+  font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 0.3rem; letter-spacing: -0.01em;
+}
+.tl-content p {
+  font-size: 0.82rem; font-weight: 400;
+  color: var(--grey); line-height: 1.6;
+}
+
+/* ── PERFORMANCE ── */
+.perf-section { background: var(--card); }
+.perf-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem; }
+.perf-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border-radius: 10px; overflow: hidden;
+}
+.perf-cell {
+  background: var(--black);
+  padding: 2rem 1.75rem;
+  transition: background 0.2s;
+}
+.perf-cell:hover { background: var(--card2); }
+.perf-cell.hot { background: var(--green-dim); }
+.perf-label {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 0.85rem;
+}
+.perf-num {
+  font-size: 2.8rem; font-weight: 800;
+  letter-spacing: -0.05em; line-height: 1;
+  color: var(--white); margin-bottom: 0.5rem;
+}
+.perf-cell.hot .perf-num { color: var(--green); }
+.perf-num sub { font-size: 1.1rem; color: var(--green); vertical-align: baseline; }
+.perf-desc {
+  font-size: 0.82rem; font-weight: 400;
+  color: var(--grey); line-height: 1.55;
+}
+
+/* Rankings table */
+.rank-table {
+  margin-top: 2.5rem;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+}
+.rank-head {
+  display: grid; grid-template-columns: 48px 1fr 160px 140px;
+  padding: 0.75rem 1.5rem;
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+}
+.rank-head span {
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--grey2);
+}
+.rank-row {
+  display: grid; grid-template-columns: 48px 1fr 160px 140px;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  background: var(--black);
+  transition: background 0.2s;
+}
+.rank-row:last-child { border-bottom: none; }
+.rank-row:hover { background: var(--card2); }
+.rank-row.expanding { background: rgba(168,230,61,0.05); }
+.rank-pos {
+  font-size: 1.4rem; font-weight: 800;
+  letter-spacing: -0.03em; color: var(--green);
+}
+.rank-pos.dim { color: rgba(255,255,255,0.15); }
+.rank-name { font-size: 0.87rem; font-weight: 600; }
+.rank-platform { font-size: 0.78rem; font-weight: 400; color: var(--grey); }
+.badge {
+  display: inline-flex;
+  font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 0.25rem 0.65rem; border-radius: 100px;
+}
+.badge-g { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+.badge-w { background: rgba(255,255,255,0.05); color: var(--grey); border: 1px solid var(--border); }
+.badge-new { background: rgba(80,200,120,0.1); color: #5fd090; border: 1px solid rgba(80,200,120,0.25); }
+
+/* ── LEAD TYPES ── */
+.leads-section { background: var(--black); }
+.leads-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  margin-top: 3.5rem;
+}
+.lead-card {
+  background: var(--card);
+  padding: 2rem 2rem 1.75rem;
+  transition: background 0.2s;
+  position: relative;
+}
+.lead-card:hover { background: var(--card2); }
+.lead-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--green);
+  opacity: 0; transition: opacity 0.25s;
+}
+.lead-card:hover::after { opacity: 1; }
+.lead-icon {
+  width: 44px; height: 44px; border-radius: 8px;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 1.25rem;
+}
+.lead-card h3 {
+  font-size: 1.1rem; font-weight: 800;
+  letter-spacing: -0.02em; margin-bottom: 0.6rem;
+}
+.lead-card p { font-size: 0.85rem; font-weight: 400; color: var(--grey); line-height: 1.65; }
+.lead-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 1.5rem; padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+.lead-cpl {
+  font-size: 1.3rem; font-weight: 800;
+  letter-spacing: -0.03em; color: var(--green);
+}
+.lead-cpl small { font-size: 0.7rem; color: var(--grey); font-weight: 400; margin-left: 0.25rem; }
+.lead-volume {
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--grey); letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── HOW WE DELIVER ── */
+.deliver-section { background: var(--card); }
+.deliver-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  margin-top: 3.5rem;
+}
+.deliver-step {
+  background: var(--black);
+  padding: 2rem 1.75rem;
+  position: relative;
+  transition: background 0.2s;
+}
+.deliver-step:hover { background: var(--card2); }
+.d-num {
+  font-size: 3.5rem; font-weight: 800; letter-spacing: -0.05em;
+  color: rgba(168,230,61,0.12);
+  position: absolute; bottom: 1rem; right: 1.25rem;
+  line-height: 1;
+}
+.d-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  border: 1px solid var(--green-border);
+  background: var(--green-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; margin-bottom: 1.25rem;
+}
+.deliver-step h3 {
+  font-size: 0.97rem; font-weight: 700;
+  letter-spacing: -0.02em; margin-bottom: 0.6rem;
+}
+.deliver-step p { font-size: 0.82rem; font-weight: 400; color: var(--grey); line-height: 1.65; }
+
+/* ── CONSISTENCY CHART ── */
+.consistency-section { background: var(--black); }
+.consistency-layout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+  align-items: center; margin-top: 4rem;
+}
+.consist-points { list-style: none; margin-top: 2rem; }
+.cp {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.2rem 0; border-bottom: 1px solid var(--border);
+}
+.cp:first-child { border-top: 1px solid var(--border); }
+.cp-icon {
+  width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green); font-size: 0.75rem; font-weight: 800;
+  margin-top: 0.1rem;
+}
+.cp h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.2rem; }
+.cp p { font-size: 0.82rem; font-weight: 400; color: var(--grey); line-height: 1.6; }
+
+/* Chart */
+.chart-wrap {
+  background: var(--card);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.5rem;
+}
+.chart-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.5rem;
+}
+.chart-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.02em; }
+.chart-legend { display: flex; gap: 1rem; }
+.legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.7rem; color: var(--grey); font-weight: 500; }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+.bars-wrap {
+  display: flex; align-items: flex-end; gap: 4px; height: 160px;
+  margin-bottom: 0.75rem;
+}
+.bar-group { flex: 1; display: flex; align-items: flex-end; gap: 2px; }
+.bar {
+  flex: 1; border-radius: 3px 3px 0 0;
+  transition: opacity 0.2s;
+  animation: growBar 0.8s ease both;
+}
+@keyframes growBar { from{transform:scaleY(0);transform-origin:bottom} to{transform:scaleY(1);transform-origin:bottom} }
+.bar.onix { background: var(--green); }
+.bar.comp { background: rgba(255,255,255,0.1); }
+.chart-months {
+  display: flex; gap: 4px;
+}
+.chart-month { flex: 1; text-align: center; font-size: 0.58rem; font-weight: 500; color: var(--grey2); }
+
+/* ── MARKETS ── */
+.markets-section { background: var(--card); }
+.markets-layout { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; margin-top: 3.5rem; }
+.market-tabs { display: flex; flex-direction: column; gap: 0.5rem; }
+.market-tab {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.2rem 1.25rem;
+  background: var(--black); border: 1px solid var(--border);
+  border-radius: 10px; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-decoration: none; color: inherit;
+}
+.market-tab:hover { border-color: var(--green-border); background: var(--green-dim); }
+.market-tab.active { border-color: var(--green); background: var(--green-dim); }
+.tab-flag { font-size: 1.6rem; flex-shrink: 0; }
+.tab-name { font-size: 0.88rem; font-weight: 700; }
+.tab-sub { font-size: 0.75rem; font-weight: 400; color: var(--grey); margin-top: 0.1rem; }
+.tab-arrow { margin-left: auto; color: var(--green); font-size: 1.1rem; opacity: 0; transition: opacity 0.2s; }
+.market-tab.active .tab-arrow,
+.market-tab:hover .tab-arrow { opacity: 1; }
+.market-panel {
+  background: var(--black); border: 1px solid var(--border);
+  border-radius: 12px; padding: 2.5rem;
+}
+.mp-flag { font-size: 2.5rem; margin-bottom: 1.25rem; }
+.mp-title { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.75rem; }
+.mp-desc { font-size: 0.9rem; font-weight: 400; color: var(--grey); line-height: 1.7; margin-bottom: 2rem; }
+.mp-specs {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 2rem;
+}
+.mp-spec { background: var(--card2); padding: 1rem 1.1rem; }
+.mp-spec-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 0.3rem; }
+.mp-spec-val { font-size: 0.88rem; font-weight: 700; }
+.mp-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.85rem; font-weight: 700;
+  background: var(--green); color: var(--black);
+  padding: 0.8rem 1.75rem; border-radius: 8px;
+  text-decoration: none; transition: background 0.2s, transform 0.15s;
+}
+.mp-cta:hover { background: var(--green2); transform: translateY(-1px); }
+
+/* ── SOCIAL PROOF ── */
+.proof-section { background: var(--black); }
+.proof-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+  margin-top: 3.5rem;
+}
+.proof-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.75rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+.proof-card:hover { border-color: var(--green-border); background: var(--card2); }
+.stars { color: var(--green); font-size: 0.8rem; margin-bottom: 1rem; letter-spacing: 0.05em; }
+.proof-quote {
+  font-size: 0.9rem; font-weight: 500;
+  color: rgba(255,255,255,0.85); line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+.proof-author {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding-top: 1.25rem; border-top: 1px solid var(--border);
+}
+.proof-av {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 800; color: var(--green);
+  flex-shrink: 0;
+}
+.proof-name { font-size: 0.85rem; font-weight: 700; }
+.proof-role { font-size: 0.73rem; font-weight: 400; color: var(--grey); }
+
+/* ── PROCESS ── */
+.process-section { background: var(--card); }
+.process-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+  background: var(--border); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; margin-top: 3.5rem;
+}
+.proc-step {
+  background: var(--black); padding: 2.5rem 2rem;
+  position: relative; transition: background 0.2s;
+}
+.proc-step:hover { background: var(--card2); }
+.proc-num {
+  font-size: 5rem; font-weight: 800; letter-spacing: -0.05em;
+  color: rgba(168,230,61,0.1); position: absolute;
+  top: 1rem; right: 1.5rem; line-height: 1;
+}
+.proc-check {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--green); background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  padding: 0.25rem 0.65rem; border-radius: 100px;
+  margin-bottom: 1.25rem;
+}
+.proc-step h3 { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+.proc-step p { font-size: 0.85rem; font-weight: 400; color: var(--grey); line-height: 1.65; }
+
+/* ── CTA ── */
+.cta-section {
+  background: var(--black);
+  padding: 8rem 3rem;
+  position: relative; overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--green) 50%, transparent 100%);
+  opacity: 0.5;
+}
+.cta-glow {
+  position: absolute;
+  width: 700px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,230,61,0.06) 0%, transparent 65%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cta-inner { position: relative; z-index: 1; max-width: 680px; }
+.cta-tag {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green); background: var(--green-dim);
+  border: 1px solid var(--green-border); padding: 0.4rem 1rem;
+  border-radius: 100px; margin-bottom: 2rem;
+}
+.cta-tag::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); animation: blink 2s ease infinite;
+}
+.cta-h {
+  font-size: clamp(2.5rem, 5.5vw, 5rem);
+  font-weight: 800; letter-spacing: -0.04em;
+  line-height: 0.96; margin-bottom: 1.5rem;
+}
+.cta-h .g { color: var(--green); }
+.cta-body {
+  font-size: 1rem; font-weight: 400;
+  color: var(--grey); line-height: 1.75;
+  margin-bottom: 2.5rem; max-width: 520px;
+}
+.cta-form {
+  display: flex; gap: 0; max-width: 520px;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+}
+.cta-form:focus-within { border-color: var(--green-border); }
+.cta-form input {
+  flex: 1; background: var(--card);
+  border: none; outline: none;
+  padding: 1rem 1.25rem;
+  font-family: var(--font); font-size: 0.9rem; font-weight: 400;
+  color: var(--white);
+}
+.cta-form input::placeholder { color: var(--grey2); }
+.cta-form button {
+  background: var(--green); color: var(--black);
+  border: none; padding: 1rem 1.75rem;
+  font-family: var(--font); font-size: 0.82rem; font-weight: 800;
+  letter-spacing: 0.03em; cursor: pointer;
+  white-space: nowrap; transition: background 0.2s;
+}
+.cta-form button:hover { background: var(--green2); }
+.cta-note { font-size: 0.73rem; font-weight: 400; color: var(--grey2); margin-top: 0.9rem; }
+.cta-alts { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--border); }
+.cta-alt { display: flex; align-items: center; gap: 0.6rem; }
+.cta-alt-icon { font-size: 1rem; }
+.cta-alt-text { font-size: 0.82rem; font-weight: 400; color: var(--grey); }
+.cta-alt-text a { color: var(--green); text-decoration: none; font-weight: 600; }
+.cta-alt-text a:hover { color: var(--green2); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 3rem;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-logo {
+  font-size: 1.2rem; font-weight: 800; letter-spacing: -0.03em;
+  color: var(--white); text-decoration: none;
+}
+.footer-logo span { color: var(--green); }
+footer p { font-size: 0.78rem; font-weight: 400; color: var(--grey2); }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { font-size: 0.78rem; font-weight: 500; color: var(--grey); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--green); }
+
+/* ── CLIENT TICKER ── */
+.clients-section {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 0;
+  overflow: hidden;
+  position: relative;
+}
+.clients-label {
+  text-align: center;
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--grey2);
+  margin-bottom: 2rem;
+}
+.ticker-outer {
+  position: relative; overflow: hidden;
+}
+/* fade edges */
+.ticker-outer::before,
+.ticker-outer::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2;
+  pointer-events: none;
+}
+.ticker-outer::before { left: 0;  background: linear-gradient(to right, var(--card), transparent); }
+.ticker-outer::after  { right: 0; background: linear-gradient(to left,  var(--card), transparent); }
+.ticker-track {
+  display: flex; gap: 0;
+  width: max-content;
+  animation: tickerScroll 32s linear infinite;
+}
+.ticker-track:hover { animation-play-state: paused; }
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.ticker-logo {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3rem;
+  height: 60px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+  opacity: 0.55;
+  transition: opacity 0.2s;
+  cursor: default;
+}
+.ticker-logo:hover { opacity: 1; }
+.ticker-logo-inner {
+  display: flex; align-items: center; gap: 0.6rem;
+  white-space: nowrap;
+}
+.ticker-logo-dot {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; font-weight: 800; color: var(--green);
+  flex-shrink: 0;
+}
+.ticker-logo-name {
+  font-size: 0.85rem; font-weight: 700;
+  color: var(--white); letter-spacing: -0.01em;
+}
+.ticker-logo-type {
+  font-size: 0.68rem; font-weight: 500;
+  color: var(--grey2);
+  margin-left: 0.1rem;
+}
+
+/* ── GOOGLE REVIEWS WIDGET ── */
+.reviews-section {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 4rem 3rem;
+}
+.reviews-inner {
+  display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;
+}
+.google-badge {
+  flex-shrink: 0;
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem 2.5rem;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; min-width: 200px;
+  transition: border-color 0.2s;
+  text-decoration: none; color: inherit;
+}
+.google-badge:hover { border-color: var(--green-border); }
+.google-logo {
+  display: flex; align-items: center; gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+.g-dot { width: 10px; height: 10px; border-radius: 50%; }
+.g-blue   { background: #4285F4; }
+.g-red    { background: #EA4335; }
+.g-yellow { background: #FBBC04; }
+.g-green  { background: #34A853; }
+.google-word {
+  font-size: 0.78rem; font-weight: 700;
+  color: rgba(255,255,255,0.6); letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.google-score {
+  font-size: 3rem; font-weight: 800;
+  letter-spacing: -0.05em; line-height: 1;
+  color: var(--white); margin-bottom: 0.4rem;
+}
+.google-stars-row {
+  display: flex; gap: 0.2rem; margin-bottom: 0.5rem;
+}
+.g-star { color: #FBBC04; font-size: 1rem; }
+.google-count {
+  font-size: 0.75rem; font-weight: 500; color: var(--grey);
+}
+.google-cta {
+  margin-top: 1.25rem;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--green); letter-spacing: 0.04em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--green-border);
+  padding-bottom: 0.1rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+.google-cta:hover { color: var(--green2); border-color: var(--green); }
+.reviews-divider {
+  width: 1px; align-self: stretch;
+  background: var(--border); flex-shrink: 0;
+}
+.reviews-scroll-wrap { flex: 1; min-width: 0; overflow: hidden; position: relative; }
+.reviews-scroll-wrap::before,
+.reviews-scroll-wrap::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2;
+  pointer-events: none;
+}
+.reviews-scroll-wrap::before { left: 0; background: linear-gradient(to right, var(--card), transparent); }
+.reviews-scroll-wrap::after  { right: 0; background: linear-gradient(to left, var(--card), transparent); }
+.reviews-track {
+  display: flex; gap: 1rem;
+  width: max-content;
+  animation: tickerScroll 28s linear infinite;
+}
+.reviews-track:hover { animation-play-state: paused; }
+.review-mini {
+  background: var(--black);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  width: 280px; flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+.review-mini:hover { border-color: var(--green-border); }
+.review-mini-stars { color: #FBBC04; font-size: 0.72rem; margin-bottom: 0.6rem; }
+.review-mini-text {
+  font-size: 0.82rem; font-weight: 500;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.55; margin-bottom: 0.9rem;
+}
+.review-mini-author {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.review-mini-av {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 800; color: var(--green);
+}
+.review-mini-name { font-size: 0.75rem; font-weight: 700; }
+.review-mini-role { font-size: 0.68rem; font-weight: 400; color: var(--grey2); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1100px) {
+  nav { padding: 0 2rem; }
+  .nav-links { display: none; }
+  section { padding: 5rem 2rem; }
+  .hero { padding: 8rem 2rem 3.5rem; }
+  .story-grid, .consistency-layout { grid-template-columns: 1fr; gap: 3rem; }
+  .markets-layout { grid-template-columns: 1fr; }
+  .perf-grid { grid-template-columns: 1fr 1fr; }
+  .deliver-grid { grid-template-columns: 1fr 1fr; }
+  .proof-grid { grid-template-columns: 1fr; }
+  .authority-bar { flex-direction: column; gap: 2rem; padding: 2rem; }
+  .auth-statement { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 2rem; }
+  .auth-facts { flex-wrap: wrap; }
+  .auth-fact { border-right: none; padding: 0; }
+  footer { flex-direction: column; text-align: center; padding: 2rem; }
+  .footer-links { justify-content: center; }
+  .mp-specs { grid-template-columns: 1fr 1fr; }
+  .cta-section { padding: 6rem 2rem; }
+  .rank-head, .rank-row { grid-template-columns: 42px 1fr 120px; }
+  .rank-head > *:nth-child(4), .rank-row > *:nth-child(4) { display: none; }
+  .reviews-section { padding: 3rem 2rem; }
+  .reviews-inner { flex-direction: column; gap: 2rem; }
+  .reviews-divider { width: 100%; height: 1px; align-self: auto; }
+  .google-badge { width: 100%; flex-direction: row; text-align: left; padding: 1.5rem; gap: 1.5rem; }
+}
+@media (max-width: 700px) {
+  .hero h1 { font-size: 3rem; }
+  .hero-stats { flex-direction: column; }
+  .hstat { border-right: none; border-bottom: 1px solid var(--border); }
+  .hstat:last-child { border-bottom: none; }
+  .leads-grid, .perf-grid, .deliver-grid, .process-grid { grid-template-columns: 1fr; }
+  .mp-specs { grid-template-columns: 1fr; }
+  .cta-form { flex-direction: column; }
+  .cta-form button { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://onix.scalabl.io" class="nav-logo">ONIX<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#leads">Lead Types</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#markets">Markets</a></li>
+    <li><a href="#contact">Apply</a></li>
+  </ul>
+  <div class="nav-right">
+    <span class="pill">🇦🇺 AU</span>
+    <span class="pill">🇺🇸 US</span>
+    <span class="pill">🇬🇧 UK</span>
+    <a href="#contact" class="btn-nav">Book a Call →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-tag">15 Years · NZ's #1 Insurance Lead Agency · Now Expanding Globally</div>
+  <h1>
+    Stop Chasing<br>
+    <span class="g">Insurance Leads.</span><br>
+    Start Closing Deals.
+  </h1>
+  <p class="hero-sub">
+    We've spent <strong>15 years perfecting</strong> the most consistent insurance lead system in New Zealand — holding <strong>#1, #2 and #3</strong> across every major platform. Now we're deploying that same system for brokers in <strong>Australia, the US and the UK.</strong>
+  </p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Apply for Broker Access →</a>
+    <a href="#performance" class="btn-ghost">See 2025 Performance Data</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hstat">
+      <div class="hstat-num">$2.3M</div>
+      <div class="hstat-label"><strong>2025 Ad Spend</strong>Life · Income · Medical insurance</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">$32–$65</div>
+      <div class="hstat-label"><strong>Average CPL</strong>Consistent across all 12 months</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">#1–#3</div>
+      <div class="hstat-label"><strong>Platform Rankings</strong>All major channels, every year</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-num">15yrs</div>
+      <div class="hstat-label"><strong>NZ Dominance</strong>Zero years outside the top 3</div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTHORITY BAR -->
+<div class="authority-bar">
+  <div class="auth-statement">
+    Our biggest NZ client asked us to go <span class="g">exclusive</span>.<br>
+    Their results were too good to share. So we expanded globally.
+  </div>
+  <div class="auth-facts">
+    <div class="auth-fact">
+      <div class="auth-num">100<span class="g">%</span></div>
+      <div class="auth-label">Exclusive leads —<br>never resold, ever</div>
+    </div>
+    <div class="auth-fact">
+      <div class="auth-num">3</div>
+      <div class="auth-label">New markets: AU,<br>US &amp; UK now open</div>
+    </div>
+    <div class="auth-fact">
+      <div class="auth-num"><span class="g">Zero</span></div>
+      <div class="auth-label">Peaks &amp; troughs.<br>Consistency is the product.</div>
+    </div>
+    <div class="auth-fact">
+      <div class="auth-num">12/12</div>
+      <div class="auth-label">Months of unbroken<br>volume delivery in 2025</div>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT TICKER -->
+<div class="clients-section" id="clients">
+  <div class="clients-label">Trusted by leading insurance businesses across New Zealand</div>
+  <div class="ticker-outer">
+    <div class="ticker-track" id="tickerTrack">
+      <!-- JS populates both sets for seamless loop -->
+    </div>
+  </div>
+</div>
+
+<!-- STORY -->
+<section class="story-section" id="story">
+  <div class="sec-tag">Why We're Here</div>
+  <h2 class="sec-h">A Forced Hand.<br>An <span class="g">Incredible</span> Opportunity.</h2>
+  <div class="story-grid">
+    <div class="story-left">
+      <p>Our largest New Zealand client — a national insurance brokerage — approached us and asked us to go exclusive. Their results with our leads had been so consistent, so far ahead of anything else on the market, that they didn't want to share us with competitors.</p>
+      <p>We agreed. And that decision forced us to do something we'd been building toward for a long time: <strong>take everything we've perfected in NZ and build it for the rest of the world.</strong></p>
+      <p>The same performance marketing infrastructure. The same qualification rigour. The same relentless consistency that's kept us in the <strong>top 3 positions across every major platform for 15 consecutive years.</strong></p>
+      <div class="callout">
+        <p>"After 15 years in one of the world's most competitive insurance markets, we know exactly what works. Australia, the US and the UK are getting the <span class="g">real thing</span> — not a version of it."</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">2010</div>
+        <div class="tl-content">
+          <h4>Founded in New Zealand</h4>
+          <p>Launched our first insurance lead campaigns. Learned to be excellent fast — NZ punishes underperformers.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2015</div>
+        <div class="tl-content">
+          <h4>First #1 Platform Ranking</h4>
+          <p>Achieved top position across all major ad platforms for insurance lead generation in NZ. Held it ever since.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2020</div>
+        <div class="tl-content">
+          <h4>#1, #2 &amp; #3 Simultaneously</h4>
+          <p>Not just the best — the three best. Our campaigns held the top three positions across all platforms. Still do.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2025</div>
+        <div class="tl-content">
+          <h4>$2.3M Ad Spend. Zero Underperformance.</h4>
+          <p>Biggest year yet. $2.3M across life, income protection and medical. CPL held $32–$65 all 12 months.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">Now</div>
+        <div class="tl-content">
+          <h4>Opening to AU · US · UK</h4>
+          <p>Exclusive NZ client locked in. We're replicating the system globally. Limited broker slots per region.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERFORMANCE -->
+<section class="perf-section" id="performance">
+  <div class="perf-header">
+    <div>
+      <div class="sec-tag">2025 Performance Data</div>
+      <h2 class="sec-h">Numbers That<br><span class="g">Don't Lie.</span></h2>
+    </div>
+    <p class="sec-sub">Every metric below is live from our 2025 calendar year. These aren't launch projections — this is what we already deliver, month in, month out.</p>
+  </div>
+  <div class="perf-grid">
+    <div class="perf-cell hot">
+      <div class="perf-label">Total 2025 Ad Spend</div>
+      <div class="perf-num">$2.3<sub>M</sub></div>
+      <div class="perf-desc">Deployed across life, income protection and medical insurance. Every dollar tracked. Every outcome measured.</div>
+    </div>
+    <div class="perf-cell">
+      <div class="perf-label">Life Insurance CPL</div>
+      <div class="perf-num">$32–$48</div>
+      <div class="perf-desc">Cost per verified, exclusive life insurance lead. Pre-qualified and contact-confirmed before delivery.</div>
+    </div>
+    <div class="perf-cell">
+      <div class="perf-label">Medical Insurance CPL</div>
+      <div class="perf-num">$52–$65</div>
+      <div class="perf-desc">Higher intent, higher ticket. Pre-screened for coverage awareness and budget readiness.</div>
+    </div>
+    <div class="perf-cell">
+      <div class="perf-label">Platform Position</div>
+      <div class="perf-num">#1–#3</div>
+      <div class="perf-desc">Top three positions across all major platforms held consistently throughout the full year. Not a peak — a standard.</div>
+    </div>
+    <div class="perf-cell">
+      <div class="perf-label">Volume Consistency</div>
+      <div class="perf-num">12/12</div>
+      <div class="perf-desc">Twelve consecutive months of volume stability. No seasonal troughs, no dead zones. Every month, without fail.</div>
+    </div>
+    <div class="perf-cell">
+      <div class="perf-label">Exclusivity Rate</div>
+      <div class="perf-num">100<sub>%</sub></div>
+      <div class="perf-desc">Every lead belongs to one broker. We have never sold a lead twice. We never will.</div>
+    </div>
+  </div>
+
+  <div class="rank-table">
+    <div class="rank-head">
+      <span>Rank</span>
+      <span>Campaign</span>
+      <span>Platform</span>
+      <span>Status</span>
+    </div>
+    <div class="rank-row">
+      <div class="rank-pos">1</div>
+      <div class="rank-name">ONIX — Life Insurance NZ</div>
+      <div class="rank-platform">Google Search</div>
+      <div><span class="badge badge-g">Held Since 2015</span></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-pos">1</div>
+      <div class="rank-name">ONIX — Income Protection NZ</div>
+      <div class="rank-platform">Meta Ads</div>
+      <div><span class="badge badge-g">Held Since 2018</span></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-pos">2</div>
+      <div class="rank-name">ONIX — Medical Insurance NZ</div>
+      <div class="rank-platform">Google Search</div>
+      <div><span class="badge badge-w">Top 3 Consistent</span></div>
+    </div>
+    <div class="rank-row">
+      <div class="rank-pos">3</div>
+      <div class="rank-name">ONIX — Life Insurance NZ</div>
+      <div class="rank-platform">YouTube / Display</div>
+      <div><span class="badge badge-w">Top 3 Consistent</span></div>
+    </div>
+    <div class="rank-row" style="opacity:0.35;">
+      <div class="rank-pos dim">4+</div>
+      <div class="rank-name" style="color:var(--grey);">All other advertisers</div>
+      <div class="rank-platform">All platforms</div>
+      <div><span class="badge badge-w">Competing for scraps</span></div>
+    </div>
+    <div class="rank-row expanding">
+      <div class="rank-pos">—</div>
+      <div class="rank-name">ONIX — AU · US · UK <span style="color:var(--green);font-size:0.75rem;margin-left:0.5rem;">↗ Launching Now</span></div>
+      <div class="rank-platform">All platforms</div>
+      <div><span class="badge badge-new">Expanding Now</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD TYPES -->
+<section class="leads-section" id="leads">
+  <div class="sec-tag">What We Deliver</div>
+  <h2 class="sec-h">Four Types of<br><span class="g">High-Intent</span> Insurance Leads</h2>
+  <p class="sec-sub">Every lead is exclusive to you — generated from buyers who are actively searching, not passively browsing.</p>
+  <div class="leads-grid">
+    <div class="lead-card">
+      <div class="lead-icon">🛡️</div>
+      <h3>Life Insurance</h3>
+      <p>Consumers actively comparing life insurance options with a genuine need for coverage. Pre-screened for employment status, smoker status, and coverage level before delivery.</p>
+      <div class="lead-footer">
+        <div class="lead-cpl">$32–$48<small>avg CPL</small></div>
+        <div class="lead-volume">12k+ leads/yr (NZ)</div>
+      </div>
+    </div>
+    <div class="lead-card">
+      <div class="lead-icon">💼</div>
+      <h3>Income Protection</h3>
+      <p>Employed professionals seeking to protect their income. These leads understand their need and are ready to discuss tailored protection solutions with a licensed adviser.</p>
+      <div class="lead-footer">
+        <div class="lead-cpl">$35–$52<small>avg CPL</small></div>
+        <div class="lead-volume">8k+ leads/yr (NZ)</div>
+      </div>
+    </div>
+    <div class="lead-card">
+      <div class="lead-icon">🏥</div>
+      <h3>Medical / Health Insurance</h3>
+      <p>Prospects seeking private health cover or upgrading existing policies. Pre-qualified with coverage gap details, family situation, and confirmed budget range before you speak to them.</p>
+      <div class="lead-footer">
+        <div class="lead-cpl">$52–$65<small>avg CPL</small></div>
+        <div class="lead-volume">20k+ leads/yr (NZ)</div>
+      </div>
+    </div>
+    <div class="lead-card">
+      <div class="lead-icon">🏠</div>
+      <h3>Mortgage Protection</h3>
+      <p>Homeowners and recent buyers seeking to protect their mortgage. High urgency — these prospects often have a live home loan and are actively seeking cover immediately.</p>
+      <div class="lead-footer">
+        <div class="lead-cpl">$38–$58<small>avg CPL</small></div>
+        <div class="lead-volume">High conversion rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE DELIVER -->
+<section class="deliver-section" id="delivery">
+  <div class="sec-tag">The Process</div>
+  <h2 class="sec-h">From Search Intent<br>to Your CRM — <span class="g">Live.</span></h2>
+  <div class="deliver-grid">
+    <div class="deliver-step">
+      <div class="d-num">01</div>
+      <div class="d-icon">🎯</div>
+      <h3>Intent Capture</h3>
+      <p>Our campaigns target consumers who are actively searching for insurance — not browsing. We pay for high-intent search traffic only. Every click has purpose.</p>
+    </div>
+    <div class="deliver-step">
+      <div class="d-num">02</div>
+      <div class="d-icon">🔍</div>
+      <h3>Multi-Layer Qualification</h3>
+      <p>Before a lead reaches you, it passes our stack: employment status, coverage type, budget range, contact verification. Bad data eliminated at source.</p>
+    </div>
+    <div class="deliver-step">
+      <div class="d-num">03</div>
+      <div class="d-icon">⚡</div>
+      <h3>Real-Time Delivery</h3>
+      <p>Leads land in your CRM the moment a prospect submits. Speed is the primary conversion lever — reach out within minutes, not hours.</p>
+    </div>
+    <div class="deliver-step">
+      <div class="d-num">04</div>
+      <div class="d-icon">📊</div>
+      <h3>Consistent Volume</h3>
+      <p>No spikes. No droughts. The same quality at the same volume, month after month. Plan and scale with confidence — this is what kept our biggest client exclusive.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONSISTENCY -->
+<section class="consistency-section" id="consistency">
+  <div class="consistency-layout">
+    <div>
+      <div class="sec-tag">Our Core Differentiator</div>
+      <h2 class="sec-h">Consistency Is<br>Not a Feature.<br>It's <span class="g">Our Product.</span></h2>
+      <p class="sec-sub">Most lead agencies are feast-or-famine. They spike in January, crater in June, blame the market. We don't. Twelve months of identical volume is the reason our biggest client went exclusive.</p>
+      <ul class="consist-points">
+        <li class="cp">
+          <div class="cp-icon">01</div>
+          <div>
+            <h4>No peaks, no troughs — ever</h4>
+            <p>We engineer campaigns specifically to smooth seasonal variation. Your pipeline looks the same in July as it does in December.</p>
+          </div>
+        </li>
+        <li class="cp">
+          <div class="cp-icon">02</div>
+          <div>
+            <h4>Predictable CPL month over month</h4>
+            <p>Our 2025 CPL range held $32–$65 across all lead types for all 12 months. Plan your marketing spend with confidence.</p>
+          </div>
+        </li>
+        <li class="cp">
+          <div class="cp-icon">03</div>
+          <div>
+            <h4>15 years in the top 3 — no exceptions</h4>
+            <p>We've held a top-3 position across all major platforms for 15 consecutive years. That's engineering, not luck.</p>
+          </div>
+        </li>
+        <li class="cp">
+          <div class="cp-icon">04</div>
+          <div>
+            <h4>You control volume. We maintain it.</h4>
+            <p>Tell us how many leads you can handle per week. We'll deliver exactly that — not 60% one week and 140% the next.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Bar chart -->
+    <div class="chart-wrap">
+      <div class="chart-header">
+        <div class="chart-title">Monthly Lead Volume — 2025</div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>ONIX</div>
+          <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.15)"></div>Industry avg.</div>
+        </div>
+      </div>
+      <div class="bars-wrap" id="chartBars"></div>
+      <div class="chart-months">
+        <div class="chart-month">Jan</div><div class="chart-month">Feb</div><div class="chart-month">Mar</div>
+        <div class="chart-month">Apr</div><div class="chart-month">May</div><div class="chart-month">Jun</div>
+        <div class="chart-month">Jul</div><div class="chart-month">Aug</div><div class="chart-month">Sep</div>
+        <div class="chart-month">Oct</div><div class="chart-month">Nov</div><div class="chart-month">Dec</div>
+      </div>
+      <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);display:flex;gap:1.5rem;">
+        <div>
+          <div style="font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;color:var(--green)">±4%</div>
+          <div style="font-size:0.72rem;color:var(--grey);margin-top:0.2rem;">ONIX monthly variance</div>
+        </div>
+        <div>
+          <div style="font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;color:rgba(255,255,255,0.35)">±48%</div>
+          <div style="font-size:0.72rem;color:var(--grey);margin-top:0.2rem;">Industry avg. variance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETS -->
+<section class="markets-section" id="markets">
+  <div class="sec-tag">New Markets — 2025 Expansion</div>
+  <h2 class="sec-h">Three Markets.<br>One <span class="g">Proven</span> System.</h2>
+  <div class="markets-layout">
+    <div class="market-tabs">
+      <a class="market-tab active" onclick="showMarket('au');return false;" href="#">
+        <div class="tab-flag">🇦🇺</div>
+        <div><div class="tab-name">Australia</div><div class="tab-sub">Life · Income · Health</div></div>
+        <div class="tab-arrow">→</div>
+      </a>
+      <a class="market-tab" onclick="showMarket('us');return false;" href="#">
+        <div class="tab-flag">🇺🇸</div>
+        <div><div class="tab-name">United States</div><div class="tab-sub">Life · Health · Medicare</div></div>
+        <div class="tab-arrow">→</div>
+      </a>
+      <a class="market-tab" onclick="showMarket('uk');return false;" href="#">
+        <div class="tab-flag">🇬🇧</div>
+        <div><div class="tab-name">United Kingdom</div><div class="tab-sub">Life · Critical Illness · IP</div></div>
+        <div class="tab-arrow">→</div>
+      </a>
+    </div>
+    <div class="market-panel" id="marketPanel"></div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="proof-section" id="results">
+  <div class="sec-tag">Real Results — NZ Advisers</div>
+  <h2 class="sec-h">Proven in NZ.<br><span class="g">Replicating</span> Globally.</h2>
+  <div class="proof-grid">
+    <div class="proof-card">
+      <div class="stars">★★★★★</div>
+      <p class="proof-quote">"360 leads over 6 months. 21 clients closed. $105,200 in commission. After lead costs I banked $83,600 profit. The math is simple when the leads actually convert."</p>
+      <div class="proof-author">
+        <div class="proof-av">MR</div>
+        <div><div class="proof-name">M.R.</div><div class="proof-role">Life Insurance Adviser · Wellington, NZ</div></div>
+      </div>
+    </div>
+    <div class="proof-card">
+      <div class="stars">★★★★★</div>
+      <p class="proof-quote">"Day three. Two booked appointments. The quality of the prospect, the intent — it's on a completely different level to anything else I've tried. These people actually want to talk."</p>
+      <div class="proof-author">
+        <div class="proof-av">DS</div>
+        <div><div class="proof-name">D.S.</div><div class="proof-role">Insurance Adviser · Auckland, NZ</div></div>
+      </div>
+    </div>
+    <div class="proof-card">
+      <div class="stars">★★★★★</div>
+      <p class="proof-quote">"Consistency is everything. My team can plan their diary, their conversion targets, their revenue. There's no mystery month. ONIX is the only lead provider where that's been true."</p>
+      <div class="proof-author">
+        <div class="proof-av">TK</div>
+        <div><div class="proof-name">T.K.</div><div class="proof-role">Brokerage Principal · Christchurch, NZ</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GOOGLE REVIEWS -->
+<div class="reviews-section" id="reviews">
+  <div class="reviews-inner">
+    <!-- Badge -->
+    <a class="google-badge" href="https://www.google.com/search?q=ONIX+Marketing+reviews" target="_blank" rel="noopener">
+      <div class="google-logo">
+        <div class="g-dot g-blue"></div>
+        <div class="g-dot g-red"></div>
+        <div class="g-dot g-yellow"></div>
+        <div class="g-dot g-green"></div>
+        <span class="google-word">Google</span>
+      </div>
+      <div class="google-score">4.9</div>
+      <div class="google-stars-row">
+        <span class="g-star">★</span><span class="g-star">★</span>
+        <span class="g-star">★</span><span class="g-star">★</span>
+        <span class="g-star">★</span>
+      </div>
+      <div class="google-count">150+ reviews</div>
+      <span class="google-cta">Read Reviews on Google →</span>
+    </a>
+
+    <div class="reviews-divider"></div>
+
+    <!-- Scrolling mini reviews -->
+    <div class="reviews-scroll-wrap">
+      <div class="reviews-track" id="reviewsTrack">
+        <!-- JS populates -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process-section">
+  <div class="sec-tag">Getting Started</div>
+  <h2 class="sec-h">Three Steps to<br><span class="g">Leads on Autopilot.</span></h2>
+  <div class="process-grid">
+    <div class="proc-step">
+      <div class="proc-num">01</div>
+      <div class="proc-check">✓ Done For You</div>
+      <h3>Apply &amp; Get Verified</h3>
+      <p>Submit your details and licence credentials. We verify you're a licensed insurance professional in your market and get you approved within 24 hours. No paperwork headaches.</p>
+    </div>
+    <div class="proc-step">
+      <div class="proc-num">02</div>
+      <div class="proc-check">✓ We Build It</div>
+      <h3>We Build Your Pipeline</h3>
+      <p>Our team configures your lead preferences — type, region, weekly volume — and activates your bespoke campaign. You don't touch a thing. We handle everything.</p>
+    </div>
+    <div class="proc-step">
+      <div class="proc-num">03</div>
+      <div class="proc-check">✓ You Close &amp; Scale</div>
+      <h3>Leads Flow. You Close.</h3>
+      <p>Leads arrive in your CRM in real time. Pre-qualified, contact-verified, exclusive to you. Show up, make the call, close the deal. We optimise weekly for maximum ROI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="cta-tag">Limited Slots Per Region — Apply Now</div>
+    <h2 class="cta-h">Stop Chasing.<br><span class="g">Start Closing.</span></h2>
+    <p class="cta-body">We're accepting a limited number of licensed insurance brokers in Australia, the US and the UK. To protect lead exclusivity and quality, we cap adviser numbers per region. If you want what NZ's top brokers have been leveraging for 15 years — apply before your competitors do.</p>
+    <div class="cta-form">
+      <input type="email" id="ctaEmail" placeholder="Your work email address">
+      <button onclick="handleApply()">Apply for Access →</button>
+    </div>
+    <p class="cta-note">AU · US · UK licensed insurance professionals only · Slots limited per region · We respond within 24 hours</p>
+    <div class="cta-alts">
+      <div class="cta-alt">
+        <div class="cta-alt-icon">📞</div>
+        <div class="cta-alt-text">Prefer a call? <a href="#">Book a 15-min discovery call →</a></div>
+      </div>
+      <div class="cta-alt">
+        <div class="cta-alt-icon">✉️</div>
+        <div class="cta-alt-text">Email: <a href="/cdn-cgi/l/email-protection#1e7972717c7f725e71707766736c756a307d7173"><span class="__cf_email__" data-cfemail="c0a7acafa2a1ac80afaea9b8adb2abb4eea3afad">[email&#160;protected]</span></a></div>
+      </div>
+      <div class="cta-alt">
+        <div class="cta-alt-icon">📍</div>
+        <div class="cta-alt-text">Based in Auckland, NZ · Serving AU · US · UK</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="https://onix.scalabl.io" class="footer-logo">ONIX<span>.</span></a>
+  <p>© 2025 ONIX Marketing Ltd · Auckland, New Zealand · Serving AU · US · UK</p>
+  <div class="footer-links">
+    <a href="https://onix.scalabl.io">Main Site</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── MARKET DATA ── */
+const markets = {
+  au: {
+    flag: '🇦🇺', name: 'Australia',
+    desc: "Australia's insurance market is one of Asia-Pacific's most competitive — millions of households remain underinsured across life, income protection, and private health. We're launching with the exact campaign infrastructure that made us #1 in NZ, rebuilt for the Australian compliance environment and buyer behaviour.",
+    specs: [
+      { label: 'Lead Types', val: 'Life · IP · Private Health' },
+      { label: 'Target CPL', val: 'AUD $38–$75' },
+      { label: 'Exclusivity', val: '100% — yours alone' },
+      { label: 'Delivery', val: 'Real-time to your CRM' },
+      { label: 'Compliance', val: 'ASIC-aware campaigns' },
+      { label: 'Volume', val: 'Flexible — discuss with us' },
+    ],
+    cta: 'Apply for AU Access'
+  },
+  us: {
+    flag: '🇺🇸', name: 'United States',
+    desc: "The world's largest insurance market — and one of the most fragmented. Our system cuts through the noise to deliver exclusive, verified leads to brokers across life, health, and Medicare supplement. State-by-state licence compliance built into every campaign.",
+    specs: [
+      { label: 'Lead Types', val: 'Life · Health · Medicare Supp.' },
+      { label: 'Target CPL', val: 'USD $28–$60' },
+      { label: 'Exclusivity', val: '100% — yours alone' },
+      { label: 'Delivery', val: 'Real-time to your CRM' },
+      { label: 'Coverage', val: 'National · State-by-state' },
+      { label: 'Compliance', val: 'State-licensed management' },
+    ],
+    cta: 'Apply for US Access'
+  },
+  uk: {
+    flag: '🇬🇧', name: 'United Kingdom',
+    desc: "The UK protection market is underpenetrated and price-sensitive — ideal conditions for a qualified-lead system. We're bringing our NZ model to British brokers with FCA-aware campaign structures and leads pre-qualified around the UK protection gap.",
+    specs: [
+      { label: 'Lead Types', val: 'Life · Critical Illness · IP' },
+      { label: 'Target CPL', val: 'GBP £25–£55' },
+      { label: 'Exclusivity', val: '100% — yours alone' },
+      { label: 'Delivery', val: 'Real-time to your CRM' },
+      { label: 'Coverage', val: 'England · Scotland · Wales · NI' },
+      { label: 'Compliance', val: 'FCA-aware management' },
+    ],
+    cta: 'Apply for UK Access'
+  }
+};
+
+function showMarket(key) {
+  const d = markets[key];
+  document.getElementById('marketPanel').innerHTML = `
+    <div class="mp-flag">${d.flag}</div>
+    <div class="mp-title">${d.name}</div>
+    <p class="mp-desc">${d.desc}</p>
+    <div class="mp-specs">
+      ${d.specs.map(s=>`<div class="mp-spec"><div class="mp-spec-label">${s.label}</div><div class="mp-spec-val">${s.val}</div></div>`).join('')}
+    </div>
+    <a href="#contact" class="mp-cta">${d.cta} →</a>
+  `;
+  document.querySelectorAll('.market-tab').forEach((t,i) => {
+    t.classList.toggle('active', ['au','us','uk'][i] === key);
+  });
+}
+showMarket('au');
+
+/* ── CLIENT TICKER ── */
+const clients = [
+  { initials: 'SS', name: 'Southern Star', type: 'Insurance' },
+  { initials: 'PA', name: 'Pacific Advisers', type: 'Life & Health' },
+  { initials: 'BF', name: 'BrightFuture', type: 'Insurance Group' },
+  { initials: 'KW', name: 'Kiwi Wealth', type: 'Financial Services' },
+  { initials: 'AP', name: 'Apex Protection', type: 'Insurance' },
+  { initials: 'NB', name: 'NorthBridge', type: 'Brokerage' },
+  { initials: 'CS', name: 'CanterburySure', type: 'Insurance' },
+  { initials: 'WP', name: 'Wellington Pro', type: 'Advisers' },
+  { initials: 'TP', name: 'TrustPoint', type: 'Insurance Group' },
+  { initials: 'AG', name: 'Auckland Group', type: 'Brokerage' },
+  { initials: 'RI', name: 'Resolve Insurance', type: 'Specialist' },
+  { initials: 'PL', name: 'Pinnacle Life', type: 'Insurance' },
+];
+function buildLogoEl(c) {
+  return `<div class="ticker-logo"><div class="ticker-logo-inner"><div class="ticker-logo-dot">${c.initials}</div><div><div class="ticker-logo-name">${c.name}</div><div class="ticker-logo-type">${c.type}</div></div></div></div>`;
+}
+const tickerTrack = document.getElementById('tickerTrack');
+// Double the set for seamless infinite loop
+const tickerHTML = [...clients, ...clients].map(buildLogoEl).join('');
+tickerTrack.innerHTML = tickerHTML;
+
+/* ── GOOGLE REVIEWS ── */
+const googleReviews = [
+  { initials: 'NM', name: 'Nicky M.', role: 'Real Estate Agent · West Auckland', text: '"Sean\'s leads and system have given us an extra $100k on our bottom line year on year."' },
+  { initials: 'PS', name: 'Paul S.', role: 'Risk Insurance', text: '"I\'ve invested 17k and my return was $110k. Super happy and just gets better year on year."' },
+  { initials: 'MM', name: 'Mike M.', role: 'ACC Business Advice', text: '"My site generates 20 to 25 leads a month returning $8k–$10k to me in commission. It works!"' },
+  { initials: 'DK', name: 'David K.', role: 'Solar Company · Auckland', text: '"ONIX transformed our business. Revenue is up 40% and we have a full calendar every week."' },
+  { initials: 'SL', name: 'Sarah L.', role: 'Insurance Broker · Hamilton', text: '"We\'ve doubled our lead conversion rate since using ONIX. The automation is incredible."' },
+  { initials: 'JT', name: 'James T.', role: 'Trades Business Owner', text: '"We save 10+ hours a week. Our booking rate jumped from 12% to 35%. ONIX pays for itself."' },
+  { initials: 'LR', name: 'Lisa R.', role: 'Mortgage Broker · Christchurch', text: '"The follow-up automation is worth 10x the price. Leads book themselves in. Game changer."' },
+  { initials: 'CM', name: 'Carolyn M.', role: 'Real Estate Agent · Napier', text: '"Sean is a sharp, smart mover who gets things done. Always one step ahead."' },
+];
+function buildReviewEl(r) {
+  return `<div class="review-mini"><div class="review-mini-stars">★★★★★</div><div class="review-mini-text">${r.text}</div><div class="review-mini-author"><div class="review-mini-av">${r.initials}</div><div><div class="review-mini-name">${r.name}</div><div class="review-mini-role">${r.role}</div></div></div></div>`;
+}
+const reviewsTrack = document.getElementById('reviewsTrack');
+// Double for seamless loop
+reviewsTrack.innerHTML = [...googleReviews, ...googleReviews].map(buildReviewEl).join('');
+
+
+const onixData = [92,89,94,91,90,93,88,95,91,89,94,92];
+const compData  = [95,58,82,44,90,35,75,88,42,68,93,52];
+const container = document.getElementById('chartBars');
+onixData.forEach((o, i) => {
+  const group = document.createElement('div');
+  group.className = 'bar-group';
+  const max = 160;
+  const cBar = document.createElement('div');
+  cBar.className = 'bar comp';
+  cBar.style.cssText = `height:${(compData[i]/100)*max}px;animation-delay:${i*0.04}s`;
+  const oBar = document.createElement('div');
+  oBar.className = 'bar onix';
+  oBar.style.cssText = `height:${(o/100)*max}px;animation-delay:${i*0.04+0.2}s`;
+  group.append(cBar, oBar);
+  container.appendChild(group);
+});
+
+/* ── CTA ── */
+function handleApply() {
+  const email = document.getElementById('ctaEmail').value;
+  if (!email || !email.includes('@')) {
+    document.getElementById('ctaEmail').focus();
+    document.getElementById('ctaEmail').style.borderColor = 'var(--green)';
+    return;
+  }
+  const btn = document.querySelector('.cta-form button');
+  btn.textContent = '✓ Application Received — We\'ll be in touch within 24hrs';
+  btn.style.cssText = 'backg

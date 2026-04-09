@@ -29,17 +29,18 @@ npm run start        # Serve dist/ folder on port 3000 (production)
 - `js/dashboard.js` - Industry dashboard with stats, charts, tab switching
 - `js/utils.js` - Magnetic buttons, smart navbar, mobile menu
 - `js/cursor.js` - Custom cursor effects
+- `js/insurance.js` - Standalone module for insurance service pages (self-contained, not imported via main.js)
 
 ## Architecture
 
-**Multi-Page Setup**: Vite config defines entry points for main site + service pages. Each service page is a standalone HTML file in `services/`. To add a new service page:
+**Multi-Page Setup**: Vite config defines entry points for main site + service pages. Current pages: main, insurance (+ life/income-protection/health sub-pages), solar, real-estate, mortgage-loans, tradies, builders, coming-soon. Each service page is a standalone HTML file in `services/`. To add a new service page:
 1. Create `services/new-page.html` (copy structure from existing)
 2. Add entry to `vite.config.js` rollupOptions.input
 3. Create page-specific styles in `styles/` if needed
 
 **JS Module System**: ES modules with Vite bundling. Initialization order in `main.js`: cursor → magnetic → navbar → mobile menu → dashboard → animations.
 
-**GSAP Usage**: GSAP 3.12.5 + ScrollTrigger loaded via CDN (NOT bundled/imported). Use `gsap` and `ScrollTrigger` as globals. Register plugins at top of animations.js: `gsap.registerPlugin(ScrollTrigger)`.
+**GSAP Usage**: GSAP 3.12.5 + ScrollTrigger + ScrollToPlugin loaded via CDN (NOT bundled/imported). Use `gsap`, `ScrollTrigger`, and `ScrollToPlugin` as globals. Register plugins at top of animation files: `gsap.registerPlugin(ScrollTrigger)` or `gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)`.
 
 **CSS Organization**: `main.css` uses `@import` for section stylesheets. Variables in `base.css`. Responsive breakpoints in `responsive.css`: ultrawide (>1920px), desktop (1200-1920px), tablet (768-1200px), mobile (<768px).
 
@@ -87,7 +88,8 @@ Each industry object structure:
 ## External Dependencies (CDN)
 
 - Google Fonts: Inter, Space Grotesk
-- GSAP 3.12.5 + ScrollTrigger (loaded at end of body, before main.js)
+- GSAP 3.12.5 + ScrollTrigger + ScrollToPlugin (loaded at end of body, before main.js)
+- Three.js (insurance pages only, for 3D globe)
 - Calendly widget (for booking section)
 
 ## Section Title Animation Pattern
@@ -95,6 +97,8 @@ Each industry object structure:
 Titles split into `<span class="char">` elements, animated from `opacity: 0, y: 30, rotateX: -40` with `stagger: 0.03` and `back.out(1.7)` easing. Titles inside `.highlight` spans preserve accent color.
 
 **Note**: Sections after Features (How, Testimonials, Team, Book, Contact) have separate title handling due to horizontal scroll pinning.
+
+**Insurance Page Animations** (`js/insurance.js`): Self-contained animation system for insurance service pages. Includes pinned markets slideshow with parallax, 3D globe with Three.js, typewriter effects, and all scroll-triggered animations. Loads its own GSAP plugins and cursor/navbar implementations.
 
 ## Mobile Considerations
 

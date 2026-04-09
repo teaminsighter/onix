@@ -1,0 +1,16 @@
+# ONIX Website - robots.txt
+# https://onixmrkt.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+
+# Sitemap location
+Sitemap: https://onixmrkt.com/sitemap.xml
+
+# Crawl delay (optional, be gentle on server)
+Crawl-delay: 1

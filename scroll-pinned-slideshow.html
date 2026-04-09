@@ -1,0 +1,513 @@
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Pinned Slideshow — Reusable Snippet</title>
+
+    <!-- GSAP + ScrollTrigger (Required) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* ============================================
+           BASE RESET
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: auto; /* Let GSAP handle scrolling */
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           SPACER SECTIONS (for demo)
+           ============================================ */
+        .spacer {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* ============================================
+           PINNED SLIDESHOW — CORE STRUCTURE
+           ============================================ */
+        .pinned-slideshow {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            visibility: hidden;
+            will-change: transform;
+        }
+
+        .slide .outer,
+        .slide .inner {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        .slide .bg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Dark overlay gradient */
+        .slide .bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.4) 0%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.6) 100%
+            );
+            z-index: 1;
+        }
+
+        /* ============================================
+           SLIDE BACKGROUNDS
+           Replace these with your own images
+           ============================================ */
+        .slide:nth-child(1) .bg {
+            background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80');
+        }
+        .slide:nth-child(2) .bg {
+            background-image: url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=1920&q=80');
+        }
+        .slide:nth-child(3) .bg {
+            background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80');
+        }
+        .slide:nth-child(4) .bg {
+            background-image: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80');
+        }
+
+        /* ============================================
+           SLIDE CONTENT
+           ============================================ */
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .slide-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            padding: 8px 20px;
+            margin-bottom: 24px;
+        }
+
+        .slide-heading {
+            font-size: clamp(2rem, 6vw, 5rem);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            line-height: 1.1;
+        }
+
+        /* Character spans for animation */
+        .slide-heading .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        .slide-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 0.15em;
+            margin-bottom: 32px;
+        }
+
+        .slide-cta {
+            display: inline-block;
+            padding: 14px 40px;
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .slide-cta:hover {
+            background: #fff;
+            color: #0a0a0a;
+        }
+
+        /* ============================================
+           SLIDE INDICATOR (optional UI)
+           ============================================ */
+        .slide-indicator {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .slide-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .slide-dot.active {
+            background: #d4af37;
+            transform: scale(1.3);
+        }
+
+        .slide-counter {
+            position: fixed;
+            left: 40px;
+            bottom: 40px;
+            z-index: 100;
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .slide-counter .current {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .slide-indicator {
+                right: 20px;
+            }
+            .slide-counter {
+                left: 20px;
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Spacer to show scroll behavior -->
+    <section class="spacer">Scroll Down</section>
+
+    <!-- ============================================
+         PINNED SLIDESHOW
+         Add/remove .slide elements as needed
+         ============================================ -->
+    <div class="pinned-slideshow">
+
+        <!-- Slide 1 -->
+        <div class="slide">
+            <div class="outer">
+                <div class="inner">
+                    <div class="bg">
+                        <div class="slide-content">
+                            <span class="slide-tag">Featured</span>
+                            <h2 class="slide-heading">Alpine Summit</h2>
+                            <p class="slide-subtitle">Discover the peaks above the clouds</p>
+                            <a href="#" class="slide-cta">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide">
+            <div class="outer">
+                <div class="inner">
+                    <div class="bg">
+                        <div class="slide-content">
+                            <span class="slide-tag">Adventure</span>
+                            <h2 class="slide-heading">Mountain Range</h2>
+                            <p class="slide-subtitle">Where earth meets the sky</p>
+                            <a href="#" class="slide-cta">Discover</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide">
+            <div class="outer">
+                <div class="inner">
+                    <div class="bg">
+                        <div class="slide-content">
+                            <span class="slide-tag">Wilderness</span>
+                            <h2 class="slide-heading">Rocky Peaks</h2>
+                            <p class="slide-subtitle">Untamed natural beauty</p>
+                            <a href="#" class="slide-cta">View More</a>
+                        </div>
+                    </div>
+                </div>
+                </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide">
+            <div class="outer">
+                <div class="inner">
+                    <div class="bg">
+                        <div class="slide-content">
+                            <span class="slide-tag">Escape</span>
+                            <h2 class="slide-heading">Winter Summit</h2>
+                            <p class="slide-subtitle">Serenity in the snow</p>
+                            <a href="#" class="slide-cta">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide Indicator Dots -->
+        <div class="slide-indicator">
+            <div class="slide-dot active"></div>
+            <div class="slide-dot"></div>
+            <div class="slide-dot"></div>
+            <div class="slide-dot"></div>
+        </div>
+
+        <!-- Slide Counter -->
+        <div class="slide-counter">
+            <span class="current">01</span> / 04
+        </div>
+    </div>
+
+    <!-- Spacer after slideshow -->
+    <section class="spacer">Continue Scrolling</section>
+    <section class="spacer">End of Page</section>
+
+    <script>
+        /* ============================================
+           SCROLL PINNED SLIDESHOW
+           Reusable GSAP ScrollTrigger Animation
+           ============================================ */
+
+        // Register GSAP plugin
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ============================================
+        // TEXT SPLITTER UTILITY
+        // Splits heading text into individual characters
+        // ============================================
+        class TextSplitter {
+            constructor(element) {
+                this.element = element;
+                this.chars = [];
+                this.originalHTML = element.innerHTML;
+                this.split();
+            }
+
+            split() {
+                const text = this.element.textContent;
+                this.element.innerHTML = '';
+
+                text.split('').forEach(char => {
+                    if (char === ' ') {
+                        const space = document.createElement('span');
+                        space.innerHTML = '&nbsp;';
+                        space.style.display = 'inline-block';
+                        this.element.appendChild(space);
+                    } else {
+                        const charSpan = document.createElement('span');
+                        charSpan.className = 'char';
+                        charSpan.textContent = char;
+                        charSpan.style.display = 'inline-block';
+                        this.element.appendChild(charSpan);
+                        this.chars.push(charSpan);
+                    }
+                });
+            }
+
+            revert() {
+                this.element.innerHTML = this.originalHTML;
+            }
+        }
+
+        // ============================================
+        // INIT PINNED SLIDESHOW
+        // ============================================
+        function initPinnedSlideshow() {
+            const showcase = document.querySelector('.pinned-slideshow');
+            if (!showcase) return;
+
+            const slides = gsap.utils.toArray('.slide');
+            const outerWrappers = gsap.utils.toArray('.slide .outer');
+            const innerWrappers = gsap.utils.toArray('.slide .inner');
+            const bgImages = gsap.utils.toArray('.slide .bg');
+            const headings = gsap.utils.toArray('.slide-heading');
+            const slideDots = gsap.utils.toArray('.slide-dot');
+            const currentSlideEl = document.querySelector('.current');
+
+            // Split headings into characters for animation
+            const splitHeadings = headings.map(h => new TextSplitter(h));
+
+            const numSlides = slides.length;
+            const numTransitions = numSlides - 1;
+
+            // ---- Initial States ----
+            // Stack all slides, z-index ascending
+            slides.forEach((slide, i) => {
+                gsap.set(slide, { autoAlpha: 1, zIndex: i + 1 });
+            });
+
+            // First slide: fully visible
+            gsap.set(outerWrappers[0], { yPercent: 0 });
+            gsap.set(innerWrappers[0], { yPercent: 0 });
+            gsap.set(bgImages[0], { yPercent: 0 });
+            gsap.set(splitHeadings[0].chars, { opacity: 1, y: 0 });
+
+            // Remaining slides: positioned below
+            for (let i = 1; i < numSlides; i++) {
+                gsap.set(outerWrappers[i], { yPercent: 100 });
+                gsap.set(innerWrappers[i], { yPercent: -100 });
+                gsap.set(bgImages[i], { yPercent: 15 });
+            }
+
+            // ---- Build Master Timeline ----
+            const masterTl = gsap.timeline();
+
+            for (let i = 0; i < numTransitions; i++) {
+                const tl = gsap.timeline();
+
+                // Current slide: parallax up + heading fade out
+                tl.to(bgImages[i], {
+                    yPercent: -15,
+                    duration: 1,
+                    ease: 'none'
+                }, 0);
+
+                tl.to(splitHeadings[i].chars, {
+                    opacity: 0,
+                    y: -30,
+                    duration: 0.4,
+                    stagger: 0.01,
+                    ease: 'none'
+                }, 0);
+
+                // Next slide: outer/inner/bg slide in
+                tl.to(outerWrappers[i + 1], {
+                    yPercent: 0,
+                    duration: 1,
+                    ease: 'none'
+                }, 0);
+
+                tl.to(innerWrappers[i + 1], {
+                    yPercent: 0,
+                    duration: 1,
+                    ease: 'none'
+                }, 0);
+
+                tl.to(bgImages[i + 1], {
+                    yPercent: 0,
+                    duration: 1,
+                    ease: 'none'
+                }, 0);
+
+                // Reveal next heading characters
+                tl.to(splitHeadings[i + 1].chars, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    stagger: 0.02,
+                    ease: 'none'
+                }, 0.4);
+
+                masterTl.add(tl);
+            }
+
+            // ---- ScrollTrigger: Pin + Scrub + Snap ----
+            ScrollTrigger.create({
+                trigger: '.pinned-slideshow',
+                start: 'top top',
+                end: () => '+=' + (numTransitions * window.innerHeight),
+                pin: true,
+                animation: masterTl,
+                scrub: 0.5,  // Adjust for smoother/faster scrubbing
+                snap: {
+                    snapTo: 1 / numTransitions,
+                    duration: { min: 0.25, max: 0.7 },
+                    delay: 0.05,
+                    ease: 'power1.inOut'
+                },
+                onUpdate: (self) => {
+                    const index = Math.min(
+                        Math.round(self.progress * numTransitions),
+                        numTransitions
+                    );
+                    updateUI(index);
+                }
+            });
+
+            // ---- UI Updates ----
+            function updateUI(index) {
+                // Update counter
+                if (currentSlideEl) {
+                    currentSlideEl.textContent = String(index + 1).padStart(2, '0');
+                }
+                // Update dots
+                slideDots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+            }
+
+            updateUI(0);
+        }
+
+        // ============================================
+        // INITIALIZE ON DOM READY
+        // ============================================
+        document.addEventListener('DOMContentLoaded', initPinnedSlideshow);
+    </script>
+
+</body>
+</html>

@@ -5,13 +5,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:optimized": "node scripts/optimize-images.mjs && vite build",
     "preview": "vite preview",
-    "start": "serve dist -l 3000"
+    "start": "serve dist -l 3000",
+    "optimize-images": "node scripts/optimize-images.mjs"
   },
   "devDependencies": {
+    "sharp": "^0.34.5",
     "vite": "^5.4.2"
   },
   "dependencies": {
+    "playwright": "^1.58.2",
     "serve": "^14.2.6"
   }
 }
