@@ -67,12 +67,16 @@ router.post('/', (req, res) => {
         const err = validateRequired(req.body, ['source', 'amount', 'month']);
         if (err) return res.status(400).json({ error: err });
 
+        const amount = parseFloat(req.body.amount);
+        if (isNaN(amount)) return res.status(400).json({ error: 'Amount must be a valid number' });
+        const leadsCount = parseInt(req.body.leads_count);
+
         const result = costs.create.run({
             source: req.body.source,
-            amount: parseFloat(req.body.amount),
+            amount,
             month: req.body.month,
             campaign_name: req.body.campaign_name || null,
-            leads_count: parseInt(req.body.leads_count) || 0,
+            leads_count: isNaN(leadsCount) ? 0 : leadsCount,
             notes: req.body.notes || null,
             created_by: req.user?.id || null
         });
@@ -100,13 +104,17 @@ router.put('/:id', (req, res) => {
         const existing = costs.getById.get(req.params.id);
         if (!existing) return res.status(404).json({ error: 'Cost entry not found' });
 
+        const updateAmount = req.body.amount != null ? parseFloat(req.body.amount) : null;
+        if (updateAmount !== null && isNaN(updateAmount)) return res.status(400).json({ error: 'Amount must be a valid number' });
+        const updateLeads = req.body.leads_count != null ? parseInt(req.body.leads_count) : null;
+
         costs.update.run({
             id: parseInt(req.params.id),
             source: req.body.source || null,
-            amount: req.body.amount != null ? parseFloat(req.body.amount) : null,
+            amount: updateAmount,
             month: req.body.month || null,
             campaign_name: req.body.campaign_name !== undefined ? req.body.campaign_name : null,
-            leads_count: req.body.leads_count != null ? parseInt(req.body.leads_count) : null,
+            leads_count: updateLeads !== null && isNaN(updateLeads) ? null : updateLeads,
             notes: req.body.notes !== undefined ? req.body.notes : null
         });
 
@@ -175,7 +183,7 @@ router.post('/deals', (req, res) => {
         const result = deals.create.run({
             lead_id: req.body.lead_id || null,
             title: req.body.title,
-            amount: parseFloat(req.body.amount),
+            amount: (() => { const a = parseFloat(req.body.amount); if (isNaN(a)) throw new Error('invalid amount'); return a; })(),
             status: req.body.status || 'pending',
             source: req.body.source || null,
             notes: req.body.notes || null,

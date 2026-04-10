@@ -20,10 +20,15 @@ const settingRoutes = require('./routes/settings');
 const webhookRoutes = require('./routes/webhook');
 const dashboardRoutes = require('./routes/dashboard');
 const { authenticateToken, authenticateView } = require('./middleware/auth');
-const { leads } = require('./database');
+const { leads, db } = require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Trust proxy when behind reverse proxy (Coolify/Traefik)
+if (process.env.TRUST_PROXY || process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
 
 // Security middleware
 app.use(helmet({
@@ -40,7 +45,7 @@ app.use(helmet({
 }));
 
 // CORS
-const corsOrigins = process.env.CORS_ORIGIN?.split(',') || ['http://localhost:5173'];
+const corsOrigins = process.env.CORS_ORIGIN?.split(',').map(s => s.trim()).filter(Boolean) || ['http://localhost:5173'];
 app.use(cors({
     origin: corsOrigins,
     credentials: true
@@ -53,6 +58,14 @@ const limiter = rateLimit({
     message: { error: 'Too many requests, please try again later.' }
 });
 app.use('/api/', limiter);
+
+// Stricter rate limit on login to prevent brute force
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { error: 'Too many login attempts. Please try again in 15 minutes.' }
+});
+app.use('/api/auth/login', loginLimiter);
 
 // Body parsing
 app.use(express.json());
@@ -97,6 +110,31 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Internal server error' });
 });
 
+// Serve built frontend static files (single-container: admin + website)
+const frontendPath = path.join(__dirname, '../public/site');
+const fs = require('fs');
+if (fs.existsSync(frontendPath)) {
+    app.use('/site', express.static(frontendPath, {
+        maxAge: '1y',
+        immutable: true
+    }));
+    // Serve frontend for non-API, non-admin paths
+    app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/') || req.path === '/login') {
+            return next();
+        }
+        // Try to serve the exact file from the built frontend
+        const filePath = path.join(frontendPath, req.path === '/' ? 'index.html' : req.path);
+        const htmlPath = filePath.endsWith('.html') ? filePath : filePath + '.html';
+        if (fs.existsSync(filePath)) {
+            return res.sendFile(filePath);
+        } else if (fs.existsSync(htmlPath)) {
+            return res.sendFile(htmlPath);
+        }
+        next();
+    });
+}
+
 // 404 handler
 app.use((req, res) => {
     if (req.path.startsWith('/api/')) {
@@ -107,10 +145,27 @@ app.use((req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`🚀 ONIX Admin running on http://localhost:${PORT}`);
-    console.log(`📊 Dashboard: http://localhost:${PORT}/dashboard`);
-    console.log(`🔐 Login: http://localhost:${PORT}/login`);
+const server = app.listen(PORT, () => {
+    console.log(`ONIX Admin running on http://localhost:${PORT}`);
+    console.log(`Dashboard: http://localhost:${PORT}/dashboard`);
+    console.log(`Login: http://localhost:${PORT}/login`);
 });
+
+// Graceful shutdown for Docker/Coolify
+function gracefulShutdown(signal) {
+    console.log(`${signal} received. Shutting down gracefully...`);
+    server.close(() => {
+        console.log('HTTP server closed.');
+        try { db.close(); } catch (e) { /* already closed */ }
+        process.exit(0);
+    });
+    setTimeout(() => {
+        console.error('Forceful shutdown after timeout.');
+        process.exit(1);
+    }, 10000);
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 module.exports = app;

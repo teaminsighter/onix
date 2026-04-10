@@ -14,6 +14,10 @@ initializeDatabase();
 // Create default admin user if not exists
 function ensureAdminExists() {
     const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+    if (!process.env.ADMIN_PASSWORD && process.env.NODE_ENV === 'production') {
+        console.error('FATAL: ADMIN_PASSWORD environment variable is required in production.');
+        process.exit(1);
+    }
     const adminPassword = process.env.ADMIN_PASSWORD || 'changeme123';
 
     const existing = users.getByUsername.get(adminUsername);

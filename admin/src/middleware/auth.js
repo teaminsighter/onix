@@ -5,11 +5,15 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
-// Generate a random secret if not set — persists for the process lifetime
-// In production, always set JWT_SECRET in .env
+// Require JWT_SECRET in production — sessions won't survive restart without it
 if (!process.env.JWT_SECRET) {
+    if (process.env.NODE_ENV === 'production') {
+        console.error('FATAL: JWT_SECRET environment variable is required in production.');
+        console.error('Generate one with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"');
+        process.exit(1);
+    }
     process.env.JWT_SECRET = crypto.randomBytes(32).toString('hex');
-    console.log('⚠️  No JWT_SECRET in .env — generated random secret (sessions won\'t survive restart)');
+    console.log('⚠️  No JWT_SECRET in .env — generated random secret (dev only, sessions won\'t survive restart)');
 }
 const JWT_SECRET = process.env.JWT_SECRET;
 

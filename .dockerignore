@@ -1,0 +1,25 @@
+node_modules
+admin/node_modules
+admin/data
+dist
+.git
+.env
+.env.local
+*.log
+.DS_Store
+.claude
+animation-demo.html
+steps-demo.html
+scroll-pinned-slideshow.html
+team-designs.html
+onix-insurance-leads_3.html
+image.png
+image copy.png
+image copy 2.png
+image copy 3.png
+image copy 4.png
+image copy 5.png
+backgrounds
+CLIENT-REPORT.md
+DEPLOYMENT.md
+MOBILE-VIEW-TOGGLE.md

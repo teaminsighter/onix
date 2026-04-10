@@ -14,10 +14,15 @@ if (!fs.existsSync(dataDir)) {
 }
 
 const dbPath = process.env.DB_PATH || path.join(dataDir, 'onix.db');
-const db = new Database(dbPath);
 
-// Enable WAL mode for better performance
-db.pragma('journal_mode = WAL');
+let db;
+try {
+    db = new Database(dbPath);
+    db.pragma('journal_mode = WAL');
+} catch (error) {
+    console.error(`FATAL: Failed to open database at ${dbPath}:`, error.message);
+    process.exit(1);
+}
 
 // Initialize database schema
 function initializeDatabase() {
@@ -193,21 +198,6 @@ function initializeDatabase() {
         )
     `);
 
-    // Update users table with additional fields if not exist
-    db.exec(`
-        CREATE TABLE IF NOT EXISTS users_new (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            full_name TEXT,
-            email TEXT,
-            password_hash TEXT NOT NULL,
-            role TEXT DEFAULT 'sales',
-            is_active BOOLEAN DEFAULT 1,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-            last_login DATETIME
-        )
-    `);
-
     // Create indexes
     db.exec(`
         CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status);
@@ -223,7 +213,13 @@ function initializeDatabase() {
         CREATE INDEX IF NOT EXISTS idx_deals_status ON deals(status);
         CREATE INDEX IF NOT EXISTS idx_user_activity_user ON user_activity_log(user_id);
         CREATE INDEX IF NOT EXISTS idx_user_activity_created ON user_activity_log(created_at);
+        CREATE INDEX IF NOT EXISTS idx_meetings_created_by ON meetings(created_by);
+        CREATE INDEX IF NOT EXISTS idx_costs_created_by ON costs(created_by);
+        CREATE INDEX IF NOT EXISTS idx_deals_created_by ON deals(created_by);
     `);
+
+    // Drop orphaned table from incomplete migration
+    db.exec(`DROP TABLE IF EXISTS users_new`);
 
     // Seed default integrations
     const existingIntegrations = db.prepare('SELECT COUNT(*) as count FROM integrations').get();
@@ -308,6 +304,29 @@ const leadQueries = {
         ORDER BY created_at DESC
     `),
 
+    searchPaginated: db.prepare(`
+        SELECT * FROM leads
+        WHERE name LIKE ? OR email LIKE ? OR phone LIKE ? OR message LIKE ?
+        ORDER BY created_at DESC LIMIT ? OFFSET ?
+    `),
+
+    searchCount: db.prepare(`
+        SELECT COUNT(*) as total FROM leads
+        WHERE name LIKE ? OR email LIKE ? OR phone LIKE ? OR message LIKE ?
+    `),
+
+    getPaginated: db.prepare(`
+        SELECT * FROM leads ORDER BY created_at DESC LIMIT ? OFFSET ?
+    `),
+
+    getByStatusPaginated: db.prepare(`
+        SELECT * FROM leads WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?
+    `),
+
+    countByStatusValue: db.prepare(`
+        SELECT COUNT(*) as total FROM leads WHERE status = ?
+    `),
+
     countByStatus: db.prepare(`
         SELECT status, COUNT(*) as count FROM leads GROUP BY status
     `),
@@ -386,6 +405,11 @@ const meetingQueries = {
         FROM meetings m LEFT JOIN leads l ON m.lead_id = l.id
         WHERE m.start_time BETWEEN ? AND ?
         ORDER BY m.start_time ASC
+    `),
+    getByStatus: db.prepare(`
+        SELECT m.*, l.name as lead_name, l.email as lead_email
+        FROM meetings m LEFT JOIN leads l ON m.lead_id = l.id
+        WHERE m.status = ? ORDER BY m.start_time DESC
     `),
     getByLead: db.prepare(`
         SELECT * FROM meetings WHERE lead_id = ? ORDER BY start_time DESC

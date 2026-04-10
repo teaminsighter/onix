@@ -37,7 +37,13 @@ const upload = multer({
 
 // ==================== FILE UPLOADS ====================
 
-router.post('/upload/:type', upload.single('file'), (req, res) => {
+router.post('/upload/:type', (req, res, next) => {
+    const allowedTypes = ['favicon', 'og-image', 'logo'];
+    if (!allowedTypes.includes(req.params.type)) {
+        return res.status(400).json({ error: 'Invalid upload type. Must be: favicon, og-image, or logo' });
+    }
+    next();
+}, upload.single('file'), (req, res) => {
     try {
         if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
 
@@ -254,7 +260,7 @@ router.put('/notifications', (req, res) => {
             new_lead_email: req.body.new_lead_email ? 1 : 0,
             new_lead_slack: req.body.new_lead_slack ? 1 : 0,
             meeting_reminder: req.body.meeting_reminder ? 1 : 0,
-            meeting_reminder_minutes: parseInt(req.body.meeting_reminder_minutes) || 30,
+            meeting_reminder_minutes: (() => { const m = parseInt(req.body.meeting_reminder_minutes); return isNaN(m) ? 30 : m; })(),
             weekly_summary: req.body.weekly_summary ? 1 : 0,
             daily_digest: req.body.daily_digest ? 1 : 0
         });

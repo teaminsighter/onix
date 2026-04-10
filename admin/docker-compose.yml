@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  onix:
+    build:
+      context: ..
+      dockerfile: admin/Dockerfile
+    container_name: onix
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - SESSION_EXPIRY=${SESSION_EXPIRY:-24h}
+      - DB_PATH=/data/onix.db
+      - CORS_ORIGIN=${CORS_ORIGIN:-https://onixmrkt.com}
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+      - TRUST_PROXY=1
+      - SMTP_HOST=${SMTP_HOST:-}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - NOTIFICATION_EMAIL=${NOTIFICATION_EMAIL:-}
+    volumes:
+      - onix_data:/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "const http=require('http');http.get('http://localhost:3001/api/health',(r)=>{process.exit(r.statusCode===200?0:1)}).on('error',()=>process.exit(1)).setTimeout(4000,function(){this.destroy();process.exit(1)})"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  onix_data:
+    driver: local

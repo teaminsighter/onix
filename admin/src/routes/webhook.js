@@ -4,18 +4,31 @@
  */
 
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
-const { leads, activities } = require('../database');
+const { leads, activities, meetings } = require('../database');
 
-// Webhook secret for validation (optional but recommended)
-const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || 'onix-webhook-secret';
+// Dedicated rate limiter for public lead endpoint
+const leadRateLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 10, // 10 submissions per minute per IP
+    message: { error: 'Too many submissions. Please try again later.' }
+});
+
+// Webhook secret for validation
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+
+if (!WEBHOOK_SECRET && process.env.NODE_ENV === 'production') {
+    console.error('FATAL: WEBHOOK_SECRET environment variable is required in production.');
+    process.exit(1);
+}
 
 // Validate webhook request
 function validateWebhook(req, res, next) {
     const secret = req.headers['x-webhook-secret'] || req.query.secret;
 
-    // In development, allow without secret
-    if (process.env.NODE_ENV === 'development') {
+    // In development, allow without secret if WEBHOOK_SECRET is not set
+    if (!WEBHOOK_SECRET && process.env.NODE_ENV !== 'production') {
         return next();
     }
 
@@ -26,8 +39,8 @@ function validateWebhook(req, res, next) {
     next();
 }
 
-// Receive new lead from contact form
-router.post('/lead', validateWebhook, (req, res) => {
+// Receive new lead from contact form (public endpoint — protected by rate limiting + CORS)
+router.post('/lead', leadRateLimiter, (req, res) => {
     try {
         const {
             name,
@@ -83,7 +96,7 @@ router.post('/lead', validateWebhook, (req, res) => {
 });
 
 // Receive Formspree webhook
-router.post('/formspree', (req, res) => {
+router.post('/formspree', validateWebhook, (req, res) => {
     try {
         // Formspree sends data in a specific format
         const {
@@ -136,7 +149,7 @@ router.post('/formspree', (req, res) => {
 });
 
 // Receive Calendly webhook
-router.post('/calendly', (req, res) => {
+router.post('/calendly', validateWebhook, (req, res) => {
     try {
         const { event, payload } = req.body;
 
@@ -167,7 +180,6 @@ router.post('/calendly', (req, res) => {
             );
 
             // Also create a meeting record
-            const { meetings } = require('../database');
             const eventDetails = payload.event || {};
             meetings.create.run({
                 lead_id: leadId,
@@ -194,7 +206,6 @@ router.post('/calendly', (req, res) => {
 
         // Handle cancellation
         if (event === 'invitee.canceled') {
-            const { meetings } = require('../database');
             const eventDetails = payload.event || {};
             if (eventDetails.uuid) {
                 const existing = meetings.getByCalendlyId.get(eventDetails.uuid);

@@ -157,7 +157,6 @@ async function submitForm(form) {
             return { success: false, error: errorData };
         }
     } catch (error) {
-        console.error('Form submission error:', error);
         return { success: false, error: error.message };
     }
 }
@@ -201,7 +200,7 @@ async function sendWebhookNotification(data) {
             body: JSON.stringify(message)
         });
     } catch (error) {
-        console.error('Webhook notification error:', error);
+        // Notification failure is non-critical, fail silently
     }
 }
 

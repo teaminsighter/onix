@@ -43,16 +43,20 @@ npm start                 # Production start
 - `js/dashboard.js` - Industry dashboard with stats, charts, tab switching
 - `js/utils.js` - Magnetic buttons, smart navbar, mobile menu
 - `js/cursor.js` - Custom cursor effects
+- `js/form-handler.js` - Form validation and submission to admin webhook endpoint
+- `js/analytics.js` - GA4, GTM, Facebook Pixel, Clarity integration (disabled until config IDs set)
+- `js/cookie-consent.js` - Cookie banner that gates analytics initialization
+- `js/image-utils.js` - Image lazy-loading utilities
 - `js/insurance.js` - Standalone module for insurance service pages (self-contained, not imported via main.js)
 
 ## Architecture
 
-**Multi-Page Setup**: Vite config defines entry points for main site + service pages. Current pages: main, insurance (+ life/income-protection/health sub-pages), solar, real-estate, mortgage-loans, tradies, builders, coming-soon. Each service page is a standalone HTML file in `services/`. To add a new service page:
+**Multi-Page Setup**: Vite config defines entry points for main site + service pages. Current pages: main, privacy-policy, terms-of-service, insurance (+ life/income-protection/health sub-pages), solar, real-estate, mortgage-loans, tradies, builders, coming-soon. Each service page is a standalone HTML file in `services/`. To add a new service page:
 1. Create `services/new-page.html` (copy structure from existing)
 2. Add entry to `vite.config.js` rollupOptions.input
 3. Create page-specific styles in `styles/` if needed
 
-**JS Module System**: ES modules with Vite bundling. Initialization order in `main.js`: cursor → magnetic → navbar → mobile menu → dashboard → animations.
+**JS Module System**: ES modules with Vite bundling. Initialization order in `main.js`: cursor → magnetic → navbar → mobile menu → dashboard → animations → form handler → cookie consent.
 
 **GSAP Usage**: GSAP 3.12.5 + ScrollTrigger + ScrollToPlugin loaded via CDN (NOT bundled/imported). Use `gsap`, `ScrollTrigger`, and `ScrollToPlugin` as globals. Register plugins at top of animation files: `gsap.registerPlugin(ScrollTrigger)` or `gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)`.
 
@@ -62,7 +66,9 @@ npm start                 # Production start
 
 **Desktop-Only Mode**: The `<body>` has `desktop-only` class forcing desktop layout. Remove from `index.html` to enable mobile responsive.
 
-**Admin Dashboard** (`admin/`): Express server (port 3001) with EJS templates, SQLite via better-sqlite3, JWT auth. Routes: `auth` (login/JWT), `leads` (CRUD), `webhook` (inbound lead capture), `dashboard` (analytics views). Views use a shared `layout.ejs` with `partials/sidebar.ejs`. Mock data in `src/mockData.js` for development.
+**Admin Dashboard** (`admin/`): Express server (port 3001) with EJS templates, SQLite via better-sqlite3, JWT auth. Routes: `auth` (login/JWT), `leads` (CRUD), `meetings` (calendar management), `costs` (tracking), `settings` (system/branding/integrations), `webhook` (inbound lead capture with optional secret validation), `dashboard` (analytics views). Views use a shared `layout.ejs` with `partials/sidebar.ejs`. Database tables: leads, lead_activities, users, settings, meetings, costs, lead_sources, calendar_events, form_responses.
+
+**Form Submission Flow**: Frontend `form-handler.js` submits to `/api/webhook/lead` endpoint → admin webhook route validates and stores in SQLite → lead appears in admin dashboard. Cookie consent gates analytics tracking (GA4, GTM, Facebook Pixel, Clarity) via `cookie-consent.js` → `analytics.js`.
 
 ## Dashboard Industries
 

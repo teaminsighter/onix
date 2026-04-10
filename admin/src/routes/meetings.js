@@ -13,9 +13,10 @@ router.get('/', (req, res) => {
         let result;
         if (from && to) {
             result = meetings.getByDateRange.all(from, to);
+        } else if (status) {
+            result = meetings.getByStatus.all(status);
         } else {
             result = meetings.getAll.all();
-            if (status) result = result.filter(m => m.status === status);
         }
         res.json(result);
     } catch (error) {
@@ -27,7 +28,7 @@ router.get('/', (req, res) => {
 // Upcoming meetings
 router.get('/upcoming', (req, res) => {
     try {
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = Math.min(parseInt(req.query.limit) || 10, 100);
         res.json(meetings.getUpcoming.all(limit));
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch upcoming meetings' });

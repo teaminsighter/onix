@@ -6,25 +6,36 @@ const express = require('express');
 const router = express.Router();
 const { leads, activities } = require('../database');
 
-// Get all leads with optional filters
+// Get all leads with optional filters and pagination
 router.get('/', (req, res) => {
     try {
-        const { status, search, limit } = req.query;
+        const { status, search, limit, page } = req.query;
+        const pageSize = Math.min(parseInt(limit) || 50, 200);
+        const pageNum = Math.max(parseInt(page) || 1, 1);
+        const offset = (pageNum - 1) * pageSize;
 
         let result;
+        let total;
 
         if (search) {
             const searchTerm = `%${search}%`;
-            result = leads.search.all(searchTerm, searchTerm, searchTerm, searchTerm);
+            result = leads.searchPaginated.all(searchTerm, searchTerm, searchTerm, searchTerm, pageSize, offset);
+            total = leads.searchCount.get(searchTerm, searchTerm, searchTerm, searchTerm).total;
         } else if (status) {
-            result = leads.getByStatus.all(status);
-        } else if (limit) {
-            result = leads.getRecent.all(parseInt(limit));
+            result = leads.getByStatusPaginated.all(status, pageSize, offset);
+            total = leads.countByStatusValue.get(status).total;
         } else {
-            result = leads.getAll.all();
+            result = leads.getPaginated.all(pageSize, offset);
+            total = leads.countTotal.get().total;
         }
 
-        res.json({ leads: result, total: result.length });
+        res.json({
+            leads: result,
+            total,
+            page: pageNum,
+            pageSize,
+            totalPages: Math.ceil(total / pageSize)
+        });
     } catch (error) {
         console.error('Error fetching leads:', error);
         res.status(500).json({ error: 'Failed to fetch leads' });
