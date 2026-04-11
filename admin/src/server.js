@@ -10,6 +10,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const fs = require('fs');
 const expressLayouts = require('express-ejs-layouts');
 
 const authRoutes = require('./routes/auth');
@@ -97,6 +98,52 @@ app.use('/api/meetings', authenticateToken, meetingRoutes);
 app.use('/api/costs', authenticateToken, costRoutes);
 app.use('/api/settings', authenticateToken, settingRoutes);
 app.use('/api/webhook', webhookRoutes); // No auth for webhooks (they use secret)
+
+// Serve built frontend static files FIRST (before admin routes)
+const frontendPath = path.join(__dirname, '../public/site');
+if (fs.existsSync(frontendPath)) {
+    // Serve all frontend static files (assets, images, logos, etc.)
+    // This must come before admin routes
+    app.use(express.static(frontendPath, {
+        maxAge: '1d',
+        index: false // Don't auto-serve index.html, we handle that manually
+    }));
+
+    // Serve frontend HTML pages for non-admin paths
+    app.get('*', (req, res, next) => {
+        // Skip admin routes - let them fall through to dashboardRoutes
+        if (req.path.startsWith('/api/') ||
+            req.path.startsWith('/admin') ||
+            req.path === '/login' ||
+            req.path === '/dashboard' ||
+            req.path.startsWith('/leads') ||
+            req.path.startsWith('/pipeline') ||
+            req.path.startsWith('/calendar') ||
+            req.path.startsWith('/meetings') ||
+            req.path.startsWith('/costs') ||
+            req.path.startsWith('/analytics') ||
+            req.path.startsWith('/settings') ||
+            req.path.startsWith('/team') ||
+            req.path.startsWith('/uploads/')) {
+            return next();
+        }
+
+        // Try to serve the exact file from the built frontend
+        const requestPath = req.path === '/' ? 'index.html' : req.path;
+        const filePath = path.join(frontendPath, requestPath);
+        const htmlPath = filePath.endsWith('.html') ? filePath : filePath + '.html';
+
+        if (fs.existsSync(filePath) && !fs.statSync(filePath).isDirectory()) {
+            return res.sendFile(filePath);
+        } else if (fs.existsSync(htmlPath)) {
+            return res.sendFile(htmlPath);
+        }
+        // Not a frontend file, continue to admin routes
+        next();
+    });
+}
+
+// Admin dashboard routes (login, dashboard, leads, etc.)
 app.use('/', dashboardRoutes);
 
 // Health check
@@ -110,37 +157,32 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Internal server error' });
 });
 
-// Serve built frontend static files (single-container: admin + website)
-const frontendPath = path.join(__dirname, '../public/site');
-const fs = require('fs');
-if (fs.existsSync(frontendPath)) {
-    app.use('/site', express.static(frontendPath, {
-        maxAge: '1y',
-        immutable: true
-    }));
-    // Serve frontend for non-API, non-admin paths
-    app.get('*', (req, res, next) => {
-        if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/') || req.path === '/login') {
-            return next();
-        }
-        // Try to serve the exact file from the built frontend
-        const filePath = path.join(frontendPath, req.path === '/' ? 'index.html' : req.path);
-        const htmlPath = filePath.endsWith('.html') ? filePath : filePath + '.html';
-        if (fs.existsSync(filePath)) {
-            return res.sendFile(filePath);
-        } else if (fs.existsSync(htmlPath)) {
-            return res.sendFile(htmlPath);
-        }
-        next();
-    });
-}
-
 // 404 handler
 app.use((req, res) => {
     if (req.path.startsWith('/api/')) {
         res.status(404).json({ error: 'Not found' });
-    } else {
+    } else if (req.path === '/login' ||
+               req.path === '/dashboard' ||
+               req.path.startsWith('/leads') ||
+               req.path.startsWith('/pipeline') ||
+               req.path.startsWith('/calendar') ||
+               req.path.startsWith('/meetings') ||
+               req.path.startsWith('/costs') ||
+               req.path.startsWith('/analytics') ||
+               req.path.startsWith('/settings') ||
+               req.path.startsWith('/team') ||
+               req.path.startsWith('/admin')) {
+        // Admin routes that don't exist - redirect to login
         res.redirect('/login');
+    } else {
+        // Frontend 404 - serve the frontend's index.html for SPA routing
+        // or show a simple 404
+        const frontendIndex = path.join(__dirname, '../public/site/index.html');
+        if (fs.existsSync(frontendIndex)) {
+            res.status(404).sendFile(frontendIndex);
+        } else {
+            res.status(404).send('Page not found');
+        }
     }
 });
 

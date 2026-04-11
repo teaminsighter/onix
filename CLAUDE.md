@@ -64,8 +64,6 @@ npm start                 # Production start
 
 **Dashboard**: `js/dashboard.js` exports `industries` object with stats/charts per industry. Auto-rotates every 8s (pauses on hover). Exports `animateDataIn()` and `animateChartIn()` for animation triggers.
 
-**Desktop-Only Mode**: The `<body>` has `desktop-only` class forcing desktop layout. Remove from `index.html` to enable mobile responsive.
-
 **Admin Dashboard** (`admin/`): Express server (port 3001) with EJS templates, SQLite via better-sqlite3, JWT auth. Routes: `auth` (login/JWT), `leads` (CRUD), `meetings` (calendar management), `costs` (tracking), `settings` (system/branding/integrations), `webhook` (inbound lead capture with optional secret validation), `dashboard` (analytics views). Views use a shared `layout.ejs` with `partials/sidebar.ejs`. Database tables: leads, lead_activities, users, settings, meetings, costs, lead_sources, calendar_events, form_responses.
 
 **Form Submission Flow**: Frontend `form-handler.js` submits to `/api/webhook/lead` endpoint → admin webhook route validates and stores in SQLite → lead appears in admin dashboard. Cookie consent gates analytics tracking (GA4, GTM, Facebook Pixel, Clarity) via `cookie-consent.js` → `analytics.js`.
