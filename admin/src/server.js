@@ -31,16 +31,29 @@ if (process.env.TRUST_PROXY || process.env.NODE_ENV === 'production') {
     app.set('trust proxy', 1);
 }
 
-// Security middleware
+// Security middleware - relaxed CSP for frontend marketing site
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://assets.calendly.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+            scriptSrc: [
+                "'self'",
+                "'unsafe-inline'",
+                "'unsafe-eval'",
+                "https://cdnjs.cloudflare.com",
+                "https://assets.calendly.com",
+                "https://static.cloudflareinsights.com",
+                "https://www.googletagmanager.com",
+                "https://www.google-analytics.com",
+                "https://connect.facebook.net"
+            ],
             scriptSrcAttr: ["'unsafe-inline'"],
-            imgSrc: ["'self'", "data:", "https:"],
+            imgSrc: ["'self'", "data:", "https:", "blob:"],
+            frameSrc: ["'self'", "https://calendly.com", "https://www.google.com"],
+            connectSrc: ["'self'", "https://calendly.com", "https://www.google-analytics.com", "https://region1.google-analytics.com"],
+            workerSrc: ["'self'", "blob:"],
         },
     },
 }));
