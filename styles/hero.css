@@ -512,7 +512,7 @@
 
 #hero-title.intro-active {
     position: fixed;
-    z-index: 100000;
+    z-index: 1000;
     visibility: visible;
     perspective: 1000px;
 }
