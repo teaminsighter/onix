@@ -36,8 +36,8 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://assets.calendly.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://assets.calendly.com", "https://www.googletagmanager.com", "https://tagmanager.google.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://fonts.googleapis.com", "data:"],
             scriptSrc: [
                 "'self'",
                 "'unsafe-inline'",
@@ -46,13 +46,15 @@ app.use(helmet({
                 "https://assets.calendly.com",
                 "https://static.cloudflareinsights.com",
                 "https://www.googletagmanager.com",
+                "https://tagmanager.google.com",
                 "https://www.google-analytics.com",
-                "https://connect.facebook.net"
+                "https://connect.facebook.net",
+                "https://www.clarity.ms"
             ],
             scriptSrcAttr: ["'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:", "blob:"],
-            frameSrc: ["'self'", "https://calendly.com", "https://www.google.com"],
-            connectSrc: ["'self'", "https://calendly.com", "https://www.google-analytics.com", "https://region1.google-analytics.com"],
+            frameSrc: ["'self'", "https://calendly.com", "https://www.google.com", "https://www.googletagmanager.com", "https://tagmanager.google.com"],
+            connectSrc: ["'self'", "https://calendly.com", "https://www.google-analytics.com", "https://region1.google-analytics.com", "https://www.googletagmanager.com", "https://www.clarity.ms"],
             workerSrc: ["'self'", "blob:"],
         },
     },
