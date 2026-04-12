@@ -185,20 +185,35 @@
                         <% }) %>
                     </div>
 
-                    <!-- Add GA4 & GTM (website tracking) -->
+                    <!-- Custom Header Scripts -->
                     <div style="margin-top:1.5rem;">
-                        <h3 class="card-title" style="margin-bottom:1rem;">Website Tracking</h3>
-                        <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1rem;">These IDs are used in the main website's analytics script (<code>js/analytics.js</code>).</p>
+                        <h3 class="card-title" style="margin-bottom:1rem;">Custom Header Scripts</h3>
+                        <p style="color:var(--gray);font-size:0.85rem;margin-bottom:1rem;">Add any tracking or analytics scripts (Google Analytics, Facebook Pixel, Hotjar, etc.) to be injected into the website's <code>&lt;head&gt;</code> section.</p>
                         <div class="form-group">
-                            <label class="form-label">Google Analytics 4 (Measurement ID)</label>
-                            <input type="text" class="form-input" id="ga4Id" placeholder="G-XXXXXXXXXX" value="<%= (integrations.find(function(i){ return i.name === 'ga4'; }) || {config:{}}).config.measurement_id || '' %>">
+                            <label class="form-label">Header Scripts</label>
+                            <textarea
+                                class="form-textarea"
+                                id="headerScripts"
+                                rows="12"
+                                placeholder="<!-- Paste your tracking scripts here -->
+<!-- Example: Google Analytics -->
+<script async src='https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX'></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>"
+                                style="font-family: monospace; font-size: 0.85rem; background: var(--bg); border: 1px solid var(--border); resize: vertical; min-height: 200px;"><%= (integrations.find(function(i){ return i.name === 'header_scripts'; }) || {config:{}}).config.scripts || '' %></textarea>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Google Tag Manager (Container ID)</label>
-                            <input type="text" class="form-input" id="gtmId" placeholder="GTM-XXXXXXX" value="<%= (integrations.find(function(i){ return i.name === 'gtm'; }) || {config:{}}).config.container_id || '' %>">
+                        <div style="display:flex;gap:0.75rem;align-items:center;">
+                            <button class="btn btn-primary" onclick="saveHeaderScripts()">Save Scripts</button>
+                            <span id="headerScriptStatus" style="color:var(--gray);font-size:0.85rem;"></span>
                         </div>
-                        <button class="btn btn-primary" onclick="saveTrackingIds()">Save Tracking IDs</button>
-                        <p style="color:var(--gray);font-size:0.8rem;margin-top:0.5rem;">After saving, update <code>js/analytics.js</code> with these IDs or use the webhook endpoint to auto-inject.</p>
+                        <p style="color:var(--gray);font-size:0.8rem;margin-top:0.75rem;">
+                            <strong>Note:</strong> Scripts will be automatically injected into the main website's <code>&lt;head&gt;</code> section.
+                            Make sure to include the full <code>&lt;script&gt;</code> tags.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -441,25 +456,31 @@ function toggleIntegration(name, enabled) {
     });
 }
 
-function saveTrackingIds() {
-    var ga4 = document.getElementById('ga4Id').value.trim();
-    var gtm = document.getElementById('gtmId').value.trim();
+function saveHeaderScripts() {
+    var scripts = document.getElementById('headerScripts').value;
+    var statusEl = document.getElementById('headerScriptStatus');
+    statusEl.textContent = 'Saving...';
+    statusEl.style.color = 'var(--gray)';
 
-    var saves = [];
-    if (ga4) saves.push(fetch('/api/settings/integrations/ga4/config', {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ measurement_id: ga4 })
-    }));
-    if (gtm) saves.push(fetch('/api/settings/integrations/gtm/config', {
-        method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ container_id: gtm })
-    }));
-
-    if (saves.length === 0) { showToast('Enter at least one tracking ID', 'error'); return; }
-
-    Promise.all(saves).then(function(results) {
-        if (results.every(function(r) { return r.ok; })) showToast('Tracking IDs saved', 'success');
-        else showToast('Failed to save some IDs', 'error');
+    fetch('/api/settings/integrations/header_scripts/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scripts: scripts })
+    }).then(function(r) {
+        if (r.ok) {
+            showToast('Header scripts saved', 'success');
+            statusEl.textContent = 'Saved!';
+            statusEl.style.color = 'var(--success)';
+            setTimeout(function() { statusEl.textContent = ''; }, 3000);
+        } else {
+            showToast('Failed to save scripts', 'error');
+            statusEl.textContent = 'Error saving';
+            statusEl.style.color = 'var(--danger)';
+        }
+    }).catch(function() {
+        showToast('Failed to save scripts', 'error');
+        statusEl.textContent = 'Error saving';
+        statusEl.style.color = 'var(--danger)';
     });
 }
 

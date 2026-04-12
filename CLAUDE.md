@@ -15,7 +15,10 @@ npm run build            # Build for production (outputs to dist/)
 npm run build:optimized  # Optimize images (sharp) then build
 npm run preview          # Preview production build
 npm run start            # Serve dist/ folder on port 3000 (production)
+npm run optimize-images  # Run image optimization (sharp) without build
 ```
+
+**Running Both Frontend + Admin**: In development, run `npm run dev` (port 5173) for frontend and `cd admin && npm run dev` (port 3001) for admin simultaneously.
 
 ### Admin Dashboard (separate app in `admin/`)
 
@@ -29,6 +32,8 @@ npm run init-db           # Initialize SQLite database
 npm run dev               # Start with nodemon (port 3001)
 npm start                 # Production start
 ```
+
+**Environment Variables**: Copy `admin/.env.example` to `admin/.env`. Required: `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `WEBHOOK_SECRET`. Optional: SMTP settings for email notifications.
 
 ## Project Structure
 
@@ -64,7 +69,7 @@ npm start                 # Production start
 
 **Dashboard**: `js/dashboard.js` exports `industries` object with stats/charts per industry. Auto-rotates every 8s (pauses on hover). Exports `animateDataIn()` and `animateChartIn()` for animation triggers.
 
-**Admin Dashboard** (`admin/`): Express server (port 3001) with EJS templates, SQLite via better-sqlite3, JWT auth. Routes: `auth` (login/JWT), `leads` (CRUD), `meetings` (calendar management), `costs` (tracking), `settings` (system/branding/integrations), `webhook` (inbound lead capture with optional secret validation), `dashboard` (analytics views). Views use a shared `layout.ejs` with `partials/sidebar.ejs`. Database tables: leads, lead_activities, users, settings, meetings, costs, lead_sources, calendar_events, form_responses.
+**Admin Dashboard** (`admin/`): Express server (port 3001) with EJS templates, SQLite via better-sqlite3, JWT auth. Routes in `admin/src/routes/`: `auth` (login/JWT), `leads` (CRUD), `meetings` (calendar management), `costs` (tracking), `settings` (system/branding/integrations), `webhook` (inbound lead capture with optional secret validation), `dashboard` (analytics views). Views use a shared `layout.ejs` with `partials/sidebar.ejs`. Database schema in `admin/src/database.js` includes: leads, lead_activities, users, settings, meetings, costs, deals, integrations, company_profile, notification_preferences, user_activity_log.
 
 **Form Submission Flow**: Frontend `form-handler.js` submits to `/api/webhook/lead` endpoint → admin webhook route validates and stores in SQLite → lead appears in admin dashboard. Cookie consent gates analytics tracking (GA4, GTM, Facebook Pixel, Clarity) via `cookie-consent.js` → `analytics.js`.
 
@@ -126,3 +131,11 @@ Titles split into `<span class="char">` elements, animated from `opacity: 0, y: 
 - Expert cards use individual lazy-load triggers on mobile vs staggered reveal on desktop
 - Hero intro: no horizontal centering on mobile, scale stays at 1
 - Custom cursor hidden on touch devices
+
+## Admin Dashboard Details
+
+**Database Access Pattern**: All database queries use prepared statements defined in `admin/src/database.js`. Query objects are exported as `leads`, `meetings`, `costs`, `deals`, `settings`, etc.
+
+**Date-Filtered Analytics**: The `dateFiltered` export provides functions for analytics with custom date ranges: `getLeadsInRange()`, `countLeadsByStatusInRange()`, `getSourcePerformanceInRange()`, `getRevenueInRange()`.
+
+**Production Deployment**: Admin serves both backend and frontend. Built frontend files go to `admin/public/site/`. The server auto-serves frontend for non-admin paths.

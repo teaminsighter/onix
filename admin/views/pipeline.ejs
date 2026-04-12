@@ -1,23 +1,20 @@
+<% var currentPage = 'pipeline'; %>
 <%- include('partials/sidebar', { user, active: 'pipeline' }) %>
 
 <main class="main">
     <div class="page-header">
         <h1 class="page-title">Pipeline</h1>
         <div class="header-actions">
-            <div class="filters" style="display: flex; gap: 0.75rem; align-items: center;">
-                <input type="date" class="form-input" id="dateFrom" style="width: auto; padding: 0.5rem 0.75rem;">
-                <span style="color: var(--gray);">to</span>
-                <input type="date" class="form-input" id="dateTo" style="width: auto; padding: 0.5rem 0.75rem;">
-                <select class="form-select" id="sourceFilter" style="width: auto; padding: 0.5rem 0.75rem;">
-                    <option value="">All Sources</option>
-                    <option value="website">Website</option>
-                    <option value="facebook">Facebook</option>
-                    <option value="google">Google</option>
-                    <option value="linkedin">LinkedIn</option>
-                    <option value="referral">Referral</option>
-                </select>
-            </div>
-            <a href="/leads" class="btn btn-secondary">
+            <%- include('partials/date-picker') %>
+            <select class="form-select" id="sourceFilter" style="width: auto; height: 38px;">
+                <option value="">All Sources</option>
+                <option value="website">Website</option>
+                <option value="facebook">Facebook</option>
+                <option value="google">Google</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="referral">Referral</option>
+            </select>
+            <a href="/leads" class="btn btn-secondary" style="height: 38px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
                     <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>

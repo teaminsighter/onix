@@ -1,8 +1,12 @@
+<% var currentPage = 'analytics'; %>
 <%- include('partials/sidebar', { user, active: 'analytics' }) %>
 
 <main class="main">
     <div class="page-header">
-        <h1 class="page-title">Analytics</h1>
+        <div>
+            <h1 class="page-title">Analytics</h1>
+        </div>
+        <%- include('partials/date-picker') %>
     </div>
 
     <!-- Quick Stats -->
