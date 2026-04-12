@@ -253,8 +253,55 @@ function setupAutoTracking() {
     if (ANALYTICS_CONFIG.DEBUG) console.log('[Analytics] Auto-tracking setup complete');
 }
 
+// ============ CUSTOM HEADER SCRIPTS (from Admin Panel) ============
+function loadCustomHeaderScripts() {
+    // Try to fetch custom header scripts from admin panel
+    // This works when admin is on same domain or when CORS is configured
+    const adminUrl = window.ONIX_ADMIN_URL || '';
+    const scriptUrl = adminUrl ? `${adminUrl}/api/webhook/header-scripts` : '/api/webhook/header-scripts';
+
+    fetch(scriptUrl)
+        .then(response => {
+            if (!response.ok) throw new Error('Failed to fetch');
+            return response.text();
+        })
+        .then(scripts => {
+            if (scripts && scripts.trim()) {
+                // Create a container div and inject the scripts
+                const container = document.createElement('div');
+                container.innerHTML = scripts;
+
+                // Move script elements to head to execute them
+                container.querySelectorAll('script').forEach(script => {
+                    const newScript = document.createElement('script');
+                    if (script.src) {
+                        newScript.src = script.src;
+                        newScript.async = script.async;
+                    } else {
+                        newScript.textContent = script.textContent;
+                    }
+                    document.head.appendChild(newScript);
+                });
+
+                // Move non-script elements (like noscript, meta) to head
+                container.querySelectorAll(':not(script)').forEach(el => {
+                    document.head.appendChild(el.cloneNode(true));
+                });
+
+                if (ANALYTICS_CONFIG.DEBUG) console.log('[Analytics] Custom header scripts loaded');
+            }
+        })
+        .catch(err => {
+            // Silently fail - custom scripts are optional
+            if (ANALYTICS_CONFIG.DEBUG) console.log('[Analytics] No custom header scripts:', err.message);
+        });
+}
+
 // ============ INITIALIZATION ============
 function initAnalytics() {
+    // Load custom header scripts from admin panel (runs regardless of consent)
+    loadCustomHeaderScripts();
+
     // Check for cookie consent before initializing tracking
     const hasConsent = localStorage.getItem('cookie_consent') === 'accepted';
 

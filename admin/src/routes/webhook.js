@@ -6,7 +6,7 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const router = express.Router();
-const { leads, activities, meetings } = require('../database');
+const { leads, activities, meetings, integrations } = require('../database');
 
 // Dedicated rate limiter for public lead endpoint
 const leadRateLimiter = rateLimit({
@@ -231,5 +231,40 @@ function sendNotification(data) {
     // TODO: Add email notification using nodemailer
     // TODO: Add Slack notification using webhook
 }
+
+// ==================== PUBLIC API ====================
+
+// Get header scripts for injection into main website (public, no auth required)
+router.get('/header-scripts', (req, res) => {
+    try {
+        const headerScripts = integrations.getByName.get('header_scripts');
+        if (!headerScripts) {
+            return res.type('text/html').send('');
+        }
+        const config = JSON.parse(headerScripts.config || '{}');
+        const scripts = config.scripts || '';
+
+        // Return as HTML for direct injection
+        res.type('text/html').send(scripts);
+    } catch (error) {
+        console.error('Error fetching header scripts:', error);
+        res.type('text/html').send('');
+    }
+});
+
+// Get header scripts as JSON (for AJAX fetching)
+router.get('/header-scripts.json', (req, res) => {
+    try {
+        const headerScripts = integrations.getByName.get('header_scripts');
+        if (!headerScripts) {
+            return res.json({ scripts: '' });
+        }
+        const config = JSON.parse(headerScripts.config || '{}');
+        res.json({ scripts: config.scripts || '' });
+    } catch (error) {
+        console.error('Error fetching header scripts:', error);
+        res.json({ scripts: '' });
+    }
+});
 
 module.exports = router;

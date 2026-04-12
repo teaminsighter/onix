@@ -229,11 +229,12 @@ function initializeDatabase() {
         seedIntegration.run('formspree', 'Formspree', 'mail', 0, 'Receive form submissions via Formspree', '{}');
         seedIntegration.run('slack', 'Slack', 'message-square', 0, 'Send lead notifications to Slack', '{}');
     }
-    // Always ensure GA4/GTM exist (added later)
+    // Always ensure GA4/GTM/header_scripts exist (added later)
     {
         const seedIfMissing = db.prepare('INSERT OR IGNORE INTO integrations (name, label, icon, enabled, description, config) VALUES (?, ?, ?, ?, ?, ?)');
         seedIfMissing.run('ga4', 'Google Analytics 4', 'bar-chart', 0, 'Website visitor tracking', '{}');
         seedIfMissing.run('gtm', 'Google Tag Manager', 'bar-chart', 0, 'Tag management for website', '{}');
+        seedIfMissing.run('header_scripts', 'Custom Header Scripts', 'code', 1, 'Custom scripts injected into website head', '{"scripts":""}');
     }
 
     // Seed default company profile
