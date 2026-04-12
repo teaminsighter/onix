@@ -8,7 +8,7 @@ const router = express.Router();
 const { authenticateView } = require('../middleware/auth');
 const {
     leads, meetings, costs, deals, activities,
-    userActivityLog, analytics,
+    userActivityLog, analytics, dateFiltered,
     companyProfile, integrations, notificationPrefs
 } = require('../database');
 
@@ -62,53 +62,119 @@ router.get('/login', (req, res) => {
     res.render('login', { title: 'Login - ONIX Admin', error: req.query.error, layout: false });
 });
 
+// Helper: get date range label
+function getDateRangeLabel(preset, fromDate, toDate) {
+    const presetLabels = {
+        'today': 'Today',
+        'yesterday': 'Yesterday',
+        'this_week': 'This week',
+        'last_7_days': 'Last 7 days',
+        'last_week': 'Last week',
+        'last_14_days': 'Last 14 days',
+        'this_month': 'This month',
+        'last_30_days': 'Last 30 days',
+        'last_month': 'Last month',
+        'all_time': 'All time'
+    };
+    if (presetLabels[preset]) return presetLabels[preset];
+    if (fromDate && toDate) {
+        const from = new Date(fromDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const to = new Date(toDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        return `${from} - ${to}`;
+    }
+    return 'All time';
+}
+
 // ==================== DASHBOARD ====================
 
 router.get('/dashboard', authenticateView, (req, res) => {
     try {
-        // Lead stats
-        const statusCounts = leads.countByStatus.all();
-        const total = leads.countTotal.get();
-        const today = leads.countToday.get();
-        const thisWeek = leads.countThisWeek.get();
-        const thisMonth = leads.countThisMonth.get();
-        const recentLeads = leads.getRecent.all(10);
+        // Parse date filter from query params
+        const { from, to, preset } = req.query;
+        const hasDateFilter = from && to;
 
-        const byStatus = {};
-        statusCounts.forEach(s => { byStatus[s.status] = s.count; });
+        // Date range info for the view
+        const dateRange = {
+            from: from || null,
+            to: to || null,
+            preset: preset || 'all_time',
+            label: getDateRangeLabel(preset, from, to)
+        };
 
-        const totalLeads = total.total || 0;
+        let totalLeads, byStatus, leadsOverTime, sourceData, recentLeads;
+        let totalRevenue, totalCost;
+
+        if (hasDateFilter) {
+            // Use date-filtered queries
+            const countResult = dateFiltered.countLeadsInRange(from, to);
+            totalLeads = countResult?.total || 0;
+
+            const statusCounts = dateFiltered.countLeadsByStatusInRange(from, to);
+            byStatus = {};
+            statusCounts.forEach(s => { byStatus[s.status] = s.count; });
+
+            leadsOverTime = dateFiltered.getLeadsOverTimeInRange(from, to);
+            sourceData = dateFiltered.getSourcePerformanceInRange(from, to);
+
+            // For recent leads in range, get the actual leads
+            const leadsInRange = dateFiltered.getLeadsInRange(from, to);
+            recentLeads = leadsInRange.slice(0, 10);
+
+            // Revenue and costs in range
+            const revenueResult = dateFiltered.getRevenueInRange(from, to);
+            totalRevenue = revenueResult?.total || 0;
+            const costResult = dateFiltered.getCostsInRange(from, to);
+            totalCost = costResult?.total || 0;
+        } else {
+            // Use all-time queries (original behavior)
+            const statusCounts = leads.countByStatus.all();
+            const total = leads.countTotal.get();
+            totalLeads = total.total || 0;
+
+            byStatus = {};
+            statusCounts.forEach(s => { byStatus[s.status] = s.count; });
+
+            leadsOverTime = analytics.leadsOverTimeMonthly.all();
+            sourceData = analytics.sourcePerformance.all();
+            recentLeads = leads.getRecent.all(10);
+
+            const revenue = deals.sumRevenue.get();
+            totalRevenue = revenue.total || 0;
+            const costTotal = costs.sumTotal.get();
+            totalCost = costTotal.total || 0;
+        }
+
         const converted = byStatus.converted || 0;
         const conversionRate = totalLeads > 0 ? Math.round((converted / totalLeads) * 1000) / 10 : 0;
-
-        // Revenue & costs
-        const revenue = deals.sumRevenue.get();
-        const totalRevenue = revenue.total || 0;
-        const costTotal = costs.sumTotal.get();
-        const totalCost = costTotal.total || 0;
         const cpl = totalLeads > 0 ? Math.round((totalCost / totalLeads) * 100) / 100 : 0;
 
-        // Meetings
+        // Meetings (always show upcoming, not filtered)
         const meetingStatusCounts = meetings.countByStatus.all();
         const scheduledMeetings = meetingStatusCounts.find(m => m.status === 'scheduled');
         const meetingsThisWeek = meetings.countThisWeek.get();
-
-        // Upcoming meetings
         const upcomingMeetings = meetings.getUpcoming.all(5);
 
-        // Activity feed
+        // Activity feed (always show recent)
         const activityRows = userActivityLog.getRecent.all(10);
         const activityFeed = formatActivityFeed(activityRows);
 
-        // Chart data: leads over time (last 6 months)
-        const leadsOverTime = analytics.leadsOverTimeMonthly.all();
+        // Chart data: leads over time
         const leadsOverTimeChart = {
-            labels: leadsOverTime.map(r => monthLabel(r.period)),
+            labels: leadsOverTime.map(r => {
+                // Format based on period type
+                if (r.period.includes('-W')) {
+                    return 'W' + r.period.split('-W')[1];
+                } else if (r.period.length === 7) {
+                    return monthLabel(r.period);
+                }
+                // Daily: show as "Jan 15"
+                const d = new Date(r.period);
+                return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            }),
             data: leadsOverTime.map(r => r.count)
         };
 
         // Chart data: lead sources
-        const sourceData = analytics.sourcePerformance.all();
         const leadSourcesChart = {
             labels: sourceData.map(r => r.source || 'unknown'),
             data: sourceData.map(r => r.leads),
@@ -129,20 +195,25 @@ router.get('/dashboard', authenticateView, (req, res) => {
             ]
         };
 
-        // Previous month comparison (simple: this month vs last month)
-        const thisMonthCount = thisMonth.count || 0;
-        const lastMonthLeads = leadsOverTime.length >= 2 ? leadsOverTime[leadsOverTime.length - 2]?.count || 0 : 0;
-        const leadsChange = lastMonthLeads > 0 ? Math.round(((thisMonthCount - lastMonthLeads) / lastMonthLeads) * 100) : 0;
-        const leadsChangeStr = leadsChange >= 0 ? `+${leadsChange}%` : `${leadsChange}%`;
+        // Calculate change % (compare to previous period if filtered, else use month comparison)
+        let leadsChangeStr = '+0%';
+        if (!hasDateFilter && leadsOverTime.length >= 2) {
+            const thisMonth = leads.countThisMonth.get();
+            const thisMonthCount = thisMonth.count || 0;
+            const lastMonthLeads = leadsOverTime.length >= 2 ? leadsOverTime[leadsOverTime.length - 2]?.count || 0 : 0;
+            const leadsChange = lastMonthLeads > 0 ? Math.round(((thisMonthCount - lastMonthLeads) / lastMonthLeads) * 100) : 0;
+            leadsChangeStr = leadsChange >= 0 ? `+${leadsChange}%` : `${leadsChange}%`;
+        }
 
         res.render('dashboard', {
             title: 'Dashboard - ONIX Admin',
             user: req.user,
+            dateRange,
             stats: {
                 leads: { total: totalLeads, change: leadsChangeStr },
-                today: today.count,
-                thisWeek: thisWeek.count,
-                thisMonth: thisMonthCount,
+                today: leads.countToday.get().count,
+                thisWeek: leads.countThisWeek.get().count,
+                thisMonth: leads.countThisMonth.get().count,
                 conversion: { rate: conversionRate, change: conversionRate > 0 ? `+${conversionRate}%` : '0%' },
                 revenue: { total: totalRevenue, change: totalRevenue > 0 ? '+' + Math.round(totalRevenue / 100) + '%' : '0%' },
                 meetings: { scheduled: scheduledMeetings?.count || 0, thisWeek: meetingsThisWeek.count || 0 },

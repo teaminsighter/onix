@@ -595,6 +595,75 @@ const analyticsQueries = {
     `)
 };
 
+// Date-filtered analytics functions (use raw SQL for dynamic date ranges)
+function getLeadsInRange(fromDate, toDate) {
+    const query = `SELECT * FROM leads WHERE DATE(created_at) BETWEEN ? AND ? ORDER BY created_at DESC`;
+    return db.prepare(query).all(fromDate, toDate);
+}
+
+function countLeadsInRange(fromDate, toDate) {
+    const query = `SELECT COUNT(*) as total FROM leads WHERE DATE(created_at) BETWEEN ? AND ?`;
+    return db.prepare(query).get(fromDate, toDate);
+}
+
+function countLeadsByStatusInRange(fromDate, toDate) {
+    const query = `SELECT status, COUNT(*) as count FROM leads WHERE DATE(created_at) BETWEEN ? AND ? GROUP BY status`;
+    return db.prepare(query).all(fromDate, toDate);
+}
+
+function getLeadsOverTimeInRange(fromDate, toDate) {
+    // Calculate appropriate grouping based on date range
+    const start = new Date(fromDate);
+    const end = new Date(toDate);
+    const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+    let query;
+    if (diffDays <= 14) {
+        // Daily for short ranges
+        query = `SELECT DATE(created_at) as period, COUNT(*) as count
+                 FROM leads WHERE DATE(created_at) BETWEEN ? AND ?
+                 GROUP BY period ORDER BY period`;
+    } else if (diffDays <= 90) {
+        // Weekly for medium ranges
+        query = `SELECT strftime('%Y-W%W', created_at) as period, COUNT(*) as count
+                 FROM leads WHERE DATE(created_at) BETWEEN ? AND ?
+                 GROUP BY period ORDER BY period`;
+    } else {
+        // Monthly for long ranges
+        query = `SELECT strftime('%Y-%m', created_at) as period, COUNT(*) as count
+                 FROM leads WHERE DATE(created_at) BETWEEN ? AND ?
+                 GROUP BY period ORDER BY period`;
+    }
+    return db.prepare(query).all(fromDate, toDate);
+}
+
+function getSourcePerformanceInRange(fromDate, toDate) {
+    const query = `SELECT source,
+        COUNT(*) as leads,
+        SUM(CASE WHEN status IN ('contacted','scheduled','converted') THEN 1 ELSE 0 END) as contacted,
+        SUM(CASE WHEN status IN ('scheduled','converted') THEN 1 ELSE 0 END) as scheduled,
+        SUM(CASE WHEN status = 'converted' THEN 1 ELSE 0 END) as converted,
+        ROUND(SUM(CASE WHEN status = 'converted' THEN 1.0 ELSE 0 END) / MAX(COUNT(*), 1) * 100, 1) as conversion_rate
+    FROM leads WHERE DATE(created_at) BETWEEN ? AND ? GROUP BY source ORDER BY leads DESC`;
+    return db.prepare(query).all(fromDate, toDate);
+}
+
+function getRevenueInRange(fromDate, toDate) {
+    const query = `SELECT COALESCE(SUM(amount), 0) as total FROM deals WHERE status = 'won' AND DATE(closed_at) BETWEEN ? AND ?`;
+    return db.prepare(query).get(fromDate, toDate);
+}
+
+function getMeetingsInRange(fromDate, toDate) {
+    const query = `SELECT status, COUNT(*) as count FROM meetings WHERE DATE(start_time) BETWEEN ? AND ? GROUP BY status`;
+    return db.prepare(query).all(fromDate, toDate);
+}
+
+function getCostsInRange(fromDate, toDate) {
+    // Costs are tracked by month, so we need to match months that fall within the date range
+    const query = `SELECT COALESCE(SUM(amount), 0) as total FROM costs WHERE month >= substr(?, 1, 7) AND month <= substr(?, 1, 7)`;
+    return db.prepare(query).get(fromDate, toDate);
+}
+
 // Export
 module.exports = {
     db,
@@ -610,5 +679,16 @@ module.exports = {
     companyProfile: companyProfileQueries,
     notificationPrefs: notificationPrefQueries,
     userActivityLog: userActivityLogQueries,
-    analytics: analyticsQueries
+    analytics: analyticsQueries,
+    // Date-filtered analytics
+    dateFiltered: {
+        getLeadsInRange,
+        countLeadsInRange,
+        countLeadsByStatusInRange,
+        getLeadsOverTimeInRange,
+        getSourcePerformanceInRange,
+        getRevenueInRange,
+        getMeetingsInRange,
+        getCostsInRange
+    }
 };
