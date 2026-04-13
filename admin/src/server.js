@@ -49,12 +49,14 @@ app.use(helmet({
                 "https://tagmanager.google.com",
                 "https://www.google-analytics.com",
                 "https://connect.facebook.net",
-                "https://www.clarity.ms"
+                "https://www.clarity.ms",
+                "https://scripts.clarity.ms",
+                "https://ss.onixmrkt.com"
             ],
             scriptSrcAttr: ["'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:", "blob:"],
             frameSrc: ["'self'", "https://calendly.com", "https://www.google.com", "https://www.googletagmanager.com", "https://tagmanager.google.com"],
-            connectSrc: ["'self'", "https://calendly.com", "https://www.google-analytics.com", "https://region1.google-analytics.com", "https://www.googletagmanager.com", "https://www.clarity.ms"],
+            connectSrc: ["'self'", "https://calendly.com", "https://www.google-analytics.com", "https://region1.google-analytics.com", "https://www.googletagmanager.com", "https://www.clarity.ms", "https://ss.onixmrkt.com"],
             workerSrc: ["'self'", "blob:"],
         },
     },

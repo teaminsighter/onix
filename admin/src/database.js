@@ -665,6 +665,11 @@ function getCostsInRange(fromDate, toDate) {
     return db.prepare(query).get(fromDate, toDate);
 }
 
+function getLeadsByStatusInRange(status, fromDate, toDate) {
+    const query = `SELECT * FROM leads WHERE status = ? AND DATE(created_at) BETWEEN ? AND ? ORDER BY created_at DESC`;
+    return db.prepare(query).all(status, fromDate, toDate);
+}
+
 // Export
 module.exports = {
     db,
@@ -686,6 +691,7 @@ module.exports = {
         getLeadsInRange,
         countLeadsInRange,
         countLeadsByStatusInRange,
+        getLeadsByStatusInRange,
         getLeadsOverTimeInRange,
         getSourcePerformanceInRange,
         getRevenueInRange,

@@ -9,7 +9,8 @@ const { authenticateView } = require('../middleware/auth');
 const {
     leads, meetings, costs, deals, activities,
     userActivityLog, analytics, dateFiltered,
-    companyProfile, integrations, notificationPrefs
+    companyProfile, integrations, notificationPrefs,
+    settings: settingsDb
 } = require('../database');
 
 // Helper: relative time string
@@ -272,12 +273,34 @@ router.get('/leads/:id', authenticateView, (req, res) => {
 
 router.get('/pipeline', authenticateView, (req, res) => {
     try {
+        // Parse date filter from query params
+        const { from, to, preset } = req.query;
+        const hasDateFilter = from && to;
+
+        // Date range info for the view
+        const dateRange = {
+            from: from || null,
+            to: to || null,
+            preset: preset || 'all_time',
+            label: getDateRangeLabel(preset, from, to)
+        };
+
         const statuses = ['new', 'contacted', 'scheduled', 'converted', 'lost'];
         const pipelineLeads = {};
-        statuses.forEach(status => {
-            pipelineLeads[status] = leads.getByStatus.all(status);
-        });
-        res.render('pipeline', { title: 'Pipeline - ONIX Admin', user: req.user, leads: pipelineLeads });
+
+        if (hasDateFilter) {
+            // Use date-filtered queries
+            statuses.forEach(status => {
+                pipelineLeads[status] = dateFiltered.getLeadsByStatusInRange(status, from, to);
+            });
+        } else {
+            // Use all-time queries (original behavior)
+            statuses.forEach(status => {
+                pipelineLeads[status] = leads.getByStatus.all(status);
+            });
+        }
+
+        res.render('pipeline', { title: 'Pipeline - ONIX Admin', user: req.user, leads: pipelineLeads, dateRange });
     } catch (error) {
         console.error('Pipeline error:', error);
         res.render('error', { layout: false, title: 'Error', message: 'Failed to load pipeline' });
