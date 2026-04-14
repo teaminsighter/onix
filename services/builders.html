@@ -12,485 +12,819 @@
     })(window,document,'script','dataLayer','GTM-MJJ77MS6');</script>
     <!-- End Google Tag Manager -->
 
-    <meta name="description" content="ONIX lead generation for builders. Automate enquiry management, project quoting and client follow-up for construction businesses.">
-    <meta property="og:title" content="Builders Lead Generation | ONIX">
-    <meta property="og:description" content="Automate enquiry management, project quoting and client follow-up for construction businesses.">
-    <meta property="og:image" content="https://onixmrkt.com/images/og-image.png">
+    <title>My Reno Quotes — Renovation Leads for Builders | Powered by ONIX</title>
+    <meta name="description" content="Get qualified renovation leads delivered direct. Kitchen, bathroom & full home reno jobs from homeowners ready to build. NZ's trusted builder lead platform.">
+    <meta property="og:title" content="My Reno Quotes — Renovation Leads for Builders">
+    <meta property="og:description" content="Qualified homeowners requesting quotes, matched to builders. Fill your pipeline without the chase.">
+    <meta property="og:image" content="https://onixmrkt.com/images/og-mrq.png">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="/images/favicon.png">
-    <title>Builders Lead Generation | ONIX</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg: #0a0a0a;
-            --bg2: #111111;
-            --accent: #c9f31d;
-            --white: #f5f5f5;
-            --gray: #888888;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Grid Background */
-        .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(201, 243, 29, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(201, 243, 29, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0;
-            animation: floatParticle 15s infinite;
-        }
-
-        @keyframes floatParticle {
-            0%, 100% { opacity: 0; transform: translateY(100vh) scale(0); }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { opacity: 0; transform: translateY(-100vh) scale(1); }
-        }
-
-        /* Scan Lines */
-        .scan-lines {
-            position: fixed;
-            inset: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.1) 2px,
-                rgba(0, 0, 0, 0.1) 4px
-            );
-            pointer-events: none;
-            animation: scanMove 8s linear infinite;
-        }
-
-        @keyframes scanMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-
-        /* Main Container */
-        .container {
-            text-align: center;
-            z-index: 10;
-            padding: 2rem;
-        }
-
-        /* 404 Glitch Text */
-        .glitch-wrapper {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .glitch {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(6rem, 20vw, 12rem);
-            font-weight: 700;
-            color: var(--white);
-            position: relative;
-            text-shadow: 0 0 10px rgba(201, 243, 29, 0.5);
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch::before {
-            color: #ff00ff;
-            animation: glitch-1 2s infinite linear alternate-reverse;
-            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-        }
-
-        .glitch::after {
-            color: #00ffff;
-            animation: glitch-2 3s infinite linear alternate-reverse;
-            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-        }
-
-        @keyframes glitch-1 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
-        }
-
-        @keyframes glitch-2 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(3px, -3px); }
-            40% { transform: translate(3px, 3px); }
-            60% { transform: translate(-3px, -3px); }
-            80% { transform: translate(-3px, 3px); }
-        }
-
-        /* Service Name */
-        .service-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Coming Soon Text */
-        .coming-soon {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.2rem;
-            color: var(--gray);
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .coming-soon::after {
-            content: '|';
-            animation: blink 1s step-end infinite;
-            color: var(--accent);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Terminal Box */
-        .terminal {
-            background: rgba(17, 17, 17, 0.9);
-            border: 1px solid rgba(201, 243, 29, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            max-width: 500px;
-            margin: 0 auto 3rem;
-            text-align: left;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-        }
-
-        .terminal-header {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .terminal-dot.red { background: #ff5f56; }
-        .terminal-dot.yellow { background: #ffbd2e; }
-        .terminal-dot.green { background: #27ca40; }
-
-        .terminal-line {
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            animation: typeLine 0.5s forwards;
-        }
-
-        .terminal-line:nth-child(2) { animation-delay: 0.5s; }
-        .terminal-line:nth-child(3) { animation-delay: 1s; }
-        .terminal-line:nth-child(4) { animation-delay: 1.5s; }
-        .terminal-line:nth-child(5) { animation-delay: 2s; }
-
-        @keyframes typeLine {
-            to { opacity: 1; }
-        }
-
-        .terminal-line .accent { color: var(--accent); }
-        .terminal-line .white { color: var(--white); }
-
-        /* Progress Bar */
-        .progress-container {
-            margin-top: 1rem;
-            opacity: 0;
-            animation: typeLine 0.5s forwards 2.5s;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.75rem;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), #a8cc18);
-            border-radius: 3px;
-            width: 0%;
-            animation: fillProgress 3s ease-out forwards 3s;
-        }
-
-        @keyframes fillProgress {
-            to { width: 73%; }
-        }
-
-        /* Back Button */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 1rem 2rem;
-            border-radius: 100px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .back-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--accent);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-            z-index: -1;
-        }
-
-        .back-btn:hover {
-            color: var(--bg);
-        }
-
-        .back-btn:hover::before {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        .back-btn .arrow {
-            transition: transform 0.3s ease;
-        }
-
-        .back-btn:hover .arrow {
-            transform: translateX(-4px);
-        }
-
-        /* Floating Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: orbFloat 10s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent);
-            top: -200px;
-            right: -100px;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: #00ffff;
-            bottom: -150px;
-            left: -100px;
-            animation-delay: -5s;
-        }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 30px) scale(1.1); }
-        }
-
-        /* Circuit Lines */
-        .circuit {
-            position: fixed;
-            stroke: rgba(201, 243, 29, 0.1);
-            stroke-width: 1;
-            fill: none;
-        }
-
-        .circuit-1 {
-            top: 10%;
-            left: 5%;
-            animation: circuitPulse 4s infinite;
-        }
-
-        .circuit-2 {
-            bottom: 10%;
-            right: 5%;
-            animation: circuitPulse 4s infinite 2s;
-        }
-
-        @keyframes circuitPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        /* Logo */
-        .logo {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--white);
-            text-decoration: none;
-            z-index: 100;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/builders.css">
 </head>
 <body>
-    <!-- Logo -->
-    <a href="/" class="logo">ONIX<span>.</span></a>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MJJ77MS6"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Background Effects -->
-    <div class="grid-bg"></div>
-    <div class="scan-lines"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
 
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Circuit Decorations -->
-    <svg class="circuit circuit-1" width="200" height="150" viewBox="0 0 200 150">
-        <path d="M0 75 H50 L70 50 H120 L140 75 H200" />
-        <path d="M50 75 V100 H100" />
-        <circle cx="50" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="70" cy="50" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="140" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-    </svg>
-
-    <svg class="circuit circuit-2" width="200" height="150" viewBox="0 0 200 150">
-        <path d="M200 75 H150 L130 100 H80 L60 75 H0" />
-        <path d="M150 75 V50 H100" />
-        <circle cx="150" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="130" cy="100" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="60" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-    </svg>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="glitch-wrapper">
-            <h1 class="glitch" data-text="404">404</h1>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <a href="/" class="nav-logo">
+                <span class="logo-mrq">MRQ</span>
+                <span class="logo-divider"></span>
+                <span class="logo-tagline">My Reno Quotes</span>
+            </a>
+            <a href="/" class="powered-badge">
+                <span>Powered by</span>
+                <span class="powered-onix">ONIX</span>
+            </a>
         </div>
-
-        <p class="service-name" id="serviceName">Service Page</p>
-        <p class="coming-soon">Building something amazing</p>
-
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
-            </div>
-            <div class="terminal-line"><span class="accent">$</span> <span class="white">initializing</span> service_page...</div>
-            <div class="terminal-line"><span class="accent">></span> Loading assets... <span class="accent">OK</span></div>
-            <div class="terminal-line"><span class="accent">></span> Configuring routes... <span class="accent">OK</span></div>
-            <div class="terminal-line"><span class="accent">></span> Building components... <span class="white">IN PROGRESS</span></div>
-            <div class="progress-container">
-                <div class="progress-label">
-                    <span>Progress</span>
-                    <span class="accent">73%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-            </div>
+        <ul class="nav-links">
+            <li><a href="#how-it-works" class="magnetic">How It Works</a></li>
+            <li><a href="#job-types" class="magnetic">Job Types</a></li>
+            <li><a href="#results" class="magnetic">Results</a></li>
+            <li><a href="#testimonials" class="magnetic">Reviews</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#contact" class="nav-cta magnetic">Get Started</a>
         </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
 
-        <a href="/" class="back-btn">
-            <span class="arrow">&larr;</span>
-            Back to Home
-        </a>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#job-types">Job Types</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+        </ul>
+        <a href="#contact" class="mobile-cta">Get Started</a>
     </div>
 
-    <script>
-        // Generate particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
-            particlesContainer.appendChild(particle);
-        }
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="hero-glow hero-glow-2"></div>
+            <div class="hero-grid"></div>
+        </div>
 
-        // Get service name from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const service = 'builders';
-        const serviceName = service.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        document.getElementById('serviceName').textContent = serviceName;
-        document.title = serviceName + ' | Coming Soon | ONIX';
-    </script>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>NZ's #1 Renovation Lead Platform for Builders</span>
+                </div>
+
+                <h1 class="hero-title" id="heroTitle">
+                    <div class="title-line">
+                        <span class="word">Get</span>
+                        <span class="word">More</span>
+                        <span class="word">Reno</span>
+                        <span class="word">Jobs.</span>
+                    </div>
+                    <div class="title-line highlight">
+                        <span class="word">Without</span>
+                        <span class="word">The</span>
+                        <span class="word">Chase.</span>
+                    </div>
+                </h1>
+
+                <p class="hero-subtitle" id="heroSubtitle">
+                    Homeowners request quotes. We match them to <span class="hero-highlight">3 qualified builders</span>. You quote, you win. No cold calling. No wasted site visits. Just <span class="hero-highlight">real jobs from real people</span> ready to renovate.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#contact" class="btn-primary magnetic">
+                        <span>Join MRQ Free</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#how-it-works" class="btn-ghost magnetic">See How It Works</a>
+                </div>
+
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Free to join</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Pay per lead</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Cancel anytime</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-stats-grid" id="heroStats">
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-target="2.5" data-prefix="$" data-suffix="M">$0</span></div>
+                        <div class="hero-card-label">Project Value</div>
+                        <div class="hero-card-desc">Matched in 2024</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-target="1200" data-suffix="+">0</span></div>
+                        <div class="hero-card-label">Jobs Matched</div>
+                        <div class="hero-card-desc">This year alone</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-text="24hrs">0</span></div>
+                        <div class="hero-card-label">Lead Delivery</div>
+                        <div class="hero-card-desc">Fresh & exclusive</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-target="4.9" data-suffix="★">0</span></div>
+                        <div class="hero-card-label">Google Rating</div>
+                        <div class="hero-card-desc">From 150+ reviews</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ========== PROBLEM SECTION ========== -->
+    <section class="problem-section" id="problem">
+        <div class="problem-container">
+            <div class="section-header">
+                <span class="section-tag">The Problem</span>
+                <h2 class="section-title" id="problemTitle">
+                    <span class="word">Tired</span>
+                    <span class="word">of</span>
+                    <span class="word highlight">Chasing</span>
+                    <span class="word">Work?</span>
+                </h2>
+            </div>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <h3>Wasted Hours Quoting</h3>
+                    <p>Driving to site visits for jobs you'll never win. Hours lost on tyre-kickers who just want a "ballpark".</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </div>
+                    <h3>Competing on Price</h3>
+                    <p>Racing to the bottom against 10 other builders. Homeowners ghosting you after you've done all the work.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                    </div>
+                    <h3>Feast or Famine</h3>
+                    <p>Busy one month, empty calendar the next. No consistent pipeline of quality work coming in.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                        </svg>
+                    </div>
+                    <h3>Ad Spend Burnout</h3>
+                    <p>Throwing money at Facebook and Google with nothing to show for it. Leads that never answer the phone.</p>
+                </div>
+            </div>
+
+            <div class="problem-solution">
+                <div class="solution-badge">
+                    <span class="badge-pulse"></span>
+                    <span>The MRQ Solution</span>
+                </div>
+                <p>We flip the script. <strong>Homeowners come to us</strong> when they're ready to renovate. We qualify them, then match them to <strong>just 3 builders</strong>. You're not competing against the world — you're one of three.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS SECTION ========== -->
+    <section class="how-section" id="how-it-works">
+        <div class="section-header">
+            <span class="section-tag">How It Works</span>
+            <h2 class="section-title">
+                <span class="word">Three</span>
+                <span class="word">Steps</span>
+                <span class="word">to</span>
+                <span class="word">a</span>
+                <span class="word highlight">Full</span>
+                <span class="word highlight">Pipeline.</span>
+            </h2>
+        </div>
+
+        <div class="how-grid">
+            <div class="how-card">
+                <div class="how-card-inner">
+                    <div class="how-number">01</div>
+                    <div class="how-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            <path d="M8 9h8"/>
+                            <path d="M8 13h6"/>
+                        </svg>
+                    </div>
+                    <h3>Homeowner Requests Quotes</h3>
+                    <p>A real person with a real renovation project fills out our detailed form — kitchen reno, bathroom upgrade, full home renovation. They're ready to build.</p>
+                    <div class="how-visual">
+                        <div class="form-preview">
+                            <div class="form-field-preview">
+                                <span class="field-label">Project Type</span>
+                                <span class="field-value">Kitchen Renovation</span>
+                            </div>
+                            <div class="form-field-preview">
+                                <span class="field-label">Budget Range</span>
+                                <span class="field-value">$40k - $60k</span>
+                            </div>
+                            <div class="form-field-preview">
+                                <span class="field-label">Timeline</span>
+                                <span class="field-value">Next 3 months</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="how-card">
+                <div class="how-card-inner">
+                    <div class="how-number">02</div>
+                    <div class="how-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="8.5" cy="7" r="4"/>
+                            <path d="M20 8v6"/>
+                            <path d="M23 11h-6"/>
+                        </svg>
+                    </div>
+                    <h3>We Match to 3 Builders</h3>
+                    <p>Our system matches the job to <strong>exactly 3 qualified builders</strong> in the area. Not 10. Not 20. Three — giving you a real shot at winning.</p>
+                    <div class="how-visual">
+                        <div class="match-preview">
+                            <div class="match-item you">
+                                <span class="match-avatar">You</span>
+                                <span class="match-check">✓</span>
+                            </div>
+                            <div class="match-item">
+                                <span class="match-avatar">B2</span>
+                                <span class="match-check">✓</span>
+                            </div>
+                            <div class="match-item">
+                                <span class="match-avatar">B3</span>
+                                <span class="match-check">✓</span>
+                            </div>
+                            <div class="match-item dimmed">
+                                <span class="match-avatar">+47</span>
+                                <span class="match-x">✗</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="how-card">
+                <div class="how-card-inner">
+                    <div class="how-number">03</div>
+                    <div class="how-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                    <h3>You Quote & Win</h3>
+                    <p>Lead lands in your inbox with full details. Contact the homeowner, quote the job, close the deal. <strong>Average win rate: 33%</strong> (1 in 3).</p>
+                    <div class="how-visual">
+                        <div class="win-preview">
+                            <div class="win-stat">
+                                <span class="win-value">33%</span>
+                                <span class="win-label">Win Rate</span>
+                            </div>
+                            <div class="win-bar">
+                                <div class="win-fill"></div>
+                            </div>
+                            <span class="win-note">1 in 3 builders wins</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== JOB TYPES SECTION ========== -->
+    <section class="jobs-section" id="job-types">
+        <div class="section-header">
+            <span class="section-tag">What We Deliver</span>
+            <h2 class="section-title">
+                <span class="word">Renovation</span>
+                <span class="word">Jobs</span>
+                <span class="word highlight">Ready</span>
+                <span class="word highlight">to</span>
+                <span class="word highlight">Quote.</span>
+            </h2>
+            <p class="section-subtitle" id="jobsSubtitle" data-text="Every lead is a homeowner who's filled out a detailed form — project type, budget, timeline. They're not browsing. They're building."></p>
+        </div>
+
+        <div class="jobs-grid">
+            <div class="job-card">
+                <div class="job-icon">
+                    <img src="/images/icons/kitchen-reno.png" alt="Kitchen Renovation" onerror="this.style.display='none'">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <path d="M3 9h18"/>
+                        <path d="M9 21V9"/>
+                    </svg>
+                </div>
+                <h3>Kitchen Renovations</h3>
+                <p>Full kitchen remodels, cabinetry upgrades, benchtop replacements. Average project value $35k–$80k.</p>
+                <div class="job-stat">
+                    <span class="job-stat-value">450+</span>
+                    <span class="job-stat-label">Leads/Year</span>
+                </div>
+                <a href="#contact" class="job-btn">Get Kitchen Leads →</a>
+            </div>
+
+            <div class="job-card">
+                <div class="job-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 6l6 6-6 6"/>
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    </svg>
+                </div>
+                <h3>Bathroom Renovations</h3>
+                <p>Complete bathroom makeovers, wet area specialists, accessibility upgrades. Average project value $20k–$45k.</p>
+                <div class="job-stat">
+                    <span class="job-stat-value">380+</span>
+                    <span class="job-stat-label">Leads/Year</span>
+                </div>
+                <a href="#contact" class="job-btn">Get Bathroom Leads →</a>
+            </div>
+
+            <div class="job-card featured">
+                <div class="job-featured-tag">High Value</div>
+                <div class="job-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                </div>
+                <h3>Full Home Renovations</h3>
+                <p>Major renovations, extensions, full property makeovers. Average project value $100k–$300k+.</p>
+                <div class="job-stat">
+                    <span class="job-stat-value">220+</span>
+                    <span class="job-stat-label">Leads/Year</span>
+                </div>
+                <a href="#contact" class="job-btn">Get Full Reno Leads →</a>
+            </div>
+
+            <div class="job-card">
+                <div class="job-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                </div>
+                <h3>Decks & Outdoor</h3>
+                <p>Deck builds, outdoor living areas, pergolas, landscaping hardscapes. Average project value $15k–$40k.</p>
+                <div class="job-stat">
+                    <span class="job-stat-value">150+</span>
+                    <span class="job-stat-label">Leads/Year</span>
+                </div>
+                <a href="#contact" class="job-btn">Get Outdoor Leads →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RESULTS SECTION ========== -->
+    <section class="results-section" id="results">
+        <div class="section-header">
+            <span class="section-tag">Builder Results</span>
+            <h2 class="section-title">
+                <span class="word">Numbers</span>
+                <span class="word">That</span>
+                <span class="word highlight">Builders</span>
+                <span class="word highlight">Trust.</span>
+            </h2>
+        </div>
+
+        <div class="results-bento">
+            <div class="bento-card bento-large" data-tilt>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Total Project Value — 2024</span>
+                    <div class="bento-value">
+                        <span class="bento-num" data-target="2.5" data-prefix="$" data-suffix="M">$0</span>
+                    </div>
+                    <p class="bento-desc">In renovation projects matched to builders through MRQ. Real jobs, real money.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Average Win Rate</span>
+                    <div class="bento-value">
+                        <span class="bento-num">33%</span>
+                    </div>
+                    <p class="bento-desc">1 in 3 builders wins each job. Compare that to quoting against 10+ competitors.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Average Lead Cost</span>
+                    <div class="bento-value">
+                        <span class="bento-num">$45</span>
+                    </div>
+                    <p class="bento-desc">Per qualified lead. Win a $50k kitchen job from a $45 lead — that's the ROI.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Active Builders</span>
+                    <div class="bento-value">
+                        <span class="bento-num" data-target="340" data-suffix="+">0</span>
+                    </div>
+                    <p class="bento-desc">Builders across NZ using MRQ to fill their pipeline every month.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Contact Rate</span>
+                    <div class="bento-value">
+                        <span class="bento-num">85%</span>
+                    </div>
+                    <p class="bento-desc">Of leads answer on first contact. These are people waiting for your call.</p>
+                </div>
+            </div>
+
+            <div class="bento-card bento-quote" data-tilt>
+                <div class="bento-card-inner">
+                    <div class="quote-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/>
+                        </svg>
+                    </div>
+                    <p class="bento-quote-text">"Best investment I've made in my business. First month I won a $65k kitchen job from a $45 lead."</p>
+                    <div class="bento-quote-author">
+                        <span class="author-name">Dave M.</span>
+                        <span class="author-role">Builder — Auckland</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS SECTION ========== -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="section-header">
+            <span class="section-tag">Builder Reviews</span>
+            <h2 class="section-title">What Builders Say</h2>
+        </div>
+
+        <div class="testimonials-layout">
+            <a href="https://g.page/r/myrenoquotes" target="_blank" class="google-badge-large">
+                <div class="google-logo">
+                    <span class="g-dot blue"></span>
+                    <span class="g-dot red"></span>
+                    <span class="g-dot yellow"></span>
+                    <span class="g-dot green"></span>
+                    <span class="g-word">Google</span>
+                </div>
+                <span class="google-score">4.9</span>
+                <span class="google-stars">★★★★★</span>
+                <span class="google-count">150+ reviews</span>
+                <span class="google-cta">Read Reviews →</span>
+            </a>
+
+            <div class="testimonials-ticker">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">DM</div>
+                            <div class="author-details">
+                                <span class="author-name">Dave M.</span>
+                                <span class="author-role">Builder — Auckland</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"First month I won a $65k kitchen job from a $45 lead. Best ROI of any marketing I've tried."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">SK</div>
+                            <div class="author-details">
+                                <span class="author-name">Steve K.</span>
+                                <span class="author-role">Renovations — Wellington</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"The leads actually answer their phones. That alone is worth it. Closed 3 bathroom jobs last month."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">MR</div>
+                            <div class="author-details">
+                                <span class="author-name">Mike R.</span>
+                                <span class="author-role">Kitchen Specialist — Hamilton</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"Was spending $2k/month on Facebook ads with nothing. Now I get 15-20 solid leads for half that."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">JT</div>
+                            <div class="author-details">
+                                <span class="author-name">Jason T.</span>
+                                <span class="author-role">Builder — Christchurch</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"Only competing against 2 others instead of 10. My win rate went from 10% to over 30%."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">PB</div>
+                            <div class="author-details">
+                                <span class="author-name">Paul B.</span>
+                                <span class="author-role">Renovations — Tauranga</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"$180k in jobs from $800 in leads over 6 months. The math speaks for itself."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">AR</div>
+                            <div class="author-details">
+                                <span class="author-name">Andy R.</span>
+                                <span class="author-role">Builder — Auckland</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"Finally a lead service that doesn't sell the same lead to 20 builders. Worth every cent."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== REGIONS SECTION ========== -->
+    <section class="regions-section" id="regions">
+        <div class="section-header">
+            <span class="section-tag">Coverage</span>
+            <h2 class="section-title">
+                <span class="word">Serving</span>
+                <span class="word">Builders</span>
+                <span class="word">Across</span>
+                <span class="word highlight">New Zealand.</span>
+            </h2>
+        </div>
+
+        <div class="regions-grid">
+            <div class="region-card active">
+                <span class="region-name">Auckland</span>
+                <span class="region-stat">45% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Wellington</span>
+                <span class="region-stat">18% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Christchurch</span>
+                <span class="region-stat">15% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Hamilton</span>
+                <span class="region-stat">8% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Tauranga</span>
+                <span class="region-stat">6% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Other Regions</span>
+                <span class="region-stat">8% of leads</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PRICING SECTION ========== -->
+    <section class="pricing-section" id="pricing">
+        <div class="section-header">
+            <span class="section-tag">Simple Pricing</span>
+            <h2 class="section-title">
+                <span class="word">Pay</span>
+                <span class="word">Per</span>
+                <span class="word highlight">Lead.</span>
+                <span class="word">That's</span>
+                <span class="word">It.</span>
+            </h2>
+        </div>
+
+        <div class="pricing-card">
+            <div class="pricing-card-inner">
+                <div class="pricing-header">
+                    <span class="pricing-badge">Most Popular</span>
+                    <h3 class="pricing-title">Builder Subscription</h3>
+                    <p class="pricing-desc">Get matched to qualified renovation leads in your area</p>
+                </div>
+
+                <div class="pricing-cost">
+                    <span class="pricing-currency">$</span>
+                    <span class="pricing-amount">45</span>
+                    <span class="pricing-period">avg per lead</span>
+                </div>
+
+                <ul class="pricing-features">
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Free to join — no monthly fee</span>
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Only matched to 3 builders per job</span>
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Full homeowner details + project brief</span>
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Choose your regions & job types</span>
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Pause or cancel anytime</span>
+                    </li>
+                    <li>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Lead credits if no contact within 48hrs</span>
+                    </li>
+                </ul>
+
+                <a href="#contact" class="pricing-cta magnetic">
+                    <span>Get Started Free</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA SECTION ========== -->
+    <section class="cta-section" id="contact">
+        <div class="cta-glow"></div>
+        <div class="cta-container">
+            <div class="cta-content">
+                <div class="cta-badge">
+                    <span class="badge-dot"></span>
+                    <span>Join 340+ Builders Getting Leads</span>
+                </div>
+
+                <h2 class="cta-title">
+                    <span class="word">Stop</span>
+                    <span class="word">Chasing.</span><br>
+                    <span class="word highlight">Start</span>
+                    <span class="word highlight">Building.</span>
+                </h2>
+
+                <p class="cta-body">Join MRQ today and start receiving qualified renovation leads from homeowners ready to build. Free to join, pay only for leads you receive.</p>
+
+                <form class="cta-form" id="ctaForm">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <input type="text" id="ctaName" placeholder="Your name" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="tel" id="ctaPhone" placeholder="Phone number" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <input type="email" id="ctaEmail" placeholder="Email address" required>
+                        </div>
+                        <div class="form-field">
+                            <select id="ctaRegion" required>
+                                <option value="" disabled selected>Your region</option>
+                                <option value="auckland">Auckland</option>
+                                <option value="wellington">Wellington</option>
+                                <option value="christchurch">Christchurch</option>
+                                <option value="hamilton">Hamilton</option>
+                                <option value="tauranga">Tauranga</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="form-submit magnetic">
+                        <span>Join MRQ Free</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </form>
+                <p class="cta-note">Free to join · No monthly fees · Pay per lead only · Cancel anytime</p>
+            </div>
+
+            <div class="cta-visual">
+                <div class="visual-card">
+                    <div class="visual-header">
+                        <span class="visual-dot green"></span>
+                        <span>New Lead</span>
+                    </div>
+                    <div class="visual-content">
+                        <div class="lead-preview">
+                            <div class="lead-type">Kitchen Renovation</div>
+                            <div class="lead-detail">
+                                <span class="detail-label">Budget:</span>
+                                <span class="detail-value">$45,000 - $60,000</span>
+                            </div>
+                            <div class="lead-detail">
+                                <span class="detail-label">Location:</span>
+                                <span class="detail-value">Ponsonby, Auckland</span>
+                            </div>
+                            <div class="lead-detail">
+                                <span class="detail-label">Timeline:</span>
+                                <span class="detail-value">Ready to start</span>
+                            </div>
+                            <div class="lead-status">
+                                <span class="status-badge">Matched to you + 2 others</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">MRQ</span>
+                <span class="footer-tagline">My Reno Quotes</span>
+                <a href="/" class="footer-powered">Powered by ONIX</a>
+            </div>
+            <p class="footer-copy">© 2025 My Reno Quotes · A product of ONIX Marketing Ltd · Auckland, New Zealand</p>
+            <div class="footer-links">
+                <a href="/">ONIX Home</a>
+                <a href="/privacy-policy.html">Privacy Policy</a>
+                <a href="/terms-of-service.html">Terms</a>
+                <a href="mailto:hello@myrenoquotes.co.nz">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script type="module" src="../js/builders.js"></script>
 </body>
 </html>
