@@ -17,7 +17,7 @@ if (cursor && cursorFollower) {
     });
 
     // Hover effects
-    const hoverElements = document.querySelectorAll('a, button, .magnetic, .hero-card, .job-card, .bento-card, .how-card');
+    const hoverElements = document.querySelectorAll('a, button, .magnetic, .hero-card, .job-card-wrapper, .bento-card, .window-card');
     hoverElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             cursor.classList.add('hovering');
@@ -373,31 +373,102 @@ function initCardAnimations() {
         }
     });
 
-    // How it works cards
-    gsap.set('.how-card', { opacity: 0, y: 50 });
+    // Pipeline window cards
+    gsap.set('.pipeline-step', { opacity: 0, y: 60 });
+    gsap.set('.pipeline-arrow', { opacity: 0, scale: 0.5 });
+
+    // Inner elements - sweep from left
+    gsap.set('.field-row', { opacity: 0, x: -40 });
+    gsap.set('.form-status', { opacity: 0, x: -40 });
+    gsap.set('.builder-row', { opacity: 0, x: 40 });
+    gsap.set('.win-celebration', { opacity: 0, x: -100 });
+    gsap.set('.win-details', { opacity: 0, x: -120 });
+    gsap.set('.win-cta-mock', { opacity: 0, x: -150 });
+
     ScrollTrigger.create({
-        trigger: '.how-grid',
+        trigger: '.pipeline-flow',
         start: 'top 75%',
         once: true,
         onEnter: () => {
-            gsap.to('.how-card', {
+            // Animate window cards with stagger
+            gsap.to('.pipeline-step', {
                 opacity: 1,
                 y: 0,
-                duration: 0.7,
-                stagger: 0.15,
+                duration: 0.8,
+                stagger: 0.2,
                 ease: 'power3.out'
+            });
+
+            // Animate arrows after cards
+            gsap.to('.pipeline-arrow', {
+                opacity: 0.5,
+                scale: 1,
+                duration: 0.5,
+                stagger: 0.2,
+                delay: 0.4,
+                ease: 'back.out(1.4)'
+            });
+
+            // Card 1: Form fields sweep from left
+            gsap.to('.field-row', {
+                opacity: 1,
+                x: 0,
+                duration: 0.6,
+                stagger: 0.1,
+                delay: 0.5,
+                ease: 'power3.out'
+            });
+            gsap.to('.form-status', {
+                opacity: 1,
+                x: 0,
+                duration: 0.5,
+                delay: 1,
+                ease: 'power3.out'
+            });
+
+            // Card 2: Builder rows sweep from right
+            gsap.to('.builder-row', {
+                opacity: 1,
+                x: 0,
+                duration: 0.6,
+                stagger: 0.12,
+                delay: 0.7,
+                ease: 'power3.out'
+            });
+
+            // Card 3: Win elements - smooth sweep from far left
+            gsap.to('.win-celebration', {
+                opacity: 1,
+                x: 0,
+                duration: 1,
+                delay: 0.9,
+                ease: 'power4.out'
+            });
+            gsap.to('.win-details', {
+                opacity: 1,
+                x: 0,
+                duration: 1.1,
+                delay: 1.1,
+                ease: 'power4.out'
+            });
+            gsap.to('.win-cta-mock', {
+                opacity: 1,
+                x: 0,
+                duration: 1.2,
+                delay: 1.4,
+                ease: 'power4.out'
             });
         }
     });
 
     // Job cards
-    gsap.set('.job-card', { opacity: 0, y: 40 });
+    gsap.set('.job-card-wrapper', { opacity: 0, y: 40 });
     ScrollTrigger.create({
         trigger: '.jobs-grid',
         start: 'top 80%',
         once: true,
         onEnter: () => {
-            gsap.to('.job-card', {
+            gsap.to('.job-card-wrapper', {
                 opacity: 1,
                 y: 0,
                 duration: 0.6,
