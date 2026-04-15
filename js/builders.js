@@ -312,24 +312,53 @@ document.querySelectorAll('.hero-count, .bento-num[data-target]').forEach(counte
 
 // ========== SECTION TITLE ANIMATIONS ==========
 function initSectionTitleAnimations() {
-    document.querySelectorAll('.section-title').forEach(title => {
+    // Select all titles that should animate
+    const allTitles = document.querySelectorAll('.section-title, .cta-title, .guarantee-title');
+
+    allTitles.forEach(title => {
         const words = title.querySelectorAll('.word');
 
         if (words.length > 0) {
-            gsap.set(words, { opacity: 0, y: 30, rotateX: -40 });
+            // Set initial state - hidden and slightly below
+            gsap.set(words, {
+                opacity: 0,
+                y: 40,
+                rotateX: -60,
+                transformOrigin: 'center bottom'
+            });
 
             ScrollTrigger.create({
                 trigger: title,
-                start: 'top 80%',
+                start: 'top 85%',
                 once: true,
                 onEnter: () => {
                     gsap.to(words, {
                         opacity: 1,
                         y: 0,
                         rotateX: 0,
+                        duration: 1,
+                        stagger: 0.08,
+                        ease: 'power3.out'
+                    });
+                }
+            });
+        } else {
+            // For titles without .word spans, animate the whole title
+            gsap.set(title, {
+                opacity: 0,
+                y: 30
+            });
+
+            ScrollTrigger.create({
+                trigger: title,
+                start: 'top 85%',
+                once: true,
+                onEnter: () => {
+                    gsap.to(title, {
+                        opacity: 1,
+                        y: 0,
                         duration: 0.8,
-                        stagger: 0.05,
-                        ease: 'back.out(1.7)'
+                        ease: 'power3.out'
                     });
                 }
             });
@@ -339,39 +368,153 @@ function initSectionTitleAnimations() {
 
 // ========== CARD ANIMATIONS ==========
 function initCardAnimations() {
-    // Problem cards
-    gsap.set('.problem-card', { opacity: 0, y: 40 });
+    // Section tags - sweep in from left
+    gsap.set('.section-tag', { opacity: 0, x: -30 });
+    document.querySelectorAll('.section-tag').forEach(tag => {
+        ScrollTrigger.create({
+            trigger: tag,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+                gsap.to(tag, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 0.8,
+                    ease: 'power3.out'
+                });
+            }
+        });
+    });
+
+    // Problem cards - alternate left/right sweep
+    const problemCards = document.querySelectorAll('.problem-card');
+    problemCards.forEach((card, index) => {
+        // Alternate: even from left, odd from right
+        const fromX = index % 2 === 0 ? -150 : 150;
+        gsap.set(card, { opacity: 0, x: fromX });
+    });
+
     ScrollTrigger.create({
         trigger: '.problem-grid',
         start: 'top 80%',
         once: true,
         onEnter: () => {
-            gsap.to('.problem-card', {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                stagger: 0.1,
-                ease: 'power3.out'
+            problemCards.forEach((card, index) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 1.2,
+                    delay: index * 0.15,
+                    ease: 'power2.out'
+                });
             });
         }
     });
 
-    // Solution box
-    gsap.set('.problem-solution', { opacity: 0, y: 30, scale: 0.98 });
-    ScrollTrigger.create({
-        trigger: '.problem-solution',
-        start: 'top 85%',
-        once: true,
-        onEnter: () => {
-            gsap.to('.problem-solution', {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 0.8,
-                ease: 'power3.out'
-            });
-        }
-    });
+    // Solution box - smooth sweep animations from left/right
+    const solutionBox = document.querySelector('.problem-solution');
+    if (solutionBox) {
+        const solutionBadge = solutionBox.querySelector('.solution-badge');
+        const solutionHeadline = solutionBox.querySelector('.solution-headline');
+        const solutionParagraphs = solutionBox.querySelectorAll('.solution-content > p');
+        const solutionFeatures = solutionBox.querySelectorAll('.solution-feature');
+
+        gsap.set(solutionBox, { opacity: 0 });
+        gsap.set(solutionBadge, { opacity: 0, x: -100 });
+        gsap.set(solutionHeadline, { opacity: 0, x: 150 });
+        // Alternate paragraphs left/right
+        solutionParagraphs.forEach((p, i) => {
+            gsap.set(p, { opacity: 0, x: i % 2 === 0 ? -120 : 120 });
+        });
+        // Features from left
+        solutionFeatures.forEach((f, i) => {
+            gsap.set(f, { opacity: 0, x: -100 - (i * 20) });
+        });
+
+        ScrollTrigger.create({
+            trigger: solutionBox,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+                const tl = gsap.timeline();
+
+                // Container fades in
+                tl.to(solutionBox, {
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: 'power2.out'
+                }, 0);
+
+                // Badge sweeps in from left
+                tl.to(solutionBadge, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 1.2,
+                    ease: 'power2.out'
+                }, 0.1);
+
+                // Headline sweeps in from right
+                tl.to(solutionHeadline, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 1.3,
+                    ease: 'power2.out'
+                }, 0.2);
+
+                // Paragraphs sweep in alternating
+                solutionParagraphs.forEach((p, i) => {
+                    tl.to(p, {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1.1,
+                        ease: 'power2.out'
+                    }, 0.4 + (i * 0.15));
+                });
+
+                // Features sweep in from left with stagger
+                tl.to(solutionFeatures, {
+                    opacity: 1,
+                    x: 0,
+                    duration: 1,
+                    stagger: 0.12,
+                    ease: 'power2.out'
+                }, 0.8);
+            }
+        });
+    }
+
+    // Typewriter animation for pipeline subtitle
+    const typewriterEl = document.querySelector('.section-desc.typewriter');
+    if (typewriterEl) {
+        const text = typewriterEl.dataset.typewriter;
+        const textSpan = typewriterEl.querySelector('.typewriter-text');
+        let charIndex = 0;
+        let typewriterStarted = false;
+
+        ScrollTrigger.create({
+            trigger: typewriterEl,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+                if (typewriterStarted) return;
+                typewriterStarted = true;
+
+                const typeInterval = setInterval(() => {
+                    if (charIndex < text.length) {
+                        textSpan.textContent = text.substring(0, charIndex + 1);
+                        charIndex++;
+                    } else {
+                        clearInterval(typeInterval);
+                        // Hide cursor after typing
+                        setTimeout(() => {
+                            const cursor = typewriterEl.querySelector('.typewriter-cursor');
+                            if (cursor) cursor.style.display = 'none';
+                        }, 2000);
+                    }
+                }, 40);
+            }
+        });
+    }
 
     // Pipeline window cards
     gsap.set('.pipeline-step', { opacity: 0, y: 60 });
@@ -478,20 +621,108 @@ function initCardAnimations() {
         }
     });
 
-    // Bento cards
-    gsap.set('.bento-card', { opacity: 0, y: 30, scale: 0.95 });
+    // Bento cards - smooth staggered reveal with text animations
+    const bentoLarge = document.querySelector('.bento-card.bento-large');
+    const bentoDashboard = document.querySelector('.bento-card.bento-dashboard');
+    const bentoSmall = document.querySelectorAll('.bento-card:not(.bento-large):not(.bento-dashboard)');
+    const allStatCards = document.querySelectorAll('.bento-card:not(.bento-dashboard)');
+
+    // Set initial states for cards
+    if (bentoLarge) {
+        gsap.set(bentoLarge, { opacity: 0, x: -60, scale: 0.95 });
+    }
+    if (bentoDashboard) {
+        gsap.set(bentoDashboard, { opacity: 0, x: 60, scale: 0.95 });
+    }
+    gsap.set(bentoSmall, { opacity: 0, y: 50, scale: 0.9 });
+
+    // Set initial states for inner text elements
+    allStatCards.forEach(card => {
+        const tag = card.querySelector('.bento-tag');
+        const num = card.querySelector('.bento-num');
+        const desc = card.querySelector('.bento-desc');
+
+        if (tag) gsap.set(tag, { opacity: 0, x: -40 });
+        if (num) gsap.set(num, { opacity: 0, y: 30, scale: 0.8 });
+        if (desc) gsap.set(desc, { opacity: 0, y: 20 });
+    });
+
     ScrollTrigger.create({
         trigger: '.results-bento',
         start: 'top 80%',
         once: true,
         onEnter: () => {
-            gsap.to('.bento-card', {
+            const tl = gsap.timeline();
+
+            // Large card slides in from left
+            if (bentoLarge) {
+                tl.to(bentoLarge, {
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                    duration: 1,
+                    ease: 'power3.out'
+                }, 0);
+            }
+
+            // Dashboard slides in from right
+            if (bentoDashboard) {
+                tl.to(bentoDashboard, {
+                    opacity: 1,
+                    x: 0,
+                    scale: 1,
+                    duration: 1,
+                    ease: 'power3.out'
+                }, 0.1);
+            }
+
+            // Small cards rise up with stagger
+            tl.to(bentoSmall, {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                duration: 0.6,
-                stagger: 0.08,
-                ease: 'power3.out'
+                duration: 0.8,
+                stagger: 0.12,
+                ease: 'back.out(1.2)'
+            }, 0.2);
+
+            // Animate inner text elements for each stat card
+            allStatCards.forEach((card, cardIndex) => {
+                const tag = card.querySelector('.bento-tag');
+                const num = card.querySelector('.bento-num');
+                const desc = card.querySelector('.bento-desc');
+                const baseDelay = 0.4 + (cardIndex * 0.15);
+
+                // Tag sweeps in from left
+                if (tag) {
+                    tl.to(tag, {
+                        opacity: 1,
+                        x: 0,
+                        duration: 0.8,
+                        ease: 'power2.out'
+                    }, baseDelay);
+                }
+
+                // Number scales up
+                if (num) {
+                    tl.to(num, {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.9,
+                        ease: 'back.out(1.5)'
+                    }, baseDelay + 0.15);
+                }
+
+                // Description fades up
+                if (desc) {
+                    tl.to(desc, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: 'power2.out'
+                    }, baseDelay + 0.3);
+                }
             });
         }
     });
@@ -610,6 +841,8 @@ function initTiltEffect() {
     const tiltCards = document.querySelectorAll('[data-tilt]');
 
     tiltCards.forEach(card => {
+        const ray = card.querySelector('.bento-card-ray');
+
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -626,6 +859,12 @@ function initTiltEffect() {
                 duration: 0.3,
                 ease: 'power2.out'
             });
+
+            // Update border glow position
+            if (ray) {
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            }
         });
 
         card.addEventListener('mouseleave', () => {
@@ -747,6 +986,119 @@ function initParallax() {
     });
 }
 
+// ========== SOLUTION IMAGE CAROUSEL ==========
+function initSolutionCarousel() {
+    const images = document.querySelectorAll('.solution-image');
+    const dots = document.querySelectorAll('.solution-image-dots .dot');
+    if (!images.length) return;
+
+    let currentIndex = 0;
+    let interval;
+    const totalImages = images.length;
+
+    function showImage(index) {
+        // Remove all classes
+        images.forEach((img, i) => {
+            img.classList.remove('active', 'prev', 'next');
+            if (i === index) {
+                img.classList.add('active');
+            } else if (i === (index - 1 + totalImages) % totalImages) {
+                img.classList.add('prev');
+            } else if (i === (index + 1) % totalImages) {
+                img.classList.add('next');
+            }
+        });
+
+        // Update dots
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+
+        currentIndex = index;
+    }
+
+    function nextImage() {
+        showImage((currentIndex + 1) % totalImages);
+    }
+
+    function startAutoplay() {
+        interval = setInterval(nextImage, 3500);
+    }
+
+    function stopAutoplay() {
+        clearInterval(interval);
+    }
+
+    // Click on dots
+    dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+            stopAutoplay();
+            showImage(i);
+            startAutoplay();
+        });
+    });
+
+    // Pause on hover
+    const container = document.querySelector('.solution-images');
+    if (container) {
+        container.addEventListener('mouseenter', stopAutoplay);
+        container.addEventListener('mouseleave', startAutoplay);
+    }
+
+    // Initial state
+    showImage(0);
+    startAutoplay();
+}
+
+// ========== GUARANTEE CARDS SCROLL REVEAL ==========
+function initGuaranteeAnimation() {
+    const cards = document.querySelectorAll('.guarantee-card');
+    const banner = document.querySelector('.guarantee-banner');
+    if (!cards.length || !banner) return;
+
+    // Set initial states - far outside positions
+    gsap.set(cards[0], { opacity: 0, x: -250 }); // Left card - far left
+    gsap.set(cards[1], { opacity: 0, y: 120 });  // Middle card - far below
+    gsap.set(cards[2], { opacity: 0, x: 250 });  // Right card - far right
+
+    ScrollTrigger.create({
+        trigger: banner,
+        start: "top 80%",
+        once: true,
+        onEnter: () => {
+            // Timeline for coordinated smooth animation
+            const tl = gsap.timeline();
+
+            // All three animate together - slow and smooth
+            tl.to(cards[0], {
+                opacity: 1,
+                x: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, 0)
+            .to(cards[1], {
+                opacity: 1,
+                y: 0,
+                duration: 1.5,
+                ease: "power2.out"
+            }, 0.15)
+            .to(cards[2], {
+                opacity: 1,
+                x: 0,
+                duration: 1.4,
+                ease: "power2.out"
+            }, 0);
+
+            // Add revealed class after animation completes
+            cards.forEach((card, i) => {
+                setTimeout(() => {
+                    card.classList.add('revealed');
+                }, i * 150 + 800);
+            });
+        }
+    });
+}
+
 // ========== INITIALIZE ==========
 document.addEventListener('DOMContentLoaded', () => {
     initHeroAnimations();
@@ -756,4 +1108,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initTiltEffect();
     initWinBarAnimation();
     initParallax();
+    initSolutionCarousel();
+    initGuaranteeAnimation();
 });
