@@ -24,6 +24,7 @@ admin/public/uploads/
 !public/images/icons/*.jpg
 !public/images/process/*.png
 !public/images/process/*.jpg
+!public/images/problems/*.png
 !public/images/team/*.png
 !public/images/team/*.jpg
 !public/logos/*.png
