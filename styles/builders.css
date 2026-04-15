@@ -101,29 +101,88 @@ img {
 }
 
 /* ========== NAVBAR ========== */
+/* Liquid glass variables */
+.navbar {
+    --c-glass: #bbbbbc;
+    --c-light: #fff;
+    --c-dark: #000;
+    --glass-reflex-dark: 2;
+    --glass-reflex-light: 0.3;
+    --saturation: 150%;
+}
+
+/* Default state - Full width, transparent, spread layout */
 .navbar {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    z-index: 1000;
+    width: 100%;
+    padding: 1.5rem 4rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 1rem 3rem;
-    background: rgba(10, 10, 10, 0.8);
-    backdrop-filter: blur(20px);
-    transition: transform 0.3s ease, background 0.3s ease;
+    align-items: center;
+    z-index: 1000;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border-bottom: none;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, width, padding, border-radius, background;
 }
 
+/* Hidden state - slides up */
 .navbar.hidden {
-    transform: translateY(-100%);
+    transform: translateY(-150%);
+    opacity: 0;
+}
+
+/* Scrolled state - Compact pill with liquid glass */
+.navbar.scrolled {
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 920px;
+    padding: 0.6rem 1.2rem 0.6rem 1.5rem;
+    justify-content: center;
+    gap: 1.2rem;
+    border-radius: 100px;
+
+    /* Liquid glass effect */
+    background-color: color-mix(in srgb, var(--c-glass) 15%, transparent);
+    backdrop-filter: blur(12px) saturate(var(--saturation));
+    -webkit-backdrop-filter: blur(12px) saturate(var(--saturation));
+
+    /* Multi-layer liquid glass border */
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+        inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+        inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+        inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+        inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent),
+        inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+        inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+        0px 2px 8px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 15%), transparent),
+        0px 8px 24px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent);
+}
+
+/* Hidden + Scrolled state */
+.navbar.scrolled.hidden {
+    transform: translateX(-50%) translateY(-150%);
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
     gap: 1rem;
+    transition: gap 0.4s ease;
+}
+
+.navbar.scrolled .nav-brand {
+    gap: 0.5rem;
 }
 
 .nav-logo {
@@ -131,6 +190,12 @@ img {
     align-items: center;
     gap: 0.5rem;
     font-family: 'Space Grotesk', sans-serif;
+    white-space: nowrap;
+    transition: gap 0.4s ease;
+}
+
+.navbar.scrolled .nav-logo {
+    gap: 0.35rem;
 }
 
 .logo-mrq {
@@ -138,18 +203,33 @@ img {
     font-weight: 800;
     color: var(--primary);
     letter-spacing: -0.02em;
+    transition: font-size 0.4s ease;
+}
+
+.navbar.scrolled .logo-mrq {
+    font-size: 1.25rem;
 }
 
 .logo-divider {
     width: 1px;
     height: 24px;
     background: var(--border);
+    transition: height 0.4s ease;
+}
+
+.navbar.scrolled .logo-divider {
+    height: 16px;
 }
 
 .logo-tagline {
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--gray);
+    transition: font-size 0.4s ease;
+}
+
+.navbar.scrolled .logo-tagline {
+    font-size: 0.7rem;
 }
 
 .powered-badge {
@@ -161,7 +241,12 @@ img {
     border-radius: 100px;
     font-size: 0.7rem;
     color: var(--gray);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+}
+
+.navbar.scrolled .powered-badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6rem;
 }
 
 .powered-badge:hover {
@@ -176,43 +261,83 @@ img {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 2.5rem;
     list-style: none;
+    transition: gap 0.4s ease;
+}
+
+.navbar.scrolled .nav-links {
+    gap: 1rem;
 }
 
 .nav-links a {
-    font-size: 0.875rem;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1rem;
     font-weight: 500;
-    color: var(--gray);
-    transition: color 0.3s ease;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 4px;
+    white-space: nowrap;
+    transition: font-size 0.4s ease, color 0.3s ease;
+}
+
+.navbar.scrolled .nav-links a {
+    font-size: 0.75rem;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
 }
 
 .nav-links a:hover {
-    color: var(--white);
+    color: var(--primary);
 }
 
 .nav-right {
     display: flex;
     align-items: center;
+    gap: 1.5rem;
+    transition: gap 0.4s ease;
+}
+
+.navbar.scrolled .nav-right {
     gap: 1rem;
 }
 
 .nav-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
     background: var(--primary);
     color: var(--bg);
-    font-weight: 600;
-    font-size: 0.875rem;
+    padding: 0.8rem 2rem;
     border-radius: 100px;
-    transition: all 0.3s ease;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: transform 0.3s, box-shadow 0.3s, padding 0.4s ease, font-size 0.4s ease;
+    white-space: nowrap;
+}
+
+.navbar.scrolled .nav-cta {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.7rem;
 }
 
 .nav-cta:hover {
-    background: var(--primary-light);
-    transform: translateY(-2px);
+    transform: scale(1.05);
     box-shadow: 0 8px 24px rgba(245, 148, 31, 0.3);
 }
 
@@ -758,6 +883,29 @@ section {
     border-radius: 12px;
     margin-bottom: 1.5rem;
     color: var(--primary);
+}
+
+.problem-illustration {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.problem-illustration img {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.4s ease;
+}
+
+.problem-card:hover .problem-illustration img {
+    transform: scale(1.08);
 }
 
 .problem-card h3 {
@@ -3763,7 +3911,16 @@ section {
         padding: 1rem 1.5rem;
     }
 
+    .navbar.scrolled {
+        max-width: calc(100% - 2rem);
+        padding: 0.5rem 1rem;
+    }
+
     .nav-links {
+        display: none;
+    }
+
+    .powered-badge {
         display: none;
     }
 

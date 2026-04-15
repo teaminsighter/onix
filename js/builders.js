@@ -41,8 +41,22 @@ let ticking = false;
 function updateNavbar() {
     const currentScrollY = window.scrollY;
 
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        navbar.classList.add('hidden');
+    // Add scrolled class after scrolling past hero area
+    if (currentScrollY > 100) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+
+    // Smart hide/show based on scroll direction
+    if (currentScrollY > 200) {
+        if (lastScrollY < currentScrollY && currentScrollY - lastScrollY > 10) {
+            // Scrolling down - hide navbar
+            navbar.classList.add('hidden');
+        } else if (lastScrollY > currentScrollY && lastScrollY - currentScrollY > 10) {
+            // Scrolling up - show navbar
+            navbar.classList.remove('hidden');
+        }
     } else {
         navbar.classList.remove('hidden');
     }
