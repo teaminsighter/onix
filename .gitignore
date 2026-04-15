@@ -16,6 +16,7 @@ admin/public/uploads/
 !images/team/*.png
 !images/icons/*.png
 !images/process/*.png
+!images/problems/*.png
 !public/images/*.png
 !public/images/*.jpg
 !public/images/*.jpeg
