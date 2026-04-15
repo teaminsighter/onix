@@ -3298,12 +3298,7 @@ section {
 .coverage-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        135deg,
-        rgba(10, 10, 10, 0.92) 0%,
-        rgba(10, 10, 10, 0.85) 50%,
-        rgba(245, 148, 31, 0.15) 100%
-    );
+    background: rgba(10, 10, 10, 0.9);
 }
 
 .coverage-content {
@@ -3547,16 +3542,7 @@ section {
 }
 
 .cta-glow {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: var(--primary);
-    border-radius: 50%;
-    filter: blur(200px);
-    opacity: 0.1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: none;
 }
 
 .cta-container {
