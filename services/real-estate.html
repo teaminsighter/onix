@@ -12,485 +12,781 @@
     })(window,document,'script','dataLayer','GTM-MJJ77MS6');</script>
     <!-- End Google Tag Manager -->
 
-    <meta name="description" content="ONIX lead generation for real estate agents. Automate property enquiry capture, qualification and follow-up.">
+    <title>Real Estate Leads — NZ · AU · Bali | ONIX</title>
+    <meta name="description" content="Exclusive buyer, seller and investor leads for real estate agents. Automated qualification, real-time delivery, 100% exclusive. NZ, Australia & Bali markets.">
     <meta property="og:title" content="Real Estate Lead Generation | ONIX">
-    <meta property="og:description" content="Automate property enquiry capture, qualification and follow-up.">
+    <meta property="og:description" content="Exclusive property leads for real estate agents. Buyer, seller, investor leads with real-time CRM delivery.">
     <meta property="og:image" content="https://onixmrkt.com/images/og-image.png">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="/images/favicon.png">
-    <title>Real Estate Lead Generation | ONIX</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        :root {
-            --bg: #0a0a0a;
-            --bg2: #111111;
-            --accent: #c9f31d;
-            --white: #f5f5f5;
-            --gray: #888888;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Grid Background */
-        .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(201, 243, 29, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(201, 243, 29, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0;
-            animation: floatParticle 15s infinite;
-        }
-
-        @keyframes floatParticle {
-            0%, 100% { opacity: 0; transform: translateY(100vh) scale(0); }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { opacity: 0; transform: translateY(-100vh) scale(1); }
-        }
-
-        /* Scan Lines */
-        .scan-lines {
-            position: fixed;
-            inset: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.1) 2px,
-                rgba(0, 0, 0, 0.1) 4px
-            );
-            pointer-events: none;
-            animation: scanMove 8s linear infinite;
-        }
-
-        @keyframes scanMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-
-        /* Main Container */
-        .container {
-            text-align: center;
-            z-index: 10;
-            padding: 2rem;
-        }
-
-        /* 404 Glitch Text */
-        .glitch-wrapper {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .glitch {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(6rem, 20vw, 12rem);
-            font-weight: 700;
-            color: var(--white);
-            position: relative;
-            text-shadow: 0 0 10px rgba(201, 243, 29, 0.5);
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch::before {
-            color: #ff00ff;
-            animation: glitch-1 2s infinite linear alternate-reverse;
-            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-        }
-
-        .glitch::after {
-            color: #00ffff;
-            animation: glitch-2 3s infinite linear alternate-reverse;
-            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-        }
-
-        @keyframes glitch-1 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
-        }
-
-        @keyframes glitch-2 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(3px, -3px); }
-            40% { transform: translate(3px, 3px); }
-            60% { transform: translate(-3px, -3px); }
-            80% { transform: translate(-3px, 3px); }
-        }
-
-        /* Service Name */
-        .service-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Coming Soon Text */
-        .coming-soon {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.2rem;
-            color: var(--gray);
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .coming-soon::after {
-            content: '|';
-            animation: blink 1s step-end infinite;
-            color: var(--accent);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Terminal Box */
-        .terminal {
-            background: rgba(17, 17, 17, 0.9);
-            border: 1px solid rgba(201, 243, 29, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            max-width: 500px;
-            margin: 0 auto 3rem;
-            text-align: left;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-        }
-
-        .terminal-header {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .terminal-dot.red { background: #ff5f56; }
-        .terminal-dot.yellow { background: #ffbd2e; }
-        .terminal-dot.green { background: #27ca40; }
-
-        .terminal-line {
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            animation: typeLine 0.5s forwards;
-        }
-
-        .terminal-line:nth-child(2) { animation-delay: 0.5s; }
-        .terminal-line:nth-child(3) { animation-delay: 1s; }
-        .terminal-line:nth-child(4) { animation-delay: 1.5s; }
-        .terminal-line:nth-child(5) { animation-delay: 2s; }
-
-        @keyframes typeLine {
-            to { opacity: 1; }
-        }
-
-        .terminal-line .accent { color: var(--accent); }
-        .terminal-line .white { color: var(--white); }
-
-        /* Progress Bar */
-        .progress-container {
-            margin-top: 1rem;
-            opacity: 0;
-            animation: typeLine 0.5s forwards 2.5s;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.75rem;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), #a8cc18);
-            border-radius: 3px;
-            width: 0%;
-            animation: fillProgress 3s ease-out forwards 3s;
-        }
-
-        @keyframes fillProgress {
-            to { width: 73%; }
-        }
-
-        /* Back Button */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 1rem 2rem;
-            border-radius: 100px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .back-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--accent);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-            z-index: -1;
-        }
-
-        .back-btn:hover {
-            color: var(--bg);
-        }
-
-        .back-btn:hover::before {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        .back-btn .arrow {
-            transition: transform 0.3s ease;
-        }
-
-        .back-btn:hover .arrow {
-            transform: translateX(-4px);
-        }
-
-        /* Floating Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: orbFloat 10s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent);
-            top: -200px;
-            right: -100px;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: #00ffff;
-            bottom: -150px;
-            left: -100px;
-            animation-delay: -5s;
-        }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 30px) scale(1.1); }
-        }
-
-        /* Circuit Lines */
-        .circuit {
-            position: fixed;
-            stroke: rgba(201, 243, 29, 0.1);
-            stroke-width: 1;
-            fill: none;
-        }
-
-        .circuit-1 {
-            top: 10%;
-            left: 5%;
-            animation: circuitPulse 4s infinite;
-        }
-
-        .circuit-2 {
-            bottom: 10%;
-            right: 5%;
-            animation: circuitPulse 4s infinite 2s;
-        }
-
-        @keyframes circuitPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        /* Logo */
-        .logo {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--white);
-            text-decoration: none;
-            z-index: 100;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-    </style>
+    <link rel="stylesheet" href="../styles/real-estate.css">
 </head>
 <body>
-    <!-- Logo -->
-    <a href="/" class="logo">ONIX<span>.</span></a>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MJJ77MS6"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <!-- Background Effects -->
-    <div class="grid-bg"></div>
-    <div class="scan-lines"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
 
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Circuit Decorations -->
-    <svg class="circuit circuit-1" width="200" height="150" viewBox="0 0 200 150">
-        <path d="M0 75 H50 L70 50 H120 L140 75 H200" />
-        <path d="M50 75 V100 H100" />
-        <circle cx="50" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="70" cy="50" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="140" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-    </svg>
-
-    <svg class="circuit circuit-2" width="200" height="150" viewBox="0 0 200 150">
-        <path d="M200 75 H150 L130 100 H80 L60 75 H0" />
-        <path d="M150 75 V50 H100" />
-        <circle cx="150" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="130" cy="100" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="60" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-    </svg>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="glitch-wrapper">
-            <h1 class="glitch" data-text="404">404</h1>
-        </div>
-
-        <p class="service-name" id="serviceName">Service Page</p>
-        <p class="coming-soon">Building something amazing</p>
-
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-logo">ONIX<span>.</span></a>
+        <ul class="nav-links">
+            <li><a href="#performance">Performance</a></li>
+            <li><a href="#leads">Leads</a></li>
+            <li><a href="#markets">Markets</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="nav-pills">
+                <span class="pill">NZ</span>
+                <span class="pill">AU</span>
+                <span class="pill">BALI</span>
             </div>
-            <div class="terminal-line"><span class="accent">$</span> <span class="white">initializing</span> service_page...</div>
-            <div class="terminal-line"><span class="accent">></span> Loading assets... <span class="accent">OK</span></div>
-            <div class="terminal-line"><span class="accent">></span> Configuring routes... <span class="accent">OK</span></div>
-            <div class="terminal-line"><span class="accent">></span> Building components... <span class="white">IN PROGRESS</span></div>
-            <div class="progress-container">
-                <div class="progress-label">
-                    <span>Progress</span>
-                    <span class="accent">73%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-            </div>
+            <a href="#contact" class="nav-cta magnetic">Apply Now</a>
         </div>
+        <button class="hamburger" aria-label="Menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
 
-        <a href="/" class="back-btn">
-            <span class="arrow">&larr;</span>
-            Back to Home
-        </a>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <ul class="mobile-nav-links">
+            <li><a href="#performance">Performance</a></li>
+            <li><a href="#leads">Leads</a></li>
+            <li><a href="#markets">Markets</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="mobile-cta">Apply Now</a>
     </div>
 
-    <script>
-        // Generate particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
-            particlesContainer.appendChild(particle);
-        }
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="hero-glow hero-glow-2"></div>
+            <div class="hero-grid"></div>
+        </div>
 
-        // Get service name from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const service = 'real-estate';
-        const serviceName = service.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        document.getElementById('serviceName').textContent = serviceName;
-        document.title = serviceName + ' | Coming Soon | ONIX';
-    </script>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Real Estate Leads · NZ · Australia · Bali</span>
+                </div>
+
+                <h1 class="hero-title" id="heroTitle">
+                    <span class="title-line">Stop Chasing <span class="highlight">Property Leads</span></span>
+                    <span class="title-line">Start Closing <span class="highlight">Sales</span></span>
+                </h1>
+
+                <p class="hero-subtitle" id="heroSubtitle">
+                    We deliver <span class="hero-highlight">exclusive, pre-qualified</span> buyer, seller and investor leads directly to your CRM. <span class="hero-highlight">100% exclusive</span> — never resold to competitors.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#contact" class="btn-primary magnetic">
+                        <span>Apply for Agent Access</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#performance" class="btn-ghost magnetic">See 2025 Performance</a>
+                </div>
+            </div>
+
+            <div class="hero-stats-grid" id="heroStats">
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value">
+                            <span class="hero-count" data-target="156">0</span>
+                        </div>
+                        <div class="hero-card-label">Listings Sold</div>
+                        <div class="hero-card-desc">Properties closed this year</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value">
+                            <span class="hero-count" data-target="4.8" data-prefix="$" data-suffix="M">$0</span>
+                        </div>
+                        <div class="hero-card-label">Total Sales</div>
+                        <div class="hero-card-desc">Revenue generated for clients</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value">
+                            <span class="hero-count" data-target="892">0</span>
+                        </div>
+                        <div class="hero-card-label">Buyer Leads</div>
+                        <div class="hero-card-desc">Qualified buyers delivered</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value">
+                            <span class="hero-count" data-target="64">0</span>
+                        </div>
+                        <div class="hero-card-label">Showings Booked</div>
+                        <div class="hero-card-desc">Automated viewing bookings</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ========== AUTHORITY & PARTNERS SECTION ========== -->
+    <section class="authority-section" id="authority">
+        <div class="authority-container">
+            <div class="authority-headline">
+                <p class="authority-intro">Our biggest client asked us to go</p>
+                <h2 class="authority-title" id="authorityTitle">
+                    <span class="highlight">Exclusive</span>
+                </h2>
+                <p class="authority-sub" id="authoritySub" data-text="Their results were too good to share. So we expanded globally."></p>
+            </div>
+
+            <div class="authority-stats">
+                <div class="auth-card">
+                    <div class="auth-card-inner">
+                        <div class="auth-card-ray"></div>
+                        <div class="auth-value">100%</div>
+                        <div class="auth-label">Exclusive Leads</div>
+                        <div class="auth-desc">Never resold</div>
+                    </div>
+                </div>
+                <div class="auth-card">
+                    <div class="auth-card-inner">
+                        <div class="auth-card-ray"></div>
+                        <div class="auth-value">3</div>
+                        <div class="auth-label">Markets</div>
+                        <div class="auth-desc">NZ, AU & Bali</div>
+                    </div>
+                </div>
+                <div class="auth-card">
+                    <div class="auth-card-inner">
+                        <div class="auth-card-ray"></div>
+                        <div class="auth-value">Zero</div>
+                        <div class="auth-label">Peaks & Troughs</div>
+                        <div class="auth-desc">Consistent delivery</div>
+                    </div>
+                </div>
+                <div class="auth-card">
+                    <div class="auth-card-inner">
+                        <div class="auth-card-ray"></div>
+                        <div class="auth-value">12/12</div>
+                        <div class="auth-label">Months Delivery</div>
+                        <div class="auth-desc">Unbroken performance</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="partners-section">
+                <div class="partners-divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">Trusted by Leading Agencies</span>
+                    <div class="divider-line"></div>
+                </div>
+                <div class="ticker-wrapper ticker-two-rows">
+                    <div class="ticker-row">
+                        <div class="ticker-track ticker-track-left" id="clientsTickerRow1"></div>
+                    </div>
+                    <div class="ticker-row">
+                        <div class="ticker-track ticker-track-right" id="clientsTickerRow2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PERFORMANCE SECTION ========== -->
+    <section class="performance-section" id="performance">
+        <div class="section-header">
+            <span class="section-tag">2025 Performance Data</span>
+            <h2 class="section-title">
+                <span class="word">Numbers</span>
+                <span class="word">That</span>
+                <span class="word highlight">Don't</span>
+                <span class="word highlight">Lie.</span>
+            </h2>
+            <p class="section-subtitle">Real results from real estate agents across New Zealand, Australia and Bali.</p>
+        </div>
+
+        <div class="perf-bento">
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <div class="bento-card-ray"></div>
+                    <span class="bento-tag">Total 2025 Ad Spend</span>
+                    <div class="bento-value">
+                        <span class="bento-num">$1.8M</span>
+                    </div>
+                    <p class="bento-desc">Invested in property lead campaigns across all markets</p>
+                </div>
+            </div>
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <div class="bento-card-ray"></div>
+                    <span class="bento-tag">Buyer Lead CPL</span>
+                    <div class="bento-value">
+                        <span class="bento-num">$28–$55</span>
+                    </div>
+                    <p class="bento-desc">Consistent cost per qualified buyer lead</p>
+                </div>
+            </div>
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <div class="bento-card-ray"></div>
+                    <span class="bento-tag">Seller Lead CPL</span>
+                    <div class="bento-value">
+                        <span class="bento-num">$45–$85</span>
+                    </div>
+                    <p class="bento-desc">High-intent homeowners ready to list</p>
+                </div>
+            </div>
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <div class="bento-card-ray"></div>
+                    <span class="bento-tag">Platform Position</span>
+                    <div class="bento-value">
+                        <span class="bento-num">#1–#3</span>
+                    </div>
+                    <p class="bento-desc">Ranking across Google, Meta & YouTube</p>
+                </div>
+            </div>
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <div class="bento-card-ray"></div>
+                    <span class="bento-tag">Volume Consistency</span>
+                    <div class="bento-value">
+                        <span class="bento-num">12/12</span>
+                    </div>
+                    <p class="bento-desc">Months of uninterrupted lead delivery</p>
+                </div>
+            </div>
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-inner">
+                    <div class="bento-card-ray"></div>
+                    <span class="bento-tag">Exclusivity Rate</span>
+                    <div class="bento-value">
+                        <span class="bento-num">100%</span>
+                    </div>
+                    <p class="bento-desc">Every lead belongs only to you</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== LEAD TYPES SECTION ========== -->
+    <section class="leads-section" id="leads">
+        <div class="section-header">
+            <span class="section-tag">What We Deliver</span>
+            <h2 class="section-title">
+                <span class="word">Four</span>
+                <span class="word">Types</span>
+                <span class="word">of</span>
+                <span class="word highlight">High-Intent</span>
+                <span class="word">Property</span>
+                <span class="word">Leads</span>
+            </h2>
+            <p class="section-subtitle">Each lead is verified, qualified and delivered exclusively to your CRM in real-time.</p>
+        </div>
+
+        <div class="leads-grid">
+            <div class="lead-card">
+                <div class="lead-icon">
+                    <img src="/images/icons/real-estate.png" alt="Buyer Leads">
+                </div>
+                <h3>Buyer Leads</h3>
+                <p>Pre-qualified buyers actively searching for properties in your target areas. Verified budget, timeline, and property preferences.</p>
+                <div class="lead-stat">
+                    <span class="lead-stat-value">12k+</span>
+                    <span class="lead-stat-label">Leads/Year</span>
+                </div>
+                <a href="#contact" class="lead-btn magnetic">Get Started →</a>
+            </div>
+            <div class="lead-card">
+                <div class="lead-icon">
+                    <img src="/images/icons/real-estate.png" alt="Seller Leads">
+                </div>
+                <h3>Seller Leads</h3>
+                <p>Homeowners ready to list their property. Pre-screened for motivation level, timeline, and property details.</p>
+                <div class="lead-stat">
+                    <span class="lead-stat-value">8k+</span>
+                    <span class="lead-stat-label">Leads/Year</span>
+                </div>
+                <a href="#contact" class="lead-btn magnetic">Get Started →</a>
+            </div>
+            <div class="lead-card">
+                <div class="lead-icon">
+                    <img src="/images/icons/real-estate.png" alt="Investor Leads">
+                </div>
+                <h3>Investor Leads</h3>
+                <p>Property investors seeking rental yields or capital growth. Qualified by budget, investment criteria, and purchase timeline.</p>
+                <div class="lead-stat">
+                    <span class="lead-stat-value">5k+</span>
+                    <span class="lead-stat-label">Leads/Year</span>
+                </div>
+                <a href="#contact" class="lead-btn magnetic">Get Started →</a>
+            </div>
+            <div class="lead-card">
+                <div class="lead-icon">
+                    <img src="/images/icons/real-estate.png" alt="Property Valuations">
+                </div>
+                <h3>Property Valuations</h3>
+                <p>Homeowners requesting property appraisals. High-intent listing opportunities with verified ownership and motivation.</p>
+                <div class="lead-stat">
+                    <span class="lead-stat-value">85%</span>
+                    <span class="lead-stat-label">List Conversion</span>
+                </div>
+                <a href="#contact" class="lead-btn magnetic">Get Started →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== DELIVERY PROCESS SECTION ========== -->
+    <section class="delivery-section" id="process">
+        <div class="section-header">
+            <span class="section-tag">The Process</span>
+            <h2 class="section-title">
+                <span class="word">From</span>
+                <span class="word">Search</span>
+                <span class="word">Intent</span>
+                <span class="word">to</span>
+                <span class="word">Your</span>
+                <span class="word highlight">CRM</span>
+                <span class="word">—</span>
+                <span class="word highlight">Live.</span>
+            </h2>
+        </div>
+
+        <div class="process-cards" id="processCards">
+            <div class="process-card">
+                <div class="process-card-image">
+                    <img src="/images/process/intent-capture.png" alt="Intent Capture" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #2a2a2a)'">
+                </div>
+                <div class="process-card-content">
+                    <h3>Intent Capture</h3>
+                    <p>We identify property seekers at the exact moment they're searching — whether buying, selling or investing.</p>
+                    <span class="process-card-num">01</span>
+                </div>
+            </div>
+            <div class="process-card">
+                <div class="process-card-image">
+                    <img src="/images/process/qualification.png" alt="Multi-Layer Qualification" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #2a2a2a)'">
+                </div>
+                <div class="process-card-content">
+                    <h3>Multi-Layer Qualification</h3>
+                    <p>Every lead passes through budget verification, timeline confirmation and property preference matching.</p>
+                    <span class="process-card-num">02</span>
+                </div>
+            </div>
+            <div class="process-card">
+                <div class="process-card-image">
+                    <img src="/images/process/delivery.png" alt="Real-Time Delivery" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #2a2a2a)'">
+                </div>
+                <div class="process-card-content">
+                    <h3>Real-Time Delivery</h3>
+                    <p>Qualified leads arrive in your CRM within minutes — complete with contact details and property requirements.</p>
+                    <span class="process-card-num">03</span>
+                </div>
+            </div>
+            <div class="process-card">
+                <div class="process-card-image">
+                    <img src="/images/process/volume.png" alt="Consistent Volume" loading="lazy" onerror="this.style.background='linear-gradient(135deg, #1a1a1a, #2a2a2a)'">
+                </div>
+                <div class="process-card-content">
+                    <h3>Consistent Volume</h3>
+                    <p>No peaks or troughs. We guarantee steady lead flow month after month, scaled to your capacity.</p>
+                    <span class="process-card-num">04</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PROPERTY SHOWCASE SECTION ========== -->
+    <section class="showcase-section" id="showcase">
+        <div class="section-header">
+            <span class="section-tag">Success Stories</span>
+            <h2 class="section-title">
+                <span class="word">Properties</span>
+                <span class="word">Sold</span>
+                <span class="word">Through</span>
+                <span class="word highlight">ONIX</span>
+                <span class="word highlight">Leads.</span>
+            </h2>
+            <p class="section-subtitle">Real properties closed by agents using our exclusive lead system.</p>
+        </div>
+
+        <div class="showcase-carousel" id="showcaseCarousel">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Property cards populated by JS -->
+            </div>
+
+            <div class="carousel-controls">
+                <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                <div class="carousel-dots" id="carouselDots"></div>
+                <button class="carousel-btn next" id="carouselNext" aria-label="Next">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ROI CALCULATOR SECTION ========== -->
+    <section class="calculator-section" id="calculator">
+        <div class="section-header">
+            <span class="section-tag">Calculate Your ROI</span>
+            <h2 class="section-title">
+                <span class="word">See</span>
+                <span class="word">Your</span>
+                <span class="word highlight">Potential</span>
+                <span class="word highlight">Returns.</span>
+            </h2>
+            <p class="section-subtitle">Adjust the values to see your potential monthly returns from ONIX leads.</p>
+        </div>
+
+        <div class="calculator-container">
+            <div class="calculator-inputs">
+                <div class="calc-input-group">
+                    <label>Average Commission (per sale)</label>
+                    <div class="calc-input-wrapper">
+                        <span class="calc-prefix">$</span>
+                        <input type="number" id="calcCommission" value="25000" min="1000" max="200000">
+                    </div>
+                </div>
+
+                <div class="calc-input-group">
+                    <label>Cost Per Lead</label>
+                    <div class="calc-input-wrapper">
+                        <span class="calc-prefix">$</span>
+                        <input type="number" id="calcCPL" value="45" min="20" max="150">
+                    </div>
+                </div>
+
+                <div class="calc-input-group">
+                    <label>Lead Conversion Rate</label>
+                    <div class="calc-slider-wrapper">
+                        <input type="range" id="calcConversion" min="2" max="20" value="8">
+                        <span class="calc-slider-value" id="conversionValue">8%</span>
+                    </div>
+                </div>
+
+                <div class="calc-input-group">
+                    <label>Monthly Leads</label>
+                    <div class="calc-slider-wrapper">
+                        <input type="range" id="calcLeads" min="10" max="200" value="50">
+                        <span class="calc-slider-value" id="leadsValue">50</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calculator-results">
+                <div class="result-card result-primary">
+                    <span class="result-label">Monthly ROI</span>
+                    <span class="result-value" id="resultROI">812%</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-label">Monthly Revenue</span>
+                    <span class="result-value" id="resultRevenue">$100,000</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-label">Monthly Cost</span>
+                    <span class="result-value" id="resultCost">$2,250</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-label">Net Profit</span>
+                    <span class="result-value" id="resultProfit">$97,750</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MARKETS SECTION ========== -->
+    <section class="markets-section" id="markets">
+        <div class="markets-pinned" id="marketsPinned">
+            <div class="markets-header">
+                <div class="section-header">
+                    <span class="section-tag">New Markets — 2025 Expansion</span>
+                    <h2 class="section-title">
+                        <span class="word">Three</span>
+                        <span class="word">Markets.</span>
+                        <span class="word">One</span>
+                        <span class="word highlight">Proven</span>
+                        <span class="word highlight">System.</span>
+                    </h2>
+                </div>
+            </div>
+
+            <div class="markets-layout">
+                <!-- Tabs Navigation -->
+                <div class="market-tabs-nav">
+                    <div class="market-tab active" data-market="nz" data-index="0">
+                        <span class="tab-flag">🇳🇿</span>
+                        <div class="tab-info">
+                            <span class="tab-name">New Zealand</span>
+                            <span class="tab-types">Buyer · Seller · Investor</span>
+                        </div>
+                        <div class="tab-progress"></div>
+                    </div>
+                    <div class="market-tab" data-market="au" data-index="1">
+                        <span class="tab-flag">🇦🇺</span>
+                        <div class="tab-info">
+                            <span class="tab-name">Australia</span>
+                            <span class="tab-types">Buyer · Seller · Investor</span>
+                        </div>
+                        <div class="tab-progress"></div>
+                    </div>
+                    <div class="market-tab" data-market="bali" data-index="2">
+                        <span class="tab-flag">🇮🇩</span>
+                        <div class="tab-info">
+                            <span class="tab-name">Bali / Indonesia</span>
+                            <span class="tab-types">Buyer · Investor · Rental</span>
+                        </div>
+                        <div class="tab-progress"></div>
+                    </div>
+                    <div class="slide-counter">
+                        <span class="counter-current">01</span> / <span class="counter-total">03</span>
+                    </div>
+                </div>
+
+                <!-- Slides -->
+                <div class="market-slides" id="marketSlides">
+                    <div class="market-slide" data-market="nz">
+                        <div class="slide-outer">
+                            <div class="slide-inner">
+                                <div class="slide-bg">
+                                    <span class="slide-badge">NZ</span>
+                                    <div class="market-card-inner">
+                                        <h3 class="panel-title"></h3>
+                                        <p class="panel-desc"></p>
+                                        <div class="panel-specs"></div>
+                                        <a href="#contact" class="panel-cta magnetic"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-slide" data-market="au">
+                        <div class="slide-outer">
+                            <div class="slide-inner">
+                                <div class="slide-bg">
+                                    <span class="slide-badge">AU</span>
+                                    <div class="market-card-inner">
+                                        <h3 class="panel-title"></h3>
+                                        <p class="panel-desc"></p>
+                                        <div class="panel-specs"></div>
+                                        <a href="#contact" class="panel-cta magnetic"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-slide" data-market="bali">
+                        <div class="slide-outer">
+                            <div class="slide-inner">
+                                <div class="slide-bg">
+                                    <span class="slide-badge">ID</span>
+                                    <div class="market-card-inner">
+                                        <h3 class="panel-title"></h3>
+                                        <p class="panel-desc"></p>
+                                        <div class="panel-specs"></div>
+                                        <a href="#contact" class="panel-cta magnetic"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="markets-scroll-hint">
+                <span>Click tabs to explore markets</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS SECTION ========== -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="section-header">
+            <span class="section-tag">Real Results</span>
+            <h2 class="section-title">
+                <span class="word">What</span>
+                <span class="word">Our</span>
+                <span class="word highlight">Clients</span>
+                <span class="word highlight">Say</span>
+            </h2>
+        </div>
+
+        <div class="testimonials-container">
+            <div class="google-badge-large">
+                <div class="google-logo">
+                    <span style="color: #4285F4;">G</span>
+                    <span style="color: #EA4335;">o</span>
+                    <span style="color: #FBBC04;">o</span>
+                    <span style="color: #4285F4;">g</span>
+                    <span style="color: #34A853;">l</span>
+                    <span style="color: #EA4335;">e</span>
+                </div>
+                <div class="google-score">4.9</div>
+                <div class="google-stars">★★★★★</div>
+                <div class="google-count">150+ reviews</div>
+                <a href="https://g.page/r/onix" target="_blank" rel="noopener" class="google-cta">
+                    Read Reviews →
+                </a>
+            </div>
+
+            <div class="testimonials-ticker-wrapper">
+                <div class="testimonials-ticker" id="testimonialRow1">
+                    <!-- Review cards populated by JS -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== GETTING STARTED SECTION ========== -->
+    <section class="getting-started-section" id="getting-started">
+        <div class="section-header">
+            <span class="section-tag">Getting Started</span>
+            <h2 class="section-title">
+                <span class="word">Three</span>
+                <span class="word">Steps</span>
+                <span class="word">to</span>
+                <span class="word highlight">Leads</span>
+                <span class="word">on</span>
+                <span class="word highlight">Autopilot.</span>
+            </h2>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <span class="step-badge">Done For You</span>
+                <h3>Apply & Get Verified</h3>
+                <p>Complete a quick application. We verify your license and discuss your target areas, budget requirements and lead preferences.</p>
+                <span class="step-num">01</span>
+            </div>
+            <div class="step-card">
+                <span class="step-badge">We Build It</span>
+                <h3>We Build Your Pipeline</h3>
+                <p>Our team configures your exclusive lead campaigns across Google, Meta and YouTube — targeting buyers, sellers or investors in your market.</p>
+                <span class="step-num">02</span>
+            </div>
+            <div class="step-card">
+                <span class="step-badge">You Close & Scale</span>
+                <h3>Leads Flow. You Close.</h3>
+                <p>Qualified leads arrive in your CRM daily. You focus on closing deals while we maintain consistent lead flow month after month.</p>
+                <span class="step-num">03</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA SECTION WITH 3D PROPERTY ========== -->
+    <section class="cta-section" id="contact">
+        <div class="cta-stars"></div>
+        <div class="cta-glow"></div>
+
+        <div class="cta-container">
+            <div class="cta-content">
+                <span class="cta-badge">Limited Slots Per Region — Apply Now</span>
+
+                <h2 class="cta-title">
+                    <span class="word">Stop</span>
+                    <span class="word">Chasing.</span>
+                    <span class="word highlight">Start</span>
+                    <span class="word highlight">Closing.</span>
+                </h2>
+
+                <p class="cta-body">
+                    We limit the number of agents per region to maintain lead exclusivity. Apply now to secure your market before slots fill up.
+                </p>
+
+                <form class="cta-form" id="ctaForm">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="magnetic">Apply for Access</button>
+                </form>
+
+                <p class="cta-note">NZ · AU · Bali licensed agents only. We'll respond within 24 hours.</p>
+
+                <div class="cta-contacts">
+                    <div class="cta-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                        <span>Book a 15-min discovery call</span>
+                    </div>
+                    <div class="cta-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <span>realestate@onixmrkt.com</span>
+                    </div>
+                    <div class="cta-contact-item">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <span>Based in Auckland, NZ — Serving NZ · AU · Bali</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3D Property Model -->
+            <div class="cta-property-wrapper">
+                <div class="property-container" id="propertyContainer">
+                    <canvas id="propertyCanvas"></canvas>
+                </div>
+                <div class="property-glow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">ONIX<span>.</span></div>
+            <p class="footer-copy">© 2025 ONIX Marketing Ltd · Auckland, New Zealand · Serving NZ · AU · Bali</p>
+            <div class="footer-links">
+                <a href="/">Main Site</a>
+                <a href="/privacy-policy">Privacy</a>
+                <a href="/terms-of-service">Terms</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="../js/real-estate.js"></script>
 </body>
 </html>

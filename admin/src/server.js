@@ -119,6 +119,15 @@ app.use('/api/webhook', webhookRoutes); // No auth for webhooks (they use secret
 // Serve built frontend static files FIRST (before admin routes)
 const frontendPath = path.join(__dirname, '../public/site');
 if (fs.existsSync(frontendPath)) {
+    // Redirect .html URLs to clean URLs (301 for SEO)
+    app.get('*.html', (req, res, next) => {
+        // Skip admin/api routes
+        if (req.path.startsWith('/api/')) return next();
+        // Redirect /page.html to /page
+        const cleanPath = req.path.replace(/\.html$/, '');
+        return res.redirect(301, cleanPath + (req._parsedUrl.search || ''));
+    });
+
     // Serve all frontend static files (assets, images, logos, etc.)
     // This must come before admin routes
     app.use(express.static(frontendPath, {

@@ -12,485 +12,1129 @@
     })(window,document,'script','dataLayer','GTM-MJJ77MS6');</script>
     <!-- End Google Tag Manager -->
 
-    <meta name="description" content="ONIX lead generation for tradies. Get more jobs with automated lead capture, quoting and follow-up for trade businesses.">
+    <title>Tradies Lead Generation | ONIX</title>
+    <meta name="description" content="Get more jobs with less hustle. ONIX delivers qualified leads for plumbers, electricians, roofers, painters and all trades across New Zealand.">
     <meta property="og:title" content="Tradies Lead Generation | ONIX">
-    <meta property="og:description" content="Get more jobs with automated lead capture, quoting and follow-up for trade businesses.">
-    <meta property="og:image" content="https://onixmrkt.com/images/og-image.png">
+    <meta property="og:description" content="NZ's #1 lead platform for tradies. Pre-qualified customers, pay per lead, 33% average win rate.">
+    <meta property="og:image" content="https://onixmrkt.com/images/og-tradies.png">
     <meta property="og:type" content="website">
     <link rel="icon" type="image/png" href="/images/favicon.png">
-    <title>Tradies Lead Generation | ONIX</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg: #0a0a0a;
-            --bg2: #111111;
-            --accent: #c9f31d;
-            --white: #f5f5f5;
-            --gray: #888888;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--white);
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Grid Background */
-        .grid-bg {
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(201, 243, 29, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(201, 243, 29, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Floating Particles */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent);
-            border-radius: 50%;
-            opacity: 0;
-            animation: floatParticle 15s infinite;
-        }
-
-        @keyframes floatParticle {
-            0%, 100% { opacity: 0; transform: translateY(100vh) scale(0); }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { opacity: 0; transform: translateY(-100vh) scale(1); }
-        }
-
-        /* Scan Lines */
-        .scan-lines {
-            position: fixed;
-            inset: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.1) 2px,
-                rgba(0, 0, 0, 0.1) 4px
-            );
-            pointer-events: none;
-            animation: scanMove 8s linear infinite;
-        }
-
-        @keyframes scanMove {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-
-        /* Main Container */
-        .container {
-            text-align: center;
-            z-index: 10;
-            padding: 2rem;
-        }
-
-        /* 404 Glitch Text */
-        .glitch-wrapper {
-            position: relative;
-            margin-bottom: 2rem;
-        }
-
-        .glitch {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(6rem, 20vw, 12rem);
-            font-weight: 700;
-            color: var(--white);
-            position: relative;
-            text-shadow: 0 0 10px rgba(201, 243, 29, 0.5);
-        }
-
-        .glitch::before,
-        .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .glitch::before {
-            color: #ff00ff;
-            animation: glitch-1 2s infinite linear alternate-reverse;
-            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
-        }
-
-        .glitch::after {
-            color: #00ffff;
-            animation: glitch-2 3s infinite linear alternate-reverse;
-            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
-        }
-
-        @keyframes glitch-1 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
-        }
-
-        @keyframes glitch-2 {
-            0%, 100% { transform: translate(0); }
-            20% { transform: translate(3px, -3px); }
-            40% { transform: translate(3px, 3px); }
-            60% { transform: translate(-3px, -3px); }
-            80% { transform: translate(-3px, 3px); }
-        }
-
-        /* Service Name */
-        .service-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Coming Soon Text */
-        .coming-soon {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.2rem;
-            color: var(--gray);
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .coming-soon::after {
-            content: '|';
-            animation: blink 1s step-end infinite;
-            color: var(--accent);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Terminal Box */
-        .terminal {
-            background: rgba(17, 17, 17, 0.9);
-            border: 1px solid rgba(201, 243, 29, 0.2);
-            border-radius: 12px;
-            padding: 1.5rem 2rem;
-            max-width: 500px;
-            margin: 0 auto 3rem;
-            text-align: left;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
-        }
-
-        .terminal-header {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .terminal-dot.red { background: #ff5f56; }
-        .terminal-dot.yellow { background: #ffbd2e; }
-        .terminal-dot.green { background: #27ca40; }
-
-        .terminal-line {
-            color: var(--gray);
-            margin-bottom: 0.5rem;
-            opacity: 0;
-            animation: typeLine 0.5s forwards;
-        }
-
-        .terminal-line:nth-child(2) { animation-delay: 0.5s; }
-        .terminal-line:nth-child(3) { animation-delay: 1s; }
-        .terminal-line:nth-child(4) { animation-delay: 1.5s; }
-        .terminal-line:nth-child(5) { animation-delay: 2s; }
-
-        @keyframes typeLine {
-            to { opacity: 1; }
-        }
-
-        .terminal-line .accent { color: var(--accent); }
-        .terminal-line .white { color: var(--white); }
-
-        /* Progress Bar */
-        .progress-container {
-            margin-top: 1rem;
-            opacity: 0;
-            animation: typeLine 0.5s forwards 2.5s;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.75rem;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), #a8cc18);
-            border-radius: 3px;
-            width: 0%;
-            animation: fillProgress 3s ease-out forwards 3s;
-        }
-
-        @keyframes fillProgress {
-            to { width: 73%; }
-        }
-
-        /* Back Button */
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-            padding: 1rem 2rem;
-            border-radius: 100px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .back-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--accent);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-            z-index: -1;
-        }
-
-        .back-btn:hover {
-            color: var(--bg);
-        }
-
-        .back-btn:hover::before {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        .back-btn .arrow {
-            transition: transform 0.3s ease;
-        }
-
-        .back-btn:hover .arrow {
-            transform: translateX(-4px);
-        }
-
-        /* Floating Orbs */
-        .orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: orbFloat 10s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent);
-            top: -200px;
-            right: -100px;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: #00ffff;
-            bottom: -150px;
-            left: -100px;
-            animation-delay: -5s;
-        }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 30px) scale(1.1); }
-        }
-
-        /* Circuit Lines */
-        .circuit {
-            position: fixed;
-            stroke: rgba(201, 243, 29, 0.1);
-            stroke-width: 1;
-            fill: none;
-        }
-
-        .circuit-1 {
-            top: 10%;
-            left: 5%;
-            animation: circuitPulse 4s infinite;
-        }
-
-        .circuit-2 {
-            bottom: 10%;
-            right: 5%;
-            animation: circuitPulse 4s infinite 2s;
-        }
-
-        @keyframes circuitPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
-        }
-
-        /* Logo */
-        .logo {
-            position: fixed;
-            top: 2rem;
-            left: 2rem;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--white);
-            text-decoration: none;
-            z-index: 100;
-        }
-
-        .logo span {
-            color: var(--accent);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/tradies.css">
 </head>
 <body>
-    <!-- Logo -->
-    <a href="/" class="logo">ONIX<span>.</span></a>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MJJ77MS6"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Background Effects -->
-    <div class="grid-bg"></div>
-    <div class="scan-lines"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursorFollower"></div>
 
-    <!-- Particles -->
-    <div class="particles" id="particles"></div>
-
-    <!-- Circuit Decorations -->
-    <svg class="circuit circuit-1" width="200" height="150" viewBox="0 0 200 150">
-        <path d="M0 75 H50 L70 50 H120 L140 75 H200" />
-        <path d="M50 75 V100 H100" />
-        <circle cx="50" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="70" cy="50" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="140" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-    </svg>
-
-    <svg class="circuit circuit-2" width="200" height="150" viewBox="0 0 200 150">
-        <path d="M200 75 H150 L130 100 H80 L60 75 H0" />
-        <path d="M150 75 V50 H100" />
-        <circle cx="150" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="130" cy="100" r="4" fill="rgba(201, 243, 29, 0.3)" />
-        <circle cx="60" cy="75" r="4" fill="rgba(201, 243, 29, 0.3)" />
-    </svg>
-
-    <!-- Main Content -->
-    <div class="container">
-        <div class="glitch-wrapper">
-            <h1 class="glitch" data-text="404">404</h1>
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-brand">
+            <a href="/" class="nav-logo">
+                <span class="logo-text">ONIX</span><span class="logo-dot">.</span>
+            </a>
+            <span class="nav-divider"></span>
+            <span class="nav-service">Tradies</span>
         </div>
-
-        <p class="service-name" id="serviceName">Service Page</p>
-        <p class="coming-soon">Building something amazing</p>
-
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot red"></div>
-                <div class="terminal-dot yellow"></div>
-                <div class="terminal-dot green"></div>
-            </div>
-            <div class="terminal-line"><span class="accent">$</span> <span class="white">initializing</span> service_page...</div>
-            <div class="terminal-line"><span class="accent">></span> Loading assets... <span class="accent">OK</span></div>
-            <div class="terminal-line"><span class="accent">></span> Configuring routes... <span class="accent">OK</span></div>
-            <div class="terminal-line"><span class="accent">></span> Building components... <span class="white">IN PROGRESS</span></div>
-            <div class="progress-container">
-                <div class="progress-label">
-                    <span>Progress</span>
-                    <span class="accent">73%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-            </div>
+        <ul class="nav-links">
+            <li><a href="#how-it-works" class="magnetic">How It Works</a></li>
+            <li><a href="#trades" class="magnetic">Trade Types</a></li>
+            <li><a href="#results" class="magnetic">Results</a></li>
+            <li><a href="#testimonials" class="magnetic">Reviews</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#contact" class="nav-cta magnetic">Get Started</a>
         </div>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
 
-        <a href="/" class="back-btn">
-            <span class="arrow">&larr;</span>
-            Back to Home
-        </a>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#trades">Trade Types</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#testimonials">Reviews</a></li>
+        </ul>
+        <a href="#contact" class="mobile-cta">Get Started</a>
     </div>
 
-    <script>
-        // Generate particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 30; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (10 + Math.random() * 10) + 's';
-            particlesContainer.appendChild(particle);
-        }
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="hero-glow hero-glow-2"></div>
+            <div class="hero-grid"></div>
+        </div>
 
-        // Get service name from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const service = 'tradies';
-        const serviceName = service.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        document.getElementById('serviceName').textContent = serviceName;
-        document.title = serviceName + ' | Coming Soon | ONIX';
-    </script>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>NZ's #1 Lead Platform for Tradies</span>
+                </div>
+
+                <h1 class="hero-title" id="heroTitle">
+                    <div class="title-line">
+                        <span class="word">Get</span>
+                        <span class="word">More</span>
+                        <span class="word">Jobs.</span>
+                    </div>
+                    <div class="title-line highlight">
+                        <span class="word">Less</span>
+                        <span class="word">Hustle.</span>
+                    </div>
+                </h1>
+
+                <p class="hero-subtitle" id="heroSubtitle">
+                    Customers need tradies. We find them. You get <span class="hero-highlight">qualified leads</span> delivered direct — plumbing, electrical, roofing, painting, and more. No cold calling. No chasing. Just <span class="hero-highlight">real jobs from real people</span> ready to hire.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#contact" class="btn-primary magnetic">
+                        <span>Start Getting Leads</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#how-it-works" class="btn-ghost magnetic">See How It Works</a>
+                </div>
+
+                <div class="hero-trust">
+                    <div class="trust-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Free to join</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Pay per lead</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                        <span>Cancel anytime</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-stats-grid" id="heroStats">
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-target="2500" data-suffix="+">0</span></div>
+                        <div class="hero-card-label">Active Leads</div>
+                        <div class="hero-card-desc">Per month</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-text="$25–$55">$0</span></div>
+                        <div class="hero-card-label">Per Lead</div>
+                        <div class="hero-card-desc">All trades</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-target="82" data-suffix="%">0</span></div>
+                        <div class="hero-card-label">Contact Rate</div>
+                        <div class="hero-card-desc">First call</div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-inner">
+                        <div class="hero-card-ray"></div>
+                        <div class="hero-card-value"><span class="hero-count" data-target="4.8" data-suffix="★">0</span></div>
+                        <div class="hero-card-label">Google Rating</div>
+                        <div class="hero-card-desc">200+ reviews</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ========== PROBLEM SECTION ========== -->
+    <section class="problem-section" id="problem">
+        <div class="problem-container">
+            <div class="section-header">
+                <span class="section-tag">The Problem</span>
+                <h2 class="section-title" id="problemTitle">
+                    <span class="word">The</span>
+                    <span class="word">Old</span>
+                    <span class="word">Way</span>
+                    <span class="word highlight">Sucks.</span>
+                </h2>
+            </div>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            <line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Waiting by the Phone</h3>
+                    <p>Slow seasons, empty calendars, inconsistent work. Some months you're flat out, others you're twiddling your thumbs.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                    </div>
+                    <h3>Word-of-Mouth Limit</h3>
+                    <p>Referrals are great, but they only go so far. You can't grow a business waiting for mates to recommend you.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                            <path d="M2 12h2M20 12h2M12 2v2M12 20v2"/>
+                        </svg>
+                    </div>
+                    <h3>Ad Spend Black Hole</h3>
+                    <p>Facebook and Google ads that burn through cash with nothing to show. Leads that never answer the phone.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            <line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Tyre-Kicker Leads</h3>
+                    <p>People who "just want a quote" then ghost you. Hours wasted on looky-loos who were never going to hire anyone.</p>
+                </div>
+            </div>
+
+            <div class="solution-banner">
+                <div class="solution-glow"></div>
+                <div class="solution-layout">
+                    <div class="solution-content">
+                        <div class="solution-badge">
+                            <span class="badge-pulse"></span>
+                            <span>The ONIX Solution</span>
+                        </div>
+                        <h3 class="solution-headline">We flip the script.</h3>
+                        <p><strong>Customers come to us</strong> when they need a tradie. We qualify them, then match them to <strong>just 3 tradies</strong> in their area.</p>
+                        <p class="solution-highlight">You're not competing against the world — you're one of three.</p>
+                        <div class="solution-features">
+                            <div class="solution-feature">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                                <span>Pre-qualified customers</span>
+                            </div>
+                            <div class="solution-feature">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                                <span>Only 3 tradies per job</span>
+                            </div>
+                            <div class="solution-feature">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                                <span>Ready-to-book customers</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solution-image">
+                        <div class="solution-image-stack">
+                            <img src="https://images.pexels.com/photos/8961065/pexels-photo-8961065.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Electrician at work" class="stack-img stack-img-1" loading="lazy">
+                            <img src="https://images.pexels.com/photos/5691622/pexels-photo-5691622.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Plumber fixing pipes" class="stack-img stack-img-2" loading="lazy">
+                            <img src="https://images.pexels.com/photos/5691544/pexels-photo-5691544.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Tradesperson with tools" class="stack-img stack-img-3" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== HOW IT WORKS SECTION ========== -->
+    <section class="how-section" id="how-it-works">
+        <div class="section-header">
+            <span class="section-tag">How It Works</span>
+            <h2 class="section-title">
+                <span class="word">Your</span>
+                <span class="word">Pipeline,</span>
+                <span class="word highlight">Simplified.</span>
+            </h2>
+            <p class="section-desc typewriter" data-typewriter="From customer request to job won — here's exactly how ONIX fills your calendar."><span class="typewriter-text"></span><span class="typewriter-cursor"></span></p>
+        </div>
+
+        <div class="pipeline-flow">
+            <!-- Step 1: Customer Requests -->
+            <div class="pipeline-step">
+                <div class="window-card">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="window-title">New Job Request</span>
+                    </div>
+                    <div class="window-content">
+                        <div class="form-mockup">
+                            <div class="form-header-mock">
+                                <div class="form-icon-mock">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                </div>
+                                <span>Plumbing — Hot Water</span>
+                            </div>
+                            <div class="form-fields-mock">
+                                <div class="field-row">
+                                    <span class="field-icon">📍</span>
+                                    <div class="field-content">
+                                        <span class="field-label">Location</span>
+                                        <span class="field-value">Auckland, NZ</span>
+                                    </div>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-icon">🔧</span>
+                                    <div class="field-content">
+                                        <span class="field-label">Job Type</span>
+                                        <span class="field-value">Hot water cylinder replacement</span>
+                                    </div>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-icon">📅</span>
+                                    <div class="field-content">
+                                        <span class="field-label">Timeline</span>
+                                        <span class="field-value">Within 1 week</span>
+                                    </div>
+                                </div>
+                                <div class="field-row">
+                                    <span class="field-icon">👤</span>
+                                    <div class="field-content">
+                                        <span class="field-label">Contact</span>
+                                        <span class="field-value blurred">John D. • 021 ••• •••</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-status">
+                                <span class="status-badge new">New Lead</span>
+                                <span class="status-time">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-info">
+                    <span class="step-number">01</span>
+                    <h3>Customer Requests</h3>
+                    <p>Someone needs a tradie — they fill out a detailed job request with all the info you need.</p>
+                </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="pipeline-arrow">
+                <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+                    <path d="M0 12H36M36 12L24 2M36 12L24 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <!-- Step 2: We Match You -->
+            <div class="pipeline-step">
+                <div class="window-card">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="window-title">Tradie Matching</span>
+                    </div>
+                    <div class="window-content">
+                        <div class="match-mockup">
+                            <div class="match-header-mock">
+                                <span class="match-title">Matched Tradies</span>
+                                <span class="match-count">3 of 3</span>
+                            </div>
+                            <div class="builders-list">
+                                <div class="builder-row you">
+                                    <div class="builder-avatar has-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                        <div class="avatar-ring"></div>
+                                    </div>
+                                    <div class="builder-info">
+                                        <span class="builder-name">Your Business</span>
+                                        <span class="builder-match">98% match</span>
+                                    </div>
+                                    <span class="builder-status selected">✓ Selected</span>
+                                </div>
+                                <div class="builder-row">
+                                    <div class="builder-avatar">
+                                        <span>T2</span>
+                                    </div>
+                                    <div class="builder-info">
+                                        <span class="builder-name">Tradie #2</span>
+                                        <span class="builder-match">94% match</span>
+                                    </div>
+                                    <span class="builder-status">✓ Selected</span>
+                                </div>
+                                <div class="builder-row">
+                                    <div class="builder-avatar">
+                                        <span>T3</span>
+                                    </div>
+                                    <div class="builder-info">
+                                        <span class="builder-name">Tradie #3</span>
+                                        <span class="builder-match">91% match</span>
+                                    </div>
+                                    <span class="builder-status">✓ Selected</span>
+                                </div>
+                                <div class="builder-row rejected">
+                                    <div class="builder-avatar dimmed">
+                                        <span>+84</span>
+                                    </div>
+                                    <div class="builder-info">
+                                        <span class="builder-name dimmed">Other tradies</span>
+                                        <span class="builder-match dimmed">Not matched</span>
+                                    </div>
+                                    <span class="builder-status rejected">✗</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-info">
+                    <span class="step-number">02</span>
+                    <h3>We Match You</h3>
+                    <p>Only 3 tradies get each lead based on location, skills, and availability. Not 10. Not 20. Just 3.</p>
+                </div>
+            </div>
+
+            <!-- Arrow -->
+            <div class="pipeline-arrow">
+                <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+                    <path d="M0 12H36M36 12L24 2M36 12L24 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <!-- Step 3: You Win -->
+            <div class="pipeline-step">
+                <div class="window-card success">
+                    <div class="window-header">
+                        <div class="window-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="window-title">Job Won!</span>
+                    </div>
+                    <div class="window-content">
+                        <div class="win-mockup">
+                            <div class="win-celebration">
+                                <span class="win-emoji">🎉</span>
+                                <span class="win-text">You got the job!</span>
+                            </div>
+                            <div class="win-details">
+                                <div class="win-project">
+                                    <span class="project-type">Hot Water Cylinder</span>
+                                    <span class="project-value">$2,800</span>
+                                </div>
+                                <div class="win-client">
+                                    <span class="client-label">Customer</span>
+                                    <span class="client-name">John D. • Auckland</span>
+                                </div>
+                                <div class="win-stats-row">
+                                    <div class="win-stat-item">
+                                        <span class="stat-val">33%</span>
+                                        <span class="stat-lbl">Win Rate</span>
+                                    </div>
+                                    <div class="win-stat-item">
+                                        <span class="stat-val">1 in 3</span>
+                                        <span class="stat-lbl">Your Odds</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="win-cta-mock">View Job Details</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="step-info">
+                    <span class="step-number">03</span>
+                    <h3>You Quote & Win</h3>
+                    <p>Call, quote, close. With only 2 competitors, your average win rate jumps to 33%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TRADE TYPES SECTION ========== -->
+    <section class="trades-section" id="trades">
+        <div class="section-header">
+            <span class="section-tag">What We Deliver</span>
+            <h2 class="section-title">
+                <span class="word">Leads</span>
+                <span class="word">for</span>
+                <span class="word highlight">Every</span>
+                <span class="word highlight">Trade.</span>
+            </h2>
+            <p class="section-subtitle" id="tradesSubtitle" data-text="Every lead is a customer who's filled out a detailed form — job type, location, timeline. They're not browsing. They're hiring."></p>
+        </div>
+
+        <div class="trades-grid">
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">🔧</div>
+                        <h3>Plumbing</h3>
+                        <p class="trade-types">Hot water, drainage, gas fitting, repairs</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">450+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>Plumbing Leads</h3>
+                        <p>Hot water cylinders, blocked drains, gas fitting, bathroom plumbing, leak repairs. Average job value $500–$5,000.</p>
+                        <a href="#contact" class="trade-btn">Get Plumbing Leads →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">⚡</div>
+                        <h3>Electrical</h3>
+                        <p class="trade-types">Residential, commercial, solar, rewires</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">380+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>Electrical Leads</h3>
+                        <p>Switchboard upgrades, rewires, lighting, EV chargers, solar connections. Average job value $300–$8,000.</p>
+                        <a href="#contact" class="trade-btn">Get Electrical Leads →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">🏠</div>
+                        <h3>Roofing</h3>
+                        <p class="trade-types">Repairs, replacements, gutters, leaks</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">280+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>Roofing Leads</h3>
+                        <p>Roof repairs, full replacements, gutter cleaning, leak detection, re-roofing. Average job value $800–$15,000.</p>
+                        <a href="#contact" class="trade-btn">Get Roofing Leads →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">🎨</div>
+                        <h3>Painting</h3>
+                        <p class="trade-types">Interior, exterior, commercial</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">320+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>Painting Leads</h3>
+                        <p>Interior repaints, exterior house painting, commercial buildings, feature walls. Average job value $1,500–$12,000.</p>
+                        <a href="#contact" class="trade-btn">Get Painting Leads →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">🌿</div>
+                        <h3>Landscaping</h3>
+                        <p class="trade-types">Design, maintenance, hardscape</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">220+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>Landscaping Leads</h3>
+                        <p>Garden design, retaining walls, paving, lawn installation, outdoor living. Average job value $2,000–$20,000.</p>
+                        <a href="#contact" class="trade-btn">Get Landscaping Leads →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">❄️</div>
+                        <h3>HVAC</h3>
+                        <p class="trade-types">Heating, cooling, ventilation</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">180+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>HVAC Leads</h3>
+                        <p>Heat pump installation, ducted systems, ventilation, air conditioning service. Average job value $2,500–$15,000.</p>
+                        <a href="#contact" class="trade-btn">Get HVAC Leads →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">🪵</div>
+                        <h3>Flooring</h3>
+                        <p class="trade-types">Timber, carpet, tiles, vinyl</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">150+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>Flooring Leads</h3>
+                        <p>Timber floor sanding, carpet laying, tile installation, vinyl flooring, floor repairs. Average job value $1,000–$8,000.</p>
+                        <a href="#contact" class="trade-btn">Get Flooring Leads →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trade-card-wrapper">
+                <div class="trade-card">
+                    <div class="trade-card-front">
+                        <div class="trade-icon">🔨</div>
+                        <h3>General Building</h3>
+                        <p class="trade-types">Decks, fences, repairs, handyman</p>
+                        <div class="trade-stat">
+                            <span class="trade-stat-value">400+</span>
+                            <span class="trade-stat-label">Leads/Month</span>
+                        </div>
+                    </div>
+                    <div class="trade-card-back">
+                        <h3>Building Leads</h3>
+                        <p>Deck builds, fence installation, general repairs, handyman jobs, small renovations. Average job value $500–$10,000.</p>
+                        <a href="#contact" class="trade-btn">Get Building Leads →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== EMERGENCY LEADS SECTION ========== -->
+    <section class="emergency-section" id="emergency">
+        <div class="emergency-container">
+            <div class="section-header">
+                <span class="section-tag urgent">Urgent Jobs</span>
+                <h2 class="section-title">
+                    <span class="word highlight">Emergency</span>
+                    <span class="word highlight">Leads.</span>
+                    <span class="word">Premium</span>
+                    <span class="word">Rates.</span>
+                </h2>
+                <p class="section-subtitle">24/7 delivery for urgent jobs. Customers who need help NOW — and are willing to pay for it.</p>
+            </div>
+
+            <div class="emergency-grid">
+                <div class="emergency-card">
+                    <div class="emergency-icon">💧</div>
+                    <div class="emergency-alert">URGENT</div>
+                    <h3>Burst Pipes</h3>
+                    <p>Water emergencies that can't wait. Customers calling multiple tradies — be first to respond.</p>
+                    <div class="emergency-rate">
+                        <span class="rate-label">Premium Lead</span>
+                        <span class="rate-value">$65–$85</span>
+                    </div>
+                </div>
+
+                <div class="emergency-card">
+                    <div class="emergency-icon">⚡</div>
+                    <div class="emergency-alert">URGENT</div>
+                    <h3>Power Outages</h3>
+                    <p>Electrical faults, no power situations. High urgency, high conversion.</p>
+                    <div class="emergency-rate">
+                        <span class="rate-label">Premium Lead</span>
+                        <span class="rate-value">$70–$90</span>
+                    </div>
+                </div>
+
+                <div class="emergency-card">
+                    <div class="emergency-icon">🌧️</div>
+                    <div class="emergency-alert">URGENT</div>
+                    <h3>Roof Leaks</h3>
+                    <p>Storm damage, active leaks. Customers desperate to stop water getting in.</p>
+                    <div class="emergency-rate">
+                        <span class="rate-label">Premium Lead</span>
+                        <span class="rate-value">$75–$95</span>
+                    </div>
+                </div>
+
+                <div class="emergency-card">
+                    <div class="emergency-icon">🚿</div>
+                    <div class="emergency-alert">URGENT</div>
+                    <h3>Blocked Drains</h3>
+                    <p>Overflowing toilets, blocked sewers. Immediate need, premium rates.</p>
+                    <div class="emergency-rate">
+                        <span class="rate-label">Premium Lead</span>
+                        <span class="rate-value">$55–$75</span>
+                    </div>
+                </div>
+
+                <div class="emergency-card">
+                    <div class="emergency-icon">🔥</div>
+                    <div class="emergency-alert">URGENT</div>
+                    <h3>HVAC Breakdowns</h3>
+                    <p>No heating in winter, no cooling in summer. Families desperate for comfort.</p>
+                    <div class="emergency-rate">
+                        <span class="rate-label">Premium Lead</span>
+                        <span class="rate-value">$60–$80</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="emergency-cta">
+                <p>Get access to emergency leads with <strong>24/7 delivery</strong> straight to your phone.</p>
+                <a href="#contact" class="btn-primary magnetic">
+                    <span>Get Emergency Leads</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== RESULTS SECTION ========== -->
+    <section class="results-section" id="results">
+        <div class="section-header">
+            <span class="section-tag">Tradie Results</span>
+            <h2 class="section-title">
+                <span class="word">Numbers</span>
+                <span class="word">That</span>
+                <span class="word highlight">Tradies</span>
+                <span class="word highlight">Trust.</span>
+            </h2>
+        </div>
+
+        <div class="results-grid">
+            <div class="bento-card bento-large" data-tilt>
+                <div class="bento-card-ray"></div>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Total Job Value — 2024</span>
+                    <div class="bento-value">
+                        <span class="bento-num" data-target="4.2" data-prefix="$" data-suffix="M">$0</span>
+                    </div>
+                    <p class="bento-desc">In trade jobs matched through ONIX. Real work, real money in tradies' pockets.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-ray"></div>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Average Win Rate</span>
+                    <div class="bento-value">
+                        <span class="bento-num">33%</span>
+                    </div>
+                    <p class="bento-desc">1 in 3 tradies wins each job. Compare that to quoting against 10+ competitors.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-ray"></div>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Average Lead Cost</span>
+                    <div class="bento-value">
+                        <span class="bento-num">$38</span>
+                    </div>
+                    <p class="bento-desc">Per qualified lead. Win a $3k job from a $38 lead — that's the ROI.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-ray"></div>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Active Tradies</span>
+                    <div class="bento-value">
+                        <span class="bento-num" data-target="450" data-suffix="+">0</span>
+                    </div>
+                    <p class="bento-desc">Tradies across NZ using ONIX to fill their calendars every month.</p>
+                </div>
+            </div>
+
+            <div class="bento-card" data-tilt>
+                <div class="bento-card-ray"></div>
+                <div class="bento-card-inner">
+                    <span class="bento-tag">Contact Rate</span>
+                    <div class="bento-value">
+                        <span class="bento-num">82%</span>
+                    </div>
+                    <p class="bento-desc">Of leads answer on first contact. These are people waiting for your call.</p>
+                </div>
+            </div>
+
+            <div class="bento-card bento-dashboard" data-tilt>
+                <div class="bento-card-ray"></div>
+                <div class="bento-card-inner">
+                    <div class="mini-dashboard">
+                        <div class="mini-dash-header">
+                            <span class="mini-dash-title">Your Pipeline</span>
+                            <span class="mini-dash-period">Last 30 days</span>
+                        </div>
+                        <div class="mini-dash-chart">
+                            <div class="mini-bar" style="height: 40%;" data-val="12"></div>
+                            <div class="mini-bar" style="height: 55%;" data-val="16"></div>
+                            <div class="mini-bar" style="height: 45%;" data-val="14"></div>
+                            <div class="mini-bar" style="height: 70%;" data-val="21"></div>
+                            <div class="mini-bar" style="height: 85%;" data-val="26"></div>
+                            <div class="mini-bar active" style="height: 100%;" data-val="30"></div>
+                        </div>
+                        <div class="mini-dash-stats">
+                            <div class="mini-stat">
+                                <span class="mini-stat-val">30</span>
+                                <span class="mini-stat-lbl">Leads</span>
+                            </div>
+                            <div class="mini-stat">
+                                <span class="mini-stat-val">10</span>
+                                <span class="mini-stat-lbl">Won</span>
+                            </div>
+                            <div class="mini-stat highlight">
+                                <span class="mini-stat-val">$28k</span>
+                                <span class="mini-stat-lbl">Revenue</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS SECTION ========== -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="section-header">
+            <span class="section-tag">Tradie Reviews</span>
+            <h2 class="section-title">What <span class="highlight">Tradies</span> Say</h2>
+        </div>
+
+        <div class="testimonials-layout">
+            <a href="https://g.page/r/onixmarketing" target="_blank" class="google-badge-large">
+                <div class="google-logo">
+                    <span class="g-dot blue"></span>
+                    <span class="g-dot red"></span>
+                    <span class="g-dot yellow"></span>
+                    <span class="g-dot green"></span>
+                    <span class="g-word">Google</span>
+                </div>
+                <span class="google-score">4.8</span>
+                <span class="google-stars">★★★★★</span>
+                <span class="google-count">200+ reviews</span>
+                <span class="google-cta">Read Reviews →</span>
+            </a>
+
+            <div class="testimonials-ticker">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">
+                                <span>MB</span>
+                            </div>
+                            <div class="author-details">
+                                <span class="author-name">Mike B.</span>
+                                <span class="author-role">Plumber — Auckland</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"First week I got 8 leads, closed 3 jobs worth $4,200. Best ROI of any marketing I've tried. Way better than Facebook ads."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">
+                                <span>JT</span>
+                            </div>
+                            <div class="author-details">
+                                <span class="author-name">Jason T.</span>
+                                <span class="author-role">Electrician — Wellington</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"The leads actually answer their phones. That alone is worth it. Closed 5 switchboard upgrades last month."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">
+                                <span>ST</span>
+                            </div>
+                            <div class="author-details">
+                                <span class="author-name">Steve T.</span>
+                                <span class="author-role">Roofer — Christchurch</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"Was spending $1,500/month on ads with nothing. Now I get 20 solid leads for half that. Calendar's full for the first time in years."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">
+                                <span>DM</span>
+                            </div>
+                            <div class="author-details">
+                                <span class="author-name">Dave M.</span>
+                                <span class="author-role">Painter — Hamilton</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"Only competing against 2 others instead of 10. My win rate went from 10% to over 35%. Game changer for my business."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">
+                                <span>PK</span>
+                            </div>
+                            <div class="author-details">
+                                <span class="author-name">Paul K.</span>
+                                <span class="author-role">HVAC — Tauranga</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"$45k in jobs from $1,200 in leads over 3 months. The math speaks for itself. My apprentice is staying busy now too."</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-author-top">
+                            <div class="author-avatar">
+                                <span>AR</span>
+                            </div>
+                            <div class="author-details">
+                                <span class="author-name">Andy R.</span>
+                                <span class="author-role">Builder — Auckland</span>
+                            </div>
+                        </div>
+                        <p class="review-text">"Finally a lead service that doesn't sell the same lead to 20 tradies. Worth every cent. Highly recommend."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== REGIONS SECTION ========== -->
+    <section class="regions-section" id="regions">
+        <div class="section-header">
+            <span class="section-tag">Coverage</span>
+            <h2 class="section-title">
+                <span class="word">Serving</span>
+                <span class="word">Tradies</span>
+                <span class="word">Across</span>
+                <span class="word highlight">New Zealand.</span>
+            </h2>
+        </div>
+
+        <div class="regions-grid">
+            <div class="region-card active">
+                <span class="region-name">Auckland</span>
+                <span class="region-stat">45% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Wellington</span>
+                <span class="region-stat">18% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Christchurch</span>
+                <span class="region-stat">15% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Hamilton</span>
+                <span class="region-stat">8% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Tauranga</span>
+                <span class="region-stat">6% of leads</span>
+            </div>
+            <div class="region-card">
+                <span class="region-name">Other Regions</span>
+                <span class="region-stat">8% of leads</span>
+            </div>
+        </div>
+
+        <div class="coverage-footer">
+            <div class="coverage-content">
+                <div class="coverage-stats">
+                    <div class="coverage-stat">
+                        <span class="coverage-num">450+</span>
+                        <span class="coverage-label">Active Tradies</span>
+                    </div>
+                    <div class="coverage-divider"></div>
+                    <div class="coverage-stat">
+                        <span class="coverage-num">8</span>
+                        <span class="coverage-label">Trade Categories</span>
+                    </div>
+                    <div class="coverage-divider"></div>
+                    <div class="coverage-stat">
+                        <span class="coverage-num">Daily</span>
+                        <span class="coverage-label">Growing Network</span>
+                    </div>
+                </div>
+                <div class="coverage-expansion">
+                    <p class="expansion-text">Not seeing your area? We're expanding across New Zealand.</p>
+                    <a href="#contact" class="expansion-btn magnetic">
+                        <span>Register Your Interest</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA SECTION ========== -->
+    <section class="cta-section" id="contact">
+        <div class="cta-stars"></div>
+        <div class="cta-glow"></div>
+        <div class="cta-container">
+            <div class="cta-content">
+                <div class="cta-badge">
+                    <span class="badge-dot"></span>
+                    <span>Join 450+ Tradies Getting Leads</span>
+                </div>
+
+                <h2 class="cta-title">
+                    <span class="word">Stop</span>
+                    <span class="word">Waiting.</span><br>
+                    <span class="word highlight">Start</span>
+                    <span class="word highlight">Earning.</span>
+                </h2>
+
+                <p class="cta-body">Join ONIX today and start receiving qualified leads from customers ready to hire. Free to join, pay only for leads you receive.</p>
+
+                <form class="cta-form" id="ctaForm">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <input type="text" id="ctaName" placeholder="Your name" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="tel" id="ctaPhone" placeholder="Phone number" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <input type="email" id="ctaEmail" placeholder="Email address" required>
+                        </div>
+                        <div class="form-field">
+                            <select id="ctaTrade" required>
+                                <option value="" disabled selected>Your trade</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="roofing">Roofing</option>
+                                <option value="painting">Painting</option>
+                                <option value="landscaping">Landscaping</option>
+                                <option value="hvac">HVAC</option>
+                                <option value="flooring">Flooring</option>
+                                <option value="building">General Building</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field full">
+                            <select id="ctaRegion" required>
+                                <option value="" disabled selected>Your region</option>
+                                <option value="auckland">Auckland</option>
+                                <option value="wellington">Wellington</option>
+                                <option value="christchurch">Christchurch</option>
+                                <option value="hamilton">Hamilton</option>
+                                <option value="tauranga">Tauranga</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="form-submit magnetic">
+                        <span>Start Getting Leads</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </form>
+                <p class="cta-note">Free to join · No monthly fees · Pay per lead only · Cancel anytime</p>
+            </div>
+
+            <div class="cta-visual">
+                <div class="visual-card">
+                    <div class="visual-header">
+                        <span class="visual-dot green"></span>
+                        <span>New Lead</span>
+                    </div>
+                    <div class="visual-content">
+                        <div class="lead-preview">
+                            <div class="lead-type">Hot Water Cylinder</div>
+                            <div class="lead-detail">
+                                <span class="detail-label">Job:</span>
+                                <span class="detail-value">Cylinder replacement</span>
+                            </div>
+                            <div class="lead-detail">
+                                <span class="detail-label">Location:</span>
+                                <span class="detail-value">Grey Lynn, Auckland</span>
+                            </div>
+                            <div class="lead-detail">
+                                <span class="detail-label">Timeline:</span>
+                                <span class="detail-value">Within 3 days</span>
+                            </div>
+                            <div class="lead-status">
+                                <span class="status-badge">Matched to you + 2 others</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="footer-logo">ONIX<span class="footer-dot">.</span></span>
+                <span class="footer-tagline">Tradies Lead Generation</span>
+            </div>
+            <p class="footer-copy">© 2025 ONIX Marketing Ltd · Auckland, New Zealand</p>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/privacy-policy">Privacy Policy</a>
+                <a href="/terms-of-service">Terms</a>
+                <a href="mailto:hello@onixmrkt.com">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script type="module" src="../js/tradies.js"></script>
 </body>
 </html>
