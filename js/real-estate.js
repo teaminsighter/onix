@@ -3,8 +3,12 @@
  * GSAP-powered animations + Three.js 3D Property Model
  */
 
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+// Wait for GSAP to be available (loaded from CDN)
+if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+} else {
+    console.error('GSAP not loaded - animations will not work');
+}
 
 // ============ DATA ============
 
@@ -1412,7 +1416,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initProcessCards();
     initPropertyShowcase();
     initROICalculator();
-    initMarketsPinnedSlideshow();
     initTestimonialsTicker();
     initPartnersTicker();
     initPropertyModel();
