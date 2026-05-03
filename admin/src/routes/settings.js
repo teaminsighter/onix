@@ -181,67 +181,6 @@ router.put('/integrations/:name/config', (req, res) => {
     }
 });
 
-// Calendly sync - fetch past events and insert as meetings
-router.post('/integrations/calendly/sync', async (req, res) => {
-    try {
-        const calendly = integrations.getByName.get('calendly');
-        if (!calendly) return res.status(404).json({ error: 'Calendly integration not found' });
-
-        const config = JSON.parse(calendly.config || '{}');
-        if (!config.api_key) return res.status(400).json({ error: 'Calendly API key not configured' });
-
-        // Get current user URI first
-        const userResp = await fetch('https://api.calendly.com/users/me', {
-            headers: { 'Authorization': `Bearer ${config.api_key}`, 'Content-Type': 'application/json' }
-        });
-        if (!userResp.ok) return res.status(400).json({ error: 'Invalid Calendly API key' });
-        const userData = await userResp.json();
-        const userUri = userData.resource.uri;
-
-        // Fetch scheduled events
-        const eventsResp = await fetch(`https://api.calendly.com/scheduled_events?user=${encodeURIComponent(userUri)}&count=100&status=active&sort=start_time:desc`, {
-            headers: { 'Authorization': `Bearer ${config.api_key}` }
-        });
-        if (!eventsResp.ok) return res.status(500).json({ error: 'Failed to fetch Calendly events' });
-        const eventsData = await eventsResp.json();
-
-        let synced = 0;
-        const { meetings: meetingsDb } = require('../database');
-
-        for (const event of eventsData.collection) {
-            const eventId = event.uri.split('/').pop();
-            const existing = meetingsDb.getByCalendlyId.get(eventId);
-            if (existing) continue;
-
-            // Fetch invitees for this event
-            const invResp = await fetch(`${event.uri}/invitees`, {
-                headers: { 'Authorization': `Bearer ${config.api_key}` }
-            });
-            const invData = invResp.ok ? await invResp.json() : { collection: [] };
-            const invitee = invData.collection[0];
-
-            meetingsDb.create.run({
-                lead_id: null,
-                title: event.name || 'Calendly Meeting',
-                description: invitee ? `Booked by ${invitee.name} (${invitee.email})` : 'Calendly booking',
-                meeting_type: 'video',
-                start_time: event.start_time,
-                end_time: event.end_time,
-                location: event.location?.join_url || 'Calendly',
-                status: 'scheduled',
-                notes: '',
-                calendly_event_id: eventId,
-                created_by: null
-            });
-            synced++;
-        }
-
-        res.json({ message: `Synced ${synced} meetings from Calendly`, synced });
-    } catch (error) {
-        console.error('Calendly sync error:', error);
-        res.status(500).json({ error: 'Failed to sync Calendly events' });
-    }
-});
 
 // ==================== NOTIFICATIONS ====================
 

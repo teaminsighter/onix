@@ -67,6 +67,7 @@ router.post('/', (req, res) => {
             status: req.body.status || 'scheduled',
             notes: req.body.notes || null,
             calendly_event_id: req.body.calendly_event_id || null,
+            ghl_appointment_id: req.body.ghl_appointment_id || null,
             created_by: req.user?.id || null
         });
 

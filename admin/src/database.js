@@ -221,11 +221,17 @@ function initializeDatabase() {
     // Drop orphaned table from incomplete migration
     db.exec(`DROP TABLE IF EXISTS users_new`);
 
+    // Migration: add ghl_appointment_id column to meetings table for GHL bookings
+    const meetingCols = db.prepare("PRAGMA table_info(meetings)").all().map(c => c.name);
+    if (!meetingCols.includes('ghl_appointment_id')) {
+        db.exec(`ALTER TABLE meetings ADD COLUMN ghl_appointment_id TEXT`);
+    }
+
     // Seed default integrations
     const existingIntegrations = db.prepare('SELECT COUNT(*) as count FROM integrations').get();
     if (existingIntegrations.count === 0) {
         const seedIntegration = db.prepare('INSERT OR IGNORE INTO integrations (name, label, icon, enabled, description, config) VALUES (?, ?, ?, ?, ?, ?)');
-        seedIntegration.run('calendly', 'Calendly', 'calendar', 0, 'Sync meetings from Calendly bookings', '{}');
+        seedIntegration.run('ghl', 'GoHighLevel', 'calendar', 1, 'Sync meetings from GHL calendar bookings', '{}');
         seedIntegration.run('formspree', 'Formspree', 'mail', 0, 'Receive form submissions via Formspree', '{}');
         seedIntegration.run('slack', 'Slack', 'message-square', 0, 'Send lead notifications to Slack', '{}');
     }
@@ -235,6 +241,7 @@ function initializeDatabase() {
         seedIfMissing.run('ga4', 'Google Analytics 4', 'bar-chart', 0, 'Website visitor tracking', '{}');
         seedIfMissing.run('gtm', 'Google Tag Manager', 'bar-chart', 0, 'Tag management for website', '{}');
         seedIfMissing.run('header_scripts', 'Custom Header Scripts', 'code', 1, 'Custom scripts injected into website head', '{"scripts":""}');
+        seedIfMissing.run('ghl', 'GoHighLevel', 'calendar', 1, 'Sync meetings from GHL calendar bookings', '{}');
     }
 
     // Seed default company profile
@@ -382,8 +389,8 @@ const userQueries = {
 // Meeting operations
 const meetingQueries = {
     create: db.prepare(`
-        INSERT INTO meetings (lead_id, title, description, meeting_type, start_time, end_time, location, status, notes, calendly_event_id, created_by)
-        VALUES (@lead_id, @title, @description, @meeting_type, @start_time, @end_time, @location, @status, @notes, @calendly_event_id, @created_by)
+        INSERT INTO meetings (lead_id, title, description, meeting_type, start_time, end_time, location, status, notes, calendly_event_id, ghl_appointment_id, created_by)
+        VALUES (@lead_id, @title, @description, @meeting_type, @start_time, @end_time, @location, @status, @notes, @calendly_event_id, @ghl_appointment_id, @created_by)
     `),
     getAll: db.prepare(`
         SELECT m.*, l.name as lead_name, l.email as lead_email
@@ -417,6 +424,9 @@ const meetingQueries = {
     `),
     getByCalendlyId: db.prepare(`
         SELECT * FROM meetings WHERE calendly_event_id = ?
+    `),
+    getByGhlId: db.prepare(`
+        SELECT * FROM meetings WHERE ghl_appointment_id = ?
     `),
     update: db.prepare(`
         UPDATE meetings SET

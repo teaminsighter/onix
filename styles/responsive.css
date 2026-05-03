@@ -141,7 +141,7 @@
         padding: 2rem;
     }
 
-    .calendly-inline-widget {
+    .ghl-booking-iframe {
         min-height: 700px;
     }
 }
@@ -497,7 +497,7 @@
         min-height: 650px;
     }
 
-    .calendly-inline-widget {
+    .ghl-booking-iframe {
         min-height: 650px;
     }
 }

@@ -183,7 +183,12 @@
                         <span style="color: var(--gray);">Created</span>
                         <span><%= new Date(meeting.created_at).toLocaleDateString('en-AU') %></span>
                     </div>
-                    <% if (meeting.calendly_event_id) { %>
+                    <% if (meeting.ghl_appointment_id) { %>
+                        <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+                            <span style="color: var(--gray);">Source</span>
+                            <span class="badge">GoHighLevel</span>
+                        </div>
+                    <% } else if (meeting.calendly_event_id) { %>
                         <div style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
                             <span style="color: var(--gray);">Source</span>
                             <span class="badge">Calendly</span>

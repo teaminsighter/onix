@@ -36,14 +36,14 @@ app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://assets.calendly.com", "https://www.googletagmanager.com", "https://tagmanager.google.com"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://www.googletagmanager.com", "https://tagmanager.google.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com", "https://fonts.googleapis.com", "data:"],
             scriptSrc: [
                 "'self'",
                 "'unsafe-inline'",
                 "'unsafe-eval'",
                 "https://cdnjs.cloudflare.com",
-                "https://assets.calendly.com",
+                "https://link.msgsndr.com",
                 "https://static.cloudflareinsights.com",
                 "https://www.googletagmanager.com",
                 "https://tagmanager.google.com",
@@ -55,8 +55,8 @@ app.use(helmet({
             ],
             scriptSrcAttr: ["'unsafe-inline'"],
             imgSrc: ["'self'", "data:", "https:", "blob:"],
-            frameSrc: ["'self'", "https://calendly.com", "https://www.google.com", "https://www.googletagmanager.com", "https://tagmanager.google.com"],
-            connectSrc: ["'self'", "https://calendly.com", "https://www.google-analytics.com", "https://region1.google-analytics.com", "https://www.googletagmanager.com", "https://www.clarity.ms", "https://ss.onixmrkt.com"],
+            frameSrc: ["'self'", "https://api.leadconnectorhq.com", "https://link.msgsndr.com", "https://msgsndr.com", "https://www.google.com", "https://www.googletagmanager.com", "https://tagmanager.google.com"],
+            connectSrc: ["'self'", "https://api.leadconnectorhq.com", "https://link.msgsndr.com", "https://www.google-analytics.com", "https://region1.google-analytics.com", "https://www.googletagmanager.com", "https://www.clarity.ms", "https://ss.onixmrkt.com"],
             workerSrc: ["'self'", "blob:"],
         },
     },

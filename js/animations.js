@@ -856,42 +856,17 @@ function initScrollAnimations() {
         });
     }
 
-    // Calendly Preload - Load early when user reaches Team section
-    const calendlyWidget = document.querySelector('.calendly-inline-widget');
+    // Animate booking calendar container when it comes into view
     const bookCalendar = document.querySelector('.book-call-calendar');
-    let calendlyPreloaded = false;
-
-    if (calendlyWidget) {
-        // Preload Calendly when user reaches Team section (before Book section)
+    if (bookCalendar) {
         ScrollTrigger.create({
-            trigger: '#team',
-            start: 'top 80%',
+            trigger: '#book',
+            start: 'top 70%',
             onEnter: () => {
-                if (!calendlyPreloaded && window.Calendly) {
-                    // Force Calendly to initialize the widget
-                    window.Calendly.initInlineWidget({
-                        url: calendlyWidget.dataset.url,
-                        parentElement: calendlyWidget,
-                        prefill: {},
-                        utm: {}
-                    });
-                    calendlyPreloaded = true;
-                }
+                bookCalendar.classList.add('visible');
             },
             once: true
         });
-
-        // Animate calendar container when it comes into view
-        if (bookCalendar) {
-            ScrollTrigger.create({
-                trigger: '#book',
-                start: 'top 70%',
-                onEnter: () => {
-                    bookCalendar.classList.add('visible');
-                },
-                once: true
-            });
-        }
     }
 
     // Contact Section Animations
@@ -906,18 +881,6 @@ function initScrollAnimations() {
             scrollTrigger: {
                 trigger: '.contact-section',
                 start: 'top 80%'
-            }
-        });
-
-        // Form card slide in from left
-        gsap.to('.contact-form-card', {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: '.contact-grid',
-                start: 'top 75%'
             }
         });
 

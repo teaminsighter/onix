@@ -91,6 +91,12 @@
     margin-bottom: 5rem;
 }
 
+/* Single column variant (when form is removed) */
+.contact-grid.contact-grid-single {
+    grid-template-columns: minmax(0, 720px);
+    justify-content: center;
+}
+
 /* Form Card */
 .contact-form-card {
     background: rgba(40, 40, 40, 0.3);

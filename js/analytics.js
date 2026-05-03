@@ -165,9 +165,9 @@ const Analytics = {
         });
     },
 
-    // Track Calendly interactions
-    trackCalendlyEvent(eventType) {
-        this.trackEvent('calendly_interaction', {
+    // Track GHL booking interactions
+    trackBookingEvent(eventType) {
+        this.trackEvent('booking_interaction', {
             event_type: eventType
         });
 
@@ -239,14 +239,18 @@ function setupAutoTracking() {
 
     sections.forEach(section => sectionObserver.observe(section));
 
-    // Track Calendly events (if Calendly is loaded)
+    // Track GHL booking iframe events (postMessage from leadconnectorhq)
     window.addEventListener('message', (e) => {
-        if (e.origin === 'https://calendly.com') {
-            if (e.data.event === 'calendly.event_scheduled') {
-                Analytics.trackCalendlyEvent('scheduled');
-            } else if (e.data.event === 'calendly.event_type_viewed') {
-                Analytics.trackCalendlyEvent('viewed');
-            }
+        const ghlOrigins = ['https://api.leadconnectorhq.com', 'https://link.msgsndr.com', 'https://msgsndr.com'];
+        if (!ghlOrigins.includes(e.origin)) return;
+
+        const eventName = e.data?.event || e.data?.type || '';
+        if (typeof eventName !== 'string') return;
+
+        if (/scheduled|booked|confirmed/i.test(eventName)) {
+            Analytics.trackBookingEvent('scheduled');
+        } else if (/viewed|loaded/i.test(eventName)) {
+            Analytics.trackBookingEvent('viewed');
         }
     });
 

@@ -148,78 +148,115 @@ router.post('/formspree', validateWebhook, (req, res) => {
     }
 });
 
-// Receive Calendly webhook
-router.post('/calendly', validateWebhook, (req, res) => {
+// Receive GoHighLevel booking webhook
+//
+// Configure in GHL: Automation → Workflows → trigger on "Appointment Booked"
+// (and another for "Appointment Cancelled"). Action: Webhook → POST to this
+// endpoint with header `x-webhook-secret: <WEBHOOK_SECRET>`. Map the standard
+// contact + appointment fields in the workflow's webhook payload.
+//
+// This handler is permissive about payload shape — accepts both nested
+// (`contact: {...}, appointment: {...}`) and flat (e.g. `first_name`,
+// `appointment_start_time`) field names that different GHL workflow configs
+// emit.
+router.post('/ghl-booking', validateWebhook, (req, res) => {
     try {
-        const { event, payload } = req.body;
+        const body = req.body || {};
 
-        if (event === 'invitee.created') {
-            const invitee = payload.invitee;
-            const eventType = payload.event_type;
+        // Pull contact data from either nested or flat payload
+        const contact = body.contact || body;
+        const firstName = contact.firstName || contact.first_name || body.first_name || '';
+        const lastName = contact.lastName || contact.last_name || body.last_name || '';
+        const fullName = (contact.name || `${firstName} ${lastName}`.trim() || contact.full_name || '').trim();
+        const email = contact.email || body.email || '';
+        const phone = contact.phone || body.phone || null;
 
-            // Create or update lead
-            const result = leads.create.run({
-                name: invitee.name,
-                email: invitee.email,
-                phone: null,
-                message: `Calendly booking: ${eventType.name}`,
-                source: 'calendly',
-                page_url: ''
-            });
+        // Pull appointment data
+        const appt = body.appointment || body;
+        const apptId = appt.id || body.appointment_id || appt.appointmentId || null;
+        const startTime = appt.startTime || appt.start_time || body.appointment_start_time || null;
+        const endTime = appt.endTime || appt.end_time || body.appointment_end_time || null;
+        const location = appt.address || appt.location || body.location || body.appointment_address || 'GHL Booking';
+        const calendarName = body.calendar?.name || body.calendar_name || appt.calendarName || 'GHL Calendar';
+        const apptTitle = appt.title || body.appointment_title || calendarName;
 
-            const leadId = result.lastInsertRowid;
+        // Event type — GHL workflows can send this in different fields
+        const eventType = (body.type || body.event_type || body.event || '').toString().toLowerCase();
+        const isCancellation = /cancel/.test(eventType) || appt.status === 'cancelled' || body.appointment_status === 'cancelled';
 
-            // Update status to scheduled
-            leads.updateStatus.run('scheduled', leadId);
-
-            activities.create.run(
-                leadId,
-                'call_scheduled',
-                `Scheduled: ${eventType.name}`,
-                'calendly'
-            );
-
-            // Also create a meeting record
-            const eventDetails = payload.event || {};
-            meetings.create.run({
-                lead_id: leadId,
-                title: eventType.name || 'Calendly Meeting',
-                description: `Booked by ${invitee.name} (${invitee.email})`,
-                meeting_type: 'video',
-                start_time: eventDetails.start_time || new Date().toISOString(),
-                end_time: eventDetails.end_time || new Date(Date.now() + 1800000).toISOString(),
-                location: eventDetails.location?.join_url || 'Calendly',
-                status: 'scheduled',
-                notes: '',
-                calendly_event_id: eventDetails.uuid || null,
-                created_by: null
-            });
-
-            console.log(`📅 Calendly booking: ${invitee.name}`);
-
-            sendNotification({
-                type: 'call_scheduled',
-                lead: { id: leadId, name: invitee.name, email: invitee.email },
-                event: eventType.name
-            });
-        }
-
-        // Handle cancellation
-        if (event === 'invitee.canceled') {
-            const eventDetails = payload.event || {};
-            if (eventDetails.uuid) {
-                const existing = meetings.getByCalendlyId.get(eventDetails.uuid);
+        // Cancellations: flip the existing meeting to cancelled
+        if (isCancellation) {
+            if (apptId) {
+                const existing = meetings.getByGhlId.get(apptId);
                 if (existing) {
                     meetings.updateStatus.run('cancelled', existing.id);
-                    console.log(`❌ Calendly cancellation: ${eventDetails.uuid}`);
+                    console.log(`❌ GHL cancellation: ${apptId}`);
                 }
+            }
+            return res.json({ success: true });
+        }
+
+        // Bookings: require email + start_time at minimum
+        if (!email || !startTime) {
+            return res.status(400).json({ error: 'email and appointment start time are required' });
+        }
+
+        // Idempotency: don't double-create if GHL retries the webhook
+        if (apptId) {
+            const existing = meetings.getByGhlId.get(apptId);
+            if (existing) {
+                console.log(`↩️  GHL booking already recorded: ${apptId}`);
+                return res.json({ success: true, leadId: existing.lead_id, meetingId: existing.id, duplicate: true });
             }
         }
 
-        res.json({ success: true });
+        const leadName = fullName || email;
+        const result = leads.create.run({
+            name: leadName,
+            email,
+            phone,
+            message: `GHL booking: ${apptTitle}`,
+            source: 'ghl',
+            page_url: ''
+        });
+        const leadId = result.lastInsertRowid;
+
+        leads.updateStatus.run('scheduled', leadId);
+
+        activities.create.run(
+            leadId,
+            'call_scheduled',
+            `Scheduled: ${apptTitle}`,
+            'ghl'
+        );
+
+        const meetingResult = meetings.create.run({
+            lead_id: leadId,
+            title: apptTitle,
+            description: `Booked by ${leadName} (${email})`,
+            meeting_type: 'video',
+            start_time: startTime,
+            end_time: endTime || new Date(new Date(startTime).getTime() + 30 * 60 * 1000).toISOString(),
+            location,
+            status: 'scheduled',
+            notes: '',
+            calendly_event_id: null,
+            ghl_appointment_id: apptId,
+            created_by: null
+        });
+
+        console.log(`📅 GHL booking: ${leadName} (${email}) — ${apptTitle}`);
+
+        sendNotification({
+            type: 'call_scheduled',
+            lead: { id: leadId, name: leadName, email, phone },
+            event: apptTitle
+        });
+
+        res.json({ success: true, leadId, meetingId: meetingResult.lastInsertRowid });
     } catch (error) {
-        console.error('Calendly webhook error:', error);
-        res.status(500).json({ error: 'Failed to process Calendly event' });
+        console.error('GHL webhook error:', error);
+        res.status(500).json({ error: 'Failed to process GHL booking' });
     }
 });
 

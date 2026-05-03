@@ -149,7 +149,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Connected Services</h3>
-                        <% var serviceIntegrations = integrations.filter(function(i) { return ['calendly','formspree','slack'].indexOf(i.name) !== -1; }); %>
+                        <% var serviceIntegrations = integrations.filter(function(i) { return ['ghl','formspree','slack'].indexOf(i.name) !== -1; }); %>
                         <span style="color: var(--gray); font-size: 0.9rem;"><%= serviceIntegrations.filter(function(i) { return i.enabled; }).length %> of <%= serviceIntegrations.length %> connected</span>
                     </div>
 
@@ -486,10 +486,10 @@ function saveHeaderScripts() {
 
 function configureIntegration(name) {
     var fields = '';
-    if (name === 'calendly') {
-        fields = '<div class="form-group"><label class="form-label">Calendly API Key</label><input type="text" class="form-input" name="api_key" placeholder="Enter your Calendly Personal Access Token"></div>' +
-            '<div class="form-group"><label class="form-label">Webhook URL (for Calendly to call)</label><input type="text" class="form-input" readonly value="' + window.location.origin + '/api/webhook/calendly" onclick="this.select()"></div>' +
-            '<button type="button" class="btn btn-secondary" onclick="syncCalendly()" style="margin-top:0.5rem;width:100%;justify-content:center;">Sync Past Meetings</button>';
+    if (name === 'ghl') {
+        fields = '<div class="form-group"><label class="form-label">Webhook URL (paste into your GHL workflow)</label><input type="text" class="form-input" readonly value="' + window.location.origin + '/api/webhook/ghl-booking" onclick="this.select()"></div>' +
+            '<div class="form-group"><label class="form-label">Webhook Secret Header</label><input type="text" class="form-input" readonly value="x-webhook-secret: &lt;your WEBHOOK_SECRET&gt;" onclick="this.select()"></div>' +
+            '<p style="font-size:0.85rem;color:var(--text-secondary);margin:0.5rem 0;">In GHL: Automation → Workflows → trigger on Appointment Booked / Cancelled → Webhook action with the URL and header above.</p>';
     } else if (name === 'slack') {
         fields = '<div class="form-group"><label class="form-label">Slack Webhook URL</label><input type="text" class="form-input" name="webhook_url" placeholder="https://hooks.slack.com/services/..."></div>';
     } else if (name === 'formspree') {
@@ -524,16 +524,6 @@ function submitIntegrationConfig(e, name) {
         if (r.ok) { closeModal(); showToast('Configuration saved', 'success'); }
         else showToast('Failed to save config', 'error');
     });
-}
-
-function syncCalendly() {
-    showToast('Syncing Calendly events...', 'info');
-    fetch('/api/settings/integrations/calendly/sync', { method: 'POST' })
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            if (data.synced !== undefined) showToast('Synced ' + data.synced + ' meetings from Calendly', 'success');
-            else showToast(data.error || 'Sync failed', 'error');
-        }).catch(function() { showToast('Sync failed', 'error'); });
 }
 
 function saveNotificationPrefs() {
