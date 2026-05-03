@@ -1113,6 +1113,230 @@ function initGuaranteeAnimation() {
     });
 }
 
+// ========== GUARANTEE 3D TILT ==========
+function initGuaranteeTilt() {
+    const stage = document.querySelector('.guarantee-stage');
+    if (!stage) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+
+    // Only run on devices with hover-capable pointers
+    if (!window.matchMedia('(hover: hover)').matches) return;
+
+    const maxTilt = 6; // degrees — keep subtle on a wide card
+
+    stage.addEventListener('mousemove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        // Normalize to -1..1, then scale to maxTilt. Card tilts AWAY from cursor.
+        const rotateY = -((x - cx) / cx) * maxTilt;       // cursor right -> right edge recedes, left forward
+        const rotateX = -((y - cy) / cy) * maxTilt;       // cursor down  -> bottom edge recedes, top forward
+
+        gsap.to(stage, {
+            rotateX,
+            rotateY,
+            transformPerspective: 1400,
+            transformOrigin: 'center center',
+            duration: 0.5,
+            ease: 'power2.out'
+        });
+    });
+
+    stage.addEventListener('mouseleave', () => {
+        gsap.to(stage, {
+            rotateX: 0,
+            rotateY: 0,
+            duration: 0.7,
+            ease: 'power2.out'
+        });
+    });
+}
+
+// ========== NEW SECTION REVEALS (PDF refresh) ==========
+function initRefreshSectionReveals() {
+    const reveal = (selector, props = {}, opts = {}) => {
+        const els = document.querySelectorAll(selector);
+        if (!els.length) return;
+        const { from = { opacity: 0, y: 40 }, stagger = 0.1, duration = 0.9, ease = 'power3.out', start = 'top 85%', trigger } = { ...opts };
+        gsap.set(els, from);
+        ScrollTrigger.create({
+            trigger: trigger || els[0],
+            start,
+            once: true,
+            onEnter: () => {
+                gsap.to(els, {
+                    opacity: 1,
+                    y: 0,
+                    x: 0,
+                    scale: 1,
+                    duration,
+                    stagger,
+                    ease,
+                    ...props
+                });
+            }
+        });
+    };
+
+    // Hero proof + scarcity row — slide up after hero stats
+    gsap.set('.hero-proof, .hero-scarcity', { opacity: 0, y: 16 });
+    gsap.to('.hero-proof', { opacity: 1, y: 0, duration: 0.7, delay: 1.9, ease: 'power3.out' });
+    gsap.to('.hero-scarcity', { opacity: 1, y: 0, duration: 0.7, delay: 2.4, ease: 'power3.out' });
+
+    // Problem prose paragraphs — staggered fade up
+    reveal('.problem-prose p', {}, { from: { opacity: 0, y: 24 }, stagger: 0.12, duration: 0.75, trigger: '.problem-prose' });
+
+    // Elephant section — prose left fades, mock right slides in from right
+    const elephantProse = document.querySelectorAll('.elephant-prose p');
+    if (elephantProse.length) {
+        gsap.set(elephantProse, { opacity: 0, x: -40 });
+        ScrollTrigger.create({
+            trigger: '.elephant-layout',
+            start: 'top 78%',
+            once: true,
+            onEnter: () => {
+                gsap.to(elephantProse, { opacity: 1, x: 0, duration: 0.9, stagger: 0.1, ease: 'power3.out' });
+            }
+        });
+    }
+    const elephantMock = document.querySelector('.elephant-mock');
+    if (elephantMock) {
+        gsap.set(elephantMock, { opacity: 0, x: 60 });
+        gsap.set('.elephant-mock-card .mock-row, .elephant-mock-card .mock-decision', { opacity: 0, y: 14 });
+        ScrollTrigger.create({
+            trigger: '.elephant-layout',
+            start: 'top 78%',
+            once: true,
+            onEnter: () => {
+                const tl = gsap.timeline();
+                tl.to(elephantMock, { opacity: 1, x: 0, duration: 1, ease: 'power3.out' });
+                tl.to('.elephant-mock-card .mock-row', { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out' }, 0.4);
+                tl.to('.elephant-mock-card .mock-decision', { opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.4)' }, 0.95);
+            }
+        });
+    }
+
+    // Who-this-is-for cards — left/right slide
+    const whoYes = document.querySelector('.who-yes');
+    const whoNo = document.querySelector('.who-no');
+    if (whoYes) gsap.set(whoYes, { opacity: 0, x: -50 });
+    if (whoNo) gsap.set(whoNo, { opacity: 0, x: 50 });
+    if (whoYes || whoNo) {
+        ScrollTrigger.create({
+            trigger: '.who-grid',
+            start: 'top 80%',
+            once: true,
+            onEnter: () => {
+                if (whoYes) gsap.to(whoYes, { opacity: 1, x: 0, duration: 0.95, ease: 'power3.out' });
+                if (whoNo) gsap.to(whoNo, { opacity: 1, x: 0, duration: 0.95, delay: 0.1, ease: 'power3.out' });
+                gsap.set('.who-list li', { opacity: 0, y: 12 });
+                gsap.to('.who-list li', { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, delay: 0.6, ease: 'power2.out' });
+            }
+        });
+    }
+
+    // Pillars — staggered card lift with internal feature stagger
+    reveal('.pillar-card', {}, { from: { opacity: 0, y: 60, scale: 0.96 }, stagger: 0.16, duration: 1, ease: 'power3.out', trigger: '.pillars-grid' });
+    const pillarFeatures = document.querySelectorAll('.pillar-features li');
+    if (pillarFeatures.length) {
+        gsap.set(pillarFeatures, { opacity: 0, x: -16 });
+        ScrollTrigger.create({
+            trigger: '.pillars-grid',
+            start: 'top 75%',
+            once: true,
+            onEnter: () => {
+                gsap.to(pillarFeatures, { opacity: 1, x: 0, duration: 0.5, stagger: 0.05, delay: 0.5, ease: 'power2.out' });
+            }
+        });
+    }
+
+    // Guarantee — stamp scale-in + copy fade
+    const stamp = document.querySelector('.guarantee-stamp');
+    if (stamp) {
+        gsap.set(stamp, { opacity: 0, scale: 0.4 });
+        gsap.set('.guarantee-copy > *', { opacity: 0, y: 24 });
+        ScrollTrigger.create({
+            trigger: '.guarantee-stage',
+            start: 'top 78%',
+            once: true,
+            onEnter: () => {
+                const tl = gsap.timeline();
+                tl.to(stamp, { opacity: 1, scale: 1, duration: 1.1, ease: 'back.out(1.5)' });
+                tl.to('.guarantee-copy > *', { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power3.out' }, 0.3);
+            }
+        });
+    }
+
+    // Result stat cards — pop up
+    reveal('.result-stat', {}, { from: { opacity: 0, y: 30, scale: 0.94 }, stagger: 0.08, duration: 0.7, ease: 'back.out(1.4)', trigger: '.result-stats' });
+
+    // Case studies — slide up
+    reveal('.case-card', {}, { from: { opacity: 0, y: 50 }, stagger: 0.15, duration: 0.9, ease: 'power3.out', trigger: '.case-studies' });
+
+    // Bonus cards — sweep up with subtle ribbon flash
+    reveal('.bonus-card', {}, { from: { opacity: 0, y: 60, scale: 0.95 }, stagger: 0.18, duration: 1, ease: 'power3.out', trigger: '.bonus-grid' });
+    const bonusRibbons = document.querySelectorAll('.bonus-ribbon');
+    if (bonusRibbons.length) {
+        gsap.set(bonusRibbons, { opacity: 0, x: 80 });
+        ScrollTrigger.create({
+            trigger: '.bonus-grid',
+            start: 'top 78%',
+            once: true,
+            onEnter: () => {
+                gsap.to(bonusRibbons, { opacity: 1, x: 0, duration: 0.7, stagger: 0.18, delay: 0.4, ease: 'power3.out' });
+            }
+        });
+    }
+
+    // Pricing flag pulse on featured tier
+    const pricingFlag = document.querySelector('.pricing-flag');
+    if (pricingFlag) {
+        gsap.set(pricingFlag, { opacity: 0, x: 80 });
+        ScrollTrigger.create({
+            trigger: '.pricing-grid',
+            start: 'top 80%',
+            once: true,
+            onEnter: () => {
+                gsap.to(pricingFlag, { opacity: 1, x: 0, duration: 0.7, delay: 0.6, ease: 'power3.out' });
+            }
+        });
+    }
+    const pricingFeatures = document.querySelectorAll('.pricing-features li');
+    if (pricingFeatures.length) {
+        gsap.set(pricingFeatures, { opacity: 0, x: -14 });
+        ScrollTrigger.create({
+            trigger: '.pricing-grid',
+            start: 'top 75%',
+            once: true,
+            onEnter: () => {
+                gsap.to(pricingFeatures, { opacity: 1, x: 0, duration: 0.5, stagger: 0.04, delay: 0.5, ease: 'power2.out' });
+            }
+        });
+    }
+
+    // Steps — sequential pop-in
+    reveal('.step-item', {}, { from: { opacity: 0, y: 30 }, stagger: 0.12, duration: 0.7, ease: 'back.out(1.3)', trigger: '.steps-track' });
+
+    // Founders cards
+    reveal('.founder-card', {}, { from: { opacity: 0, y: 40 }, stagger: 0.18, duration: 0.9, ease: 'power3.out', trigger: '.founders-grid' });
+    const foundersSummary = document.querySelector('.founders-summary');
+    if (foundersSummary) {
+        gsap.set(foundersSummary, { opacity: 0, y: 30 });
+        ScrollTrigger.create({
+            trigger: foundersSummary,
+            start: 'top 88%',
+            once: true,
+            onEnter: () => {
+                gsap.to(foundersSummary, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+            }
+        });
+    }
+}
+
 // ========== INITIALIZE ==========
 document.addEventListener('DOMContentLoaded', () => {
     initHeroAnimations();
@@ -1124,4 +1348,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initParallax();
     initSolutionCarousel();
     initGuaranteeAnimation();
+    initGuaranteeTilt();
+    initRefreshSectionReveals();
 });

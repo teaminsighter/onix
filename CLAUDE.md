@@ -33,7 +33,7 @@ npm run dev               # Start with nodemon (port 3001)
 npm start                 # Production start
 ```
 
-**Environment Variables**: Copy `admin/.env.example` to `admin/.env`. Required: `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `WEBHOOK_SECRET`. Optional: SMTP settings for email notifications.
+**Environment Variables**: Copy `admin/.env.example` to `admin/.env`. Required: `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `WEBHOOK_SECRET`. Optional: `CORS_ORIGIN` (comma-separated allowed origins), `DB_PATH` (defaults to `./data/onix.db`), `TRUST_PROXY` (set to 1 behind reverse proxy), SMTP settings for email notifications. Requires Node.js >=18.0.0.
 
 ## Project Structure
 
@@ -52,7 +52,7 @@ npm start                 # Production start
 - `js/analytics.js` - GA4, GTM, Facebook Pixel, Clarity integration (disabled until config IDs set)
 - `js/cookie-consent.js` - Cookie banner that gates analytics initialization
 - `js/image-utils.js` - Image lazy-loading utilities
-- `js/insurance.js` - Standalone module for insurance service pages (self-contained, not imported via main.js)
+- `js/insurance.js`, `js/solar.js`, `js/real-estate.js`, `js/tradies.js`, `js/builders.js` - Per-service-page standalone modules. Each is self-contained (registers its own GSAP plugins, cursor, navbar, animations) and is loaded directly by its service HTML — NOT imported via `main.js`.
 
 ## Architecture
 
@@ -123,7 +123,7 @@ Titles split into `<span class="char">` elements, animated from `opacity: 0, y: 
 
 **Note**: Sections after Features (How, Testimonials, Team, Book, Contact) have separate title handling due to horizontal scroll pinning.
 
-**Insurance Page Animations** (`js/insurance.js`): Self-contained animation system for insurance service pages. Includes pinned markets slideshow with parallax, 3D globe with Three.js, typewriter effects, and all scroll-triggered animations. Loads its own GSAP plugins and cursor/navbar implementations.
+**Service-Page Animation Modules**: Each major service page (`insurance`, `solar`, `real-estate`, `tradies`, `builders`) has its own self-contained JS module under `js/`. They do NOT go through `main.js` — they each register GSAP plugins, set up their own cursor/navbar, and run their page-specific animations. When changing animation behavior site-wide, expect to touch each of these modules separately. `insurance.js` additionally drives the Three.js 3D globe and pinned markets slideshow; `real-estate.js` also uses Three.js for a 3D property model.
 
 ## Mobile Considerations
 
