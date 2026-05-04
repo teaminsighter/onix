@@ -1350,4 +1350,99 @@ document.addEventListener('DOMContentLoaded', () => {
     initGuaranteeAnimation();
     initGuaranteeTilt();
     initRefreshSectionReveals();
+    initProofAndVideo();
 });
+
+// ========== PROOF / VIDEO TESTIMONIALS ==========
+function initProofAndVideo() {
+    // ---- Scroll reveal for phones + video cards (IntersectionObserver) ----
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.proof-phone, .video-card').forEach((el) => observer.observe(el));
+
+    // ---- Phone tilt-on-hover (3D parallax) ----
+    document.querySelectorAll('.proof-phone').forEach((phone) => {
+        const frame = phone.querySelector('.phone-frame');
+        if (!frame) return;
+
+        // Capture the persistent stagger rotation (-1.5deg / +1.5deg) so we can preserve it
+        const baseRotate = phone.matches(':nth-child(odd)') ? -1.5 : 1.5;
+
+        phone.addEventListener('mousemove', (e) => {
+            const rect = frame.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const rx = ((y - rect.height / 2) / rect.height) * -10; // tilt up/down
+            const ry = ((x - rect.width / 2) / rect.width) * 12;    // tilt left/right
+            frame.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(10px)`;
+        });
+
+        phone.addEventListener('mouseleave', () => {
+            frame.style.transform = '';
+        });
+    });
+
+    // ---- Lightbox ----
+    const lightbox = document.getElementById('proofLightbox');
+    if (lightbox) {
+        const lightboxImg = lightbox.querySelector('.lightbox-img');
+        const closeBtn = lightbox.querySelector('.lightbox-close');
+
+        const openLightbox = (src, alt) => {
+            lightboxImg.src = src;
+            lightboxImg.alt = alt || '';
+            lightbox.classList.add('active');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // Defer src reset so the close animation isn't visually awkward
+            setTimeout(() => { lightboxImg.src = ''; }, 300);
+        };
+
+        document.querySelectorAll('.proof-phone').forEach((phone) => {
+            phone.addEventListener('click', () => {
+                const src = phone.dataset.img;
+                const alt = phone.querySelector('img')?.alt;
+                if (src) openLightbox(src, alt);
+            });
+        });
+
+        closeBtn?.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox();
+        });
+    }
+
+    // ---- Lazy-load YouTube on first click (privacy + perf) ----
+    document.querySelectorAll('.video-card').forEach((card) => {
+        const thumb = card.querySelector('.video-thumbnail');
+        const videoId = card.dataset.videoId;
+        if (!thumb || !videoId) return;
+
+        thumb.addEventListener('click', () => {
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+            iframe.title = 'Video testimonial';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.allowFullscreen = true;
+            iframe.loading = 'lazy';
+            thumb.replaceWith(iframe);
+            card.classList.add('playing');
+        }, { once: true });
+    });
+}

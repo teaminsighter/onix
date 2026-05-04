@@ -27,6 +27,10 @@ admin/public/uploads/
 !public/images/problems/*.png
 !public/images/team/*.png
 !public/images/team/*.jpg
+!public/images/case-studies/**/*.png
+!public/images/case-studies/**/*.jpg
+!public/images/case-studies/**/*.jpeg
+!public/images/case-studies/**/*.webp
 !public/logos/*.png
 !public/logos/*.jpg
 !public/logos/*.jpeg
