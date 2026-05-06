@@ -6215,3 +6215,618 @@ section {
         width: 32px;
     }
 }
+
+/* ============================================================
+   GOOGLE TRUST STRIP — under hero, infinite horizontal marquee
+   ============================================================ */
+.google-strip {
+    position: relative;
+    padding: 1.6rem 0;
+    background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+}
+
+.google-strip-mask {
+    position: relative;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
+.google-strip-track {
+    display: flex;
+    width: max-content;
+    animation: googleStripScroll 38s linear infinite;
+    will-change: transform;
+}
+
+.google-strip:hover .google-strip-track { animation-play-state: paused; }
+
+.google-strip-set {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-right: 1.25rem;
+    flex-shrink: 0;
+}
+
+.google-strip-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 1.05rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--gray-light);
+    font-size: 0.92rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+a.google-strip-pill:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(245,148,31,0.35);
+    transform: translateY(-1px);
+}
+
+.google-strip-pill.text { color: var(--gray-light); }
+
+.google-strip-pill .g-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.18rem;
+    font-weight: 700;
+}
+
+.google-strip-pill .g-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    display: inline-block;
+}
+.google-strip-pill .g-dot.blue   { background: #4285F4; }
+.google-strip-pill .g-dot.red    { background: #EA4335; }
+.google-strip-pill .g-dot.yellow { background: #FBBC05; }
+.google-strip-pill .g-dot.green  { background: #34A853; }
+.google-strip-pill .g-word {
+    margin-left: 0.25rem;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.google-strip-pill .g-stars {
+    color: #FBBC05;
+    letter-spacing: 0.05em;
+    font-size: 0.95rem;
+}
+
+.google-strip-pill .g-score {
+    color: var(--white);
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.google-strip-pill .g-pill-label {
+    color: var(--white);
+    font-weight: 500;
+}
+
+.google-strip-divider {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    flex-shrink: 0;
+}
+
+@keyframes googleStripScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .google-strip-track { animation: none; }
+}
+
+@media (max-width: 768px) {
+    .google-strip { padding: 1.1rem 0; }
+    .google-strip-pill {
+        padding: 0.45rem 0.85rem;
+        font-size: 0.82rem;
+    }
+    .google-strip-track { animation-duration: 28s; }
+}
+
+/* ============================================================
+   ELEPHANT PROOF WALL — vertical 4-column infinite marquee
+   ============================================================ */
+.elephant-wall {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.wall-frame {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.85rem;
+    height: 560px;
+    border-radius: 22px;
+    padding: 0.5rem;
+    background: linear-gradient(150deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+.wall-col {
+    position: relative;
+    overflow: hidden;
+    border-radius: 14px;
+}
+
+.wall-track {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    will-change: transform;
+}
+
+.wall-col-up .wall-track {
+    animation: wallScrollUp 30s linear infinite;
+}
+.wall-col-down .wall-track {
+    animation: wallScrollDown 34s linear infinite;
+}
+
+.elephant-wall:hover .wall-track {
+    animation-play-state: paused;
+}
+
+/* slight stagger by varying column durations for a more organic feel */
+.wall-col:nth-child(1) .wall-track { animation-duration: 32s; }
+.wall-col:nth-child(2) .wall-track { animation-duration: 28s; }
+.wall-col:nth-child(3) .wall-track { animation-duration: 36s; }
+.wall-col:nth-child(4) .wall-track { animation-duration: 30s; }
+
+.wall-tile {
+    margin: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    flex-shrink: 0;
+}
+
+.wall-tile img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.wall-fade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 80px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.wall-fade-top {
+    top: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,0.95), rgba(10,10,10,0));
+}
+
+.wall-fade-bot {
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(10,10,10,0.95), rgba(10,10,10,0));
+}
+
+.wall-caption {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: var(--gray-light);
+    font-size: 0.88rem;
+}
+
+.wall-caption .rule-x {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(34,197,94,0.18);
+    color: #22c55e;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+@keyframes wallScrollUp {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-50%); }
+}
+
+@keyframes wallScrollDown {
+    from { transform: translateY(-50%); }
+    to   { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wall-track { animation: none !important; }
+}
+
+@media (max-width: 968px) {
+    .wall-frame { height: 480px; }
+}
+
+@media (max-width: 768px) {
+    .wall-frame {
+        grid-template-columns: repeat(2, 1fr);
+        height: 440px;
+        gap: 0.6rem;
+        padding: 0.4rem;
+    }
+    .wall-col-mobile-hide { display: none; }
+    .wall-track { gap: 0.6rem; }
+    .wall-col:nth-child(1) .wall-track { animation-duration: 28s; }
+    .wall-col:nth-child(2) .wall-track { animation-duration: 32s; }
+}
+
+/* ============================================================
+   GOOGLE REVIEW REEL — horizontal infinite scroll of cards
+   ============================================================ */
+.review-reel-section {
+    position: relative;
+    padding: 7rem 0 7rem;
+    background: var(--bg2);
+    overflow: hidden;
+}
+
+.review-reel-header {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.review-reel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1.2rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.25s, transform 0.25s;
+}
+.review-reel-badge:hover {
+    border-color: rgba(245,148,31,0.4);
+    transform: translateY(-1px);
+}
+.review-reel-badge .g-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.18rem;
+    font-weight: 700;
+}
+.review-reel-badge .g-dot {
+    width: 7px; height: 7px; border-radius: 50%; display: inline-block;
+}
+.review-reel-badge .g-dot.blue   { background: #4285F4; }
+.review-reel-badge .g-dot.red    { background: #EA4335; }
+.review-reel-badge .g-dot.yellow { background: #FBBC05; }
+.review-reel-badge .g-dot.green  { background: #34A853; }
+.review-reel-badge .g-word {
+    margin-left: 0.3rem;
+    color: var(--white);
+    font-weight: 600;
+}
+.review-reel-score {
+    color: var(--white);
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+}
+.review-reel-badge .g-stars {
+    color: #FBBC05;
+    letter-spacing: 0.05em;
+}
+.review-reel-count {
+    color: var(--gray-light);
+    font-size: 0.9rem;
+}
+
+.review-reel-headline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    margin: 0 0 0.8rem;
+    letter-spacing: -0.015em;
+}
+.review-reel-headline .highlight {
+    color: var(--primary);
+}
+
+.review-reel-sub {
+    color: var(--gray-light);
+    font-size: 1.05rem;
+    margin: 0;
+}
+
+.review-reel-mask {
+    position: relative;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+}
+
+.review-reel-track {
+    display: flex;
+    width: max-content;
+    animation: reviewReelScroll 70s linear infinite;
+    will-change: transform;
+}
+.review-reel-section:hover .review-reel-track { animation-play-state: paused; }
+
+.review-reel-set {
+    display: flex;
+    gap: 1.4rem;
+    padding-right: 1.4rem;
+    flex-shrink: 0;
+}
+
+.g-review-card {
+    width: 380px;
+    flex-shrink: 0;
+    padding: 1.5rem 1.5rem 1.4rem;
+    border-radius: 16px;
+    background: linear-gradient(150deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+.g-review-card:hover {
+    border-color: rgba(245,148,31,0.3);
+    transform: translateY(-2px);
+}
+
+.g-review-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.g-review-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+}
+
+.g-review-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.g-review-name {
+    color: var(--white);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.g-review-sub {
+    color: var(--gray-light);
+    font-size: 0.78rem;
+}
+
+.g-review-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1rem;
+    flex-shrink: 0;
+}
+.g-review-mark .g-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    display: inline-block;
+}
+.g-review-mark .g-dot.blue   { background: #4285F4; }
+.g-review-mark .g-dot.red    { background: #EA4335; }
+.g-review-mark .g-dot.yellow { background: #FBBC05; }
+.g-review-mark .g-dot.green  { background: #34A853; }
+
+.g-review-stars {
+    color: #FBBC05;
+    letter-spacing: 0.08em;
+    font-size: 1rem;
+}
+
+.g-review-body {
+    color: var(--gray-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.review-reel-cta {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+@keyframes reviewReelScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .review-reel-track { animation: none; }
+}
+
+@media (max-width: 768px) {
+    .review-reel-section { padding: 5rem 0; }
+    .review-reel-headline { font-size: 1.7rem; }
+    .review-reel-sub { font-size: 0.95rem; }
+    .g-review-card { width: 300px; padding: 1.25rem; }
+    .review-reel-track { animation-duration: 50s; }
+    .review-reel-set { gap: 1rem; padding-right: 1rem; }
+}
+
+/* ============================================================
+   INLINE VIDEO PROOF — slim block with one or two video cards
+   ============================================================ */
+.inline-video-proof {
+    position: relative;
+    padding: 4.5rem 2rem;
+    background: linear-gradient(180deg, transparent, rgba(245,148,31,0.04), transparent);
+}
+
+.inline-video-eyebrow-wrap {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.inline-video-pair {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.inline-video-frame {
+    position: relative;
+    text-align: center;
+}
+
+.inline-video-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.inline-video-tag {
+    color: var(--white);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.inline-video-eyebrow .g-stars {
+    color: #FBBC05;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+}
+
+.inline-video-frame .video-card {
+    margin: 0;
+}
+
+.inline-video-quote {
+    margin: 1.5rem 0 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    color: var(--white);
+    line-height: 1.5;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+}
+
+@media (max-width: 968px) {
+    .inline-video-pair { grid-template-columns: 1fr; gap: 3rem; }
+}
+
+@media (max-width: 768px) {
+    .inline-video-proof { padding: 3rem 1.25rem; }
+    .inline-video-quote { font-size: 0.98rem; }
+}
+
+/* ============================================================
+   INLINE REVIEW ROW — 3 Google review cards between sections
+   ============================================================ */
+.inline-review-row {
+    padding: 5rem 4rem;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.inline-review-row-head {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.inline-review-row-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--gray-light);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.inline-review-row-tag .g-mark { display: inline-flex; align-items: center; gap: 0.15rem; }
+.inline-review-row-tag .g-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.inline-review-row-tag .g-dot.blue   { background: #4285F4; }
+.inline-review-row-tag .g-dot.red    { background: #EA4335; }
+.inline-review-row-tag .g-dot.yellow { background: #FBBC05; }
+.inline-review-row-tag .g-dot.green  { background: #34A853; }
+
+.inline-review-row-title {
+    margin: 1rem 0 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+.inline-review-row-title .highlight {
+    color: var(--primary);
+}
+
+.inline-review-row-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+@media (max-width: 968px) {
+    .inline-review-row { padding: 4rem 1.5rem; }
+    .inline-review-row-grid { grid-template-columns: 1fr; }
+}
